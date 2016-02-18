@@ -1,0 +1,15 @@
+node_modules/
+platforms/
+plugins/
+www/bin/
+www/bld/
+www/images/
+www/merges/
+www/res/
+www/scripts/
+www/Project_Readme.html
+www/config.xml
+www/www.jsproj
+www.sln
+/www/www.jsproj.user
+/www.v12.suo
