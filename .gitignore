@@ -1,15 +1,6 @@
-node_modules/
-platforms/
-plugins/
-www/bin/
-www/bld/
-www/images/
-www/merges/
-www/res/
-www/scripts/
-www/Project_Readme.html
-www/config.xml
-www/www.jsproj
-www.sln
-/www/www.jsproj.user
-/www.v12.suo
+﻿# .gitignore
+[Pp]lugins/android.json
+[Pp]lugins/windows.json
+[Pp]lugins/wp8.json
+[Pp]lugins/remote_ios.json
+[Pp]latforms/
