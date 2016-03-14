@@ -1,4 +1,4 @@
-﻿angular.module('starter', ['ionic', 'control', 'starter.services'])
+﻿angular.module('starter', ['ionic', 'control', 'BLE'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {

@@ -1,48 +1,41 @@
-﻿angular.module('starter.services', [])
+﻿angular.module('BLE', [])
 
 .factory('BLE', function () {
     var connected;
 
+    var device_id = "B0:B4:48:9D:51:EE";
+
     function btFailure(stage, error) { console.log("Bluetooth error during " + stage + " stage. Error: " + error); };
 
-    return {
-        devices: [],
+    function connect(id) {
+        ble.connect(id,
+            function () { console.log("Connect Successful"); },
+            function (error) { console.log("Connect Failed"); }
+        );
+    }
 
-        scan: function (callback) {
+    return {
+        scan: function () {
             var that = this;
 
             ble.scan([], 5, function (device) {
+                if (device.name == "NIRScanNano") {
+                    connect(device.id);
+                }
                 console.log(JSON.stringify(device));
             }, function (error) {
                 console.log("ERROR: " + console.log(error));
                 callback();
             });
-
-
         },
-        connect: function (deviceId, callback) {
-            if (deviceId == 0)
-                deviceId = "30:14:06:24:12:98";
-            /*bluetoothSerial.connect(deviceId,
 
-                function () {
-                   //success
-                    console.log("bluetooth connected!");
-                    callback(true);
-                },
-                callback(false)
-            );*/
+        disconnect: function () {
+            ble.disconnect(device_id,
+                function () { console.log("Disconnect Successful"); },
+                function () { console.log("Disconnect Failed"); }
+            );
         },
-        disconnect: function (callback) {
-            /*bluetoothSerial.disconnect(
 
-                function () {
-                    //success
-                    console.log("bluetooth disconnected!");
-                    callback(false);
-                }, callback(true)
-            );*/
-        },
         write: function (value) {
             //bluetoothSerial.write(value, function () { console.log("SUCCESS = " + value) }, function () { console.log("FAIL= " + value) });
         }
