@@ -106,6 +106,6 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
-  <plugin name="cordova-plugin-ble-central" version="1.0.4" src="https://github.com/don/cordova-plugin-ble-central" />
   <preference name="android-targetSdkVersion" value="22" />
+  <plugin name="cordova-plugin-ble-central" version="1.0.4" src="https://github.com/don/cordova-plugin-ble-central" />
 </widget>
