@@ -9,7 +9,6 @@
   <preference name="SplashScreen" value="screen" />
   <preference name="windows-target-version" value="8.1" />
   <!-- Support for Cordova 5.0.0 plugin system -->
-  <plugin name="cordova-plugin-whitelist" version="1" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
   <allow-intent href="tel:*" />
@@ -108,4 +107,5 @@
   </platform>
   <preference name="android-targetSdkVersion" value="22" />
   <plugin name="cordova-plugin-ble-central" version="1.0.4" src="https://github.com/don/cordova-plugin-ble-central" />
+  <plugin name="cordova-plugin-whitelist" version="1.2.1" />
 </widget>
