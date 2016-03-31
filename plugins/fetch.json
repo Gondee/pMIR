@@ -18,8 +18,9 @@
     },
     "com.example.hello": {
         "source": {
-            "type": "local",
-            "path": "C:\\Users\\Miguel\\Documents\\cordova-plugin-hello"
+            "type": "git",
+            "url": "https://github.com/clement360/Cordova-Hello-JNI-Plugin.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {}
