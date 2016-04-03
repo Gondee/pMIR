@@ -113,5 +113,5 @@
   <preference name="ShowTitle" value="True" />
   <preference name="InAppBrowserStorageEnabled" value="True" />
   <preference name="SuppressesIncrementalRendering" value="True" />
-  <plugin name="com.example.hello" version="0.7.0" src="https://github.com/clement360/Cordova-Hello-JNI-Plugin.git" />
+  <plugin name="com.example.hello" version="0.7.0" src="C:\Users\Miguel\Documents\cordova-plugin-hello" />
 </widget>

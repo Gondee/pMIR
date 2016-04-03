@@ -16,6 +16,7 @@
  */
 #include <string.h>
 #include <jni.h>
+#include <dlpspec.h>
 
 /* This is a trivial JNI example where we use a native method
  * to return a new VM String. See the corresponding Java source
@@ -23,6 +24,28 @@
  *
  *   apps/samples/hello-jni/project/src/com/example/hellojni/HelloJni.java
  */
+jstring
+Java_com_example_plugin_HelloJni_getConfigName( JNIEnv* env, jobject thiz, jbyteArray array )
+{
+    // get jbyte array from array and it's length
+    jbyte* configPtr = (*env)->GetByteArrayElements(env, array, NULL);
+    jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+    size_t bufSize = lengthOfArray;
+
+    dlpspec_scan_read_configuration	(configPtr, bufSize );
+    uScanConfig *config = (uScanConfig *)configPtr;
+    char* config_name = config->scanCfg.config_name;
+
+    // release array
+    (*env)->ReleaseByteArrayElements(env, array, configPtr, 0);
+
+/*    char *buf = (char*)malloc(10);
+    strcpy(buf, "1234567890");
+    jstring jstrBuf = (*env)->NewStringUTF(env, buf);*/
+    return (*env)->NewStringUTF(env, config_name);
+}
+
 jstring
 Java_com_example_plugin_HelloJni_stringFromJNI( JNIEnv* env,
                                                   jobject thiz )
