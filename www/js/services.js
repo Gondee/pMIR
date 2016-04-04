@@ -3,7 +3,7 @@ angular.module('app.services', [])
 .factory('BLE', function($q) {
 
     var connected;
-    var connectedBool;
+    var connectedBool = false;
     var connected_device_id;
 
     // scan config list globals
@@ -78,16 +78,17 @@ angular.module('app.services', [])
 
         ble.connect(deviceId,
             function (peripheral) {
-                // success callback 
+                // success callback
+                connectedBool = true;
                 connected = peripheral;
                 connected_device_id = deviceId;
                 deferred.resolve(peripheral);
-                connectedBool = true;
+                
                 alert('connected');
             },
             function (reason) {
                 // failure callback
-                
+                connectedBool = false;
                 deferred.reject(reason);
                 alert('connect failed');
             }
@@ -97,10 +98,7 @@ angular.module('app.services', [])
     },
 
     isConnected: function () {
-        if (connected)
-            return true;
-        else
-            return false;
+        return connectedBool;
     },
 
     lights: function () {

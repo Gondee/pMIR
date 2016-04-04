@@ -1,7 +1,14 @@
 angular.module('app.controllers', [])
   
 .controller('pMIRQuickScannerCtrl', function($scope, BLE) {
-    $scope.connected = BLE.isConnected();
+    $scope.connected = false;
+
+    var init = function () {
+        $scope.connected = BLE.isConnected();
+        alert($scope.connected)
+    }
+
+    init();
 })
       
 .controller('connectionsCtrl', function($scope, BLE) {
