@@ -20,7 +20,7 @@ angular.module('starter.services', [])
 
     // service uuids
     var scanConfigsServiceID =  '53455205-444C-5020-4E49-52204E616E6F';
-    var scanDataInfoServiceID = '53455206-444C-5020-4E49-52204E616E6F'
+    var scanDataInfoServiceID = '53455206-444C-5020-4E49-52204E616E6F';
 
     // scan config characteristic uuids
     var returnScanConfigsCharID =       '43484115-444C-5020-4E49-52204E616E6F';
