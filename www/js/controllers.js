@@ -1,12 +1,15 @@
 angular.module('app.controllers', [])
   
-.controller('pMIRQuickScannerCtrl', function($scope) {
-
+.controller('pMIRQuickScannerCtrl', function($scope, BLE) {
+    $scope.connected = BLE.isConnected();
 })
       
 .controller('connectionsCtrl', function($scope, BLE) {
     // keep a reference since devices will be added
     $scope.devices = BLE.devices;
+
+    $scope.connected = false;
+    $scope.connecting = false;
 
     var success = function () {
         if ($scope.devices.length < 1) {
@@ -22,10 +25,14 @@ angular.module('app.controllers', [])
     BLE.scan().then(success, failure);
 
     $scope.connect = function (deviceId) {
+        $scope.connecting = true;
         BLE.connect(deviceId).then(
             function (peripheral) {
+                $scope.connected = true;
                 $scope.device = peripheral;
-            }
+                $scope.connecting = false;
+            },
+            function () { $scope.connecting = false; }
         );
     }
 })

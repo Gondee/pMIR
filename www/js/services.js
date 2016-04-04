@@ -3,6 +3,7 @@ angular.module('app.services', [])
 .factory('BLE', function($q) {
 
     var connected;
+    var connectedBool;
     var connected_device_id;
 
     // scan config list globals
@@ -40,13 +41,14 @@ angular.module('app.services', [])
 
         that.devices.length = 0;
 
-        // disconnect the connected device (hack, device should disconnect when leaving detail page)
+        //  TODO: we need a real disconnect button
         if (connected) {
             var id = connected.id;
             ble.disconnect(connected.id, function() {
                 console.log("Disconnected " + id);
             });
             connected = null;
+            connectedBool = false;
         }
 
         ble.startScan([],  /* scan for all services */
@@ -80,17 +82,25 @@ angular.module('app.services', [])
                 connected = peripheral;
                 connected_device_id = deviceId;
                 deferred.resolve(peripheral);
+                connectedBool = true;
                 alert('connected');
             },
             function (reason) {
                 // failure callback
-
+                
                 deferred.reject(reason);
                 alert('connect failed');
             }
         );
 
         return deferred.promise;
+    },
+
+    isConnected: function () {
+        if (connected)
+            return true;
+        else
+            return false;
     },
 
     lights: function () {
