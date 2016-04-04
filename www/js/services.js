@@ -1,5 +1,4 @@
-angular.module('starter.services', [])
-
+angular.module('app.services', [])
 
 .factory('BLE', function($q) {
 
@@ -71,6 +70,7 @@ angular.module('starter.services', [])
 
         return deferred.promise;
     },
+
     connect: function(deviceId) {
         var deferred = $q.defer();
 
@@ -80,11 +80,13 @@ angular.module('starter.services', [])
                 connected = peripheral;
                 connected_device_id = deviceId;
                 deferred.resolve(peripheral);
+                alert('connected');
             },
             function (reason) {
                 // failure callback
 
                 deferred.reject(reason);
+                alert('connect failed');
             }
         );
 
@@ -303,10 +305,8 @@ angular.module('starter.services', [])
       return base64
   }
 
-});
+})
 
-
-angular.module('app.services', [])
 
 .factory('BlankFactory', [function(){
 

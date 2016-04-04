@@ -30,7 +30,12 @@ public class Hello extends CordovaPlugin {
 
             byte[] buffer = data.getArrayBuffer(0);
             String message = HelloJni.getConfigName(buffer);
-            //String message = "The passed array length: " + buffer.length;
+            callbackContext.success(message);
+            validAction = true;
+        } else if (action.equals("interpretScanData")) {
+
+            byte[] buffer = data.getArrayBuffer(0);
+            String message = HelloJni.getScanData(buffer);
             callbackContext.success(message);
             validAction = true;
         } else {
