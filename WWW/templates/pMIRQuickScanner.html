@@ -1,8 +1,11 @@
 <ion-view title="pMIR Quick Scanner" id="page1">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-
+        <div class="card" ui-sref="menu.connections">
+            <div class="item item-text-wrap">
+                Connected: {{connected}}
+            </div>
+        </div>
         <form class="list">
-            <ion-radio>Device Connected</ion-radio>
             <ion-radio>Profile Set</ion-radio>
             <ion-radio>Ready to Scan</ion-radio>
         </form>
@@ -11,8 +14,7 @@
             <ion-toggle toggle-class="toggle-positive">Reference</ion-toggle>
         </form>
         <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" class="button button-stable  button-block">Start</button>
-            <button id="pMIRQuickScanner-button6" class="button button-stable  button-block">Stop</button>
+            <button id="pMIRQuickScanner-button5" ng-click="lights()" class="button button-balanced  button-block">Scan</button>
         </div>
     </ion-content>
 </ion-view>

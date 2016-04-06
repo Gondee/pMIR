@@ -5,10 +5,13 @@ angular.module('app.controllers', [])
 
     var init = function () {
         $scope.connected = BLE.isConnected();
-        alert($scope.connected)
     }
 
     init();
+
+    $scope.lights = function (device_id) {
+        BLE.lights(device_id);
+    }
 })
       
 .controller('connectionsCtrl', function($scope, BLE) {
