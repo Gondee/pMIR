@@ -17,6 +17,7 @@
 #include <string.h>
 #include <jni.h>
 #include <dlpspec.h>
+#include <stdio.h>
 
 /* This is a trivial JNI example where we use a native method
  * to return a new VM String. See the corresponding Java source
@@ -44,24 +45,42 @@ Java_com_example_plugin_HelloJni_getConfigName( JNIEnv* env, jobject thiz, jbyte
     return (*env)->NewStringUTF(env, config_name);
 }
 
-jstring
+jobject
 Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )
 {
+    // JNI get java ScanResult class and constructor
+    jmethodID constructor;
+    jclass scanResultClass = (*env)->FindClass(env, "com/example/plugin/ScanResult");
+    if (scanResultClass == NULL) {
+       printf("Find Class Failed.\n");
+    }else{
+       printf("Found class.\n");
+    }
+
+    constructor = (*env)->GetMethodID(env, scanResultClass, "<init>", "(Ljava/lang/String;I)V");
+    if (constructor == NULL) {
+        printf("Find method Failed.\n");
+    }else {
+        printf("Found method.\n");
+    }
+
     // get jbyte array from array and it's length
-    jbyte* configPtr = (*env)->GetByteArrayElements(env, array, NULL);
+    jbyte* scanBlobPtr = (*env)->GetByteArrayElements(env, array, NULL);
     jsize lengthOfArray = (*env)->GetArrayLength(env, array);
 
     size_t bufSize = lengthOfArray;
+    scanResults * scanResultPtr = malloc(sizeof(scanResults));
 
-    dlpspec_scan_read_configuration	(configPtr, bufSize );
-    uScanConfig *config = (uScanConfig *)configPtr;
+    dlpspec_scan_interpret(scanBlobPtr, bufSize, scanResultPtr);
 
-    char* config_name = config->scanCfg.config_name;
+    jstring scanName = (*env)->NewStringUTF(env, scanResultPtr->scan_name);
+    jint length = (jint)scanResultPtr->length;
 
     // release array
-    (*env)->ReleaseByteArrayElements(env, array, configPtr, 0);
+    (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
 
-    return (*env)->NewStringUTF(env, config_name);
+    // return java ScanResult object
+    return (*env)->NewObject(env, scanResultClass, constructor, scanName, length);
 }
 
 

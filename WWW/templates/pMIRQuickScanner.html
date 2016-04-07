@@ -5,6 +5,19 @@
                 Connected: {{connected}}
             </div>
         </div>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Scan Config:
+                </div>
+                <select>
+                    <option>Context 1</option>
+                    <option>Harabad</option>
+                    <option>C#C#!</option>
+                </select>
+            </label>
+
+        </div>
         <form class="list">
             <ion-radio>Profile Set</ion-radio>
             <ion-radio>Ready to Scan</ion-radio>
@@ -14,7 +27,7 @@
             <ion-toggle toggle-class="toggle-positive">Reference</ion-toggle>
         </form>
         <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="lights()" class="button button-balanced  button-block">Scan</button>
+            <button id="pMIRQuickScanner-button5" ng-click="NIRScan()" class="button button-balanced  button-block">Scan</button>
         </div>
     </ion-content>
 </ion-view>

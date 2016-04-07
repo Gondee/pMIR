@@ -5,9 +5,10 @@ angular.module('app.controllers', [])
 
     var init = function () {
         $scope.connected = BLE.isConnected();
+        BLE.getScanConfigs();
     }
 
-    init();
+    window.setTimeout(init, 5000);
 
     $scope.lights = function (device_id) {
         BLE.lights(device_id);
@@ -172,8 +173,8 @@ angular.module('app.controllers', [])
         }
     );
 
-    $scope.lights = function (device_id) {
-        BLE.lights(device_id);
+    $scope.NIRScan = function (device_id) {
+        BLE.NIRScan(device_id);
     }
 
     $scope.getScanConfigs = function (device_id) {

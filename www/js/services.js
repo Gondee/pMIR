@@ -12,11 +12,17 @@ angular.module('app.services', [])
     var currentScanConfigId = 0;
     var currentScanConfigIndex = 0;
     var scanConfigNames = [];
+    var configDefered;
 
     //scan config data globals
     var scanConfigDataLength;
     var scanConfigDataArrayRaw;
     var scanConfigDataArrayPayload;
+
+    // NIRScan data globals
+    var scanDataLength;
+    var scanDataArrayRaw;
+    var scanDataArrayPayload;
 
     // service uuids
     var scanConfigsServiceID =  '53455205-444C-5020-4E49-52204E616E6F';
@@ -30,6 +36,8 @@ angular.module('app.services', [])
 
     // scan data characteristic uuids
     var startScanCharID = '4348411D-444C-5020-4E49-52204E616E6F';
+    var requestScanDataCharID = '43484127-444C-5020-4E49-52204E616E6F';
+    var returnScanDataCharID = '43484128-444C-5020-4E49-52204E616E6F';
 
   return {
 
@@ -101,19 +109,18 @@ angular.module('app.services', [])
         return connectedBool;
     },
 
-    lights: function () {
+    NIRScan: function () {
         var data = new Uint8Array(1);
 
-        ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onConfigData, failureMsg("Error: recieve notification for scan data"));
+        ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onScanData, failureMsg("Error: recieve notification for scan data"));
         ble.write(connected_device_id, scanDataInfoServiceID, startScanCharID, data.buffer,
             function(res) { console.log("lights"); },
             function(res) { console.log("no lights"); }
         );
-
-        
     },
 
-    getScanConfigs: function() {
+    getScanConfigs: function () {
+        configDefered = $q.defer();
         var data = new Uint8Array(1);
 
         // start notification when characteristic changes (config indicies)
@@ -127,6 +134,70 @@ angular.module('app.services', [])
 
     }
 
+  };
+
+  function onStartScanNotify(buffer) {
+      // Decode the ArrayBuffer into a typed Array based on the data you expect
+      var packetNum = new Uint8Array(buffer)[0];
+      var payload = new Uint32Array(buffer.slice(1));
+      var NIRScanIndex;
+      
+      if (packetNum == 255) {
+          NIRScanIndex = payload[0];
+          console.log("HEYOO: NIRScan Index = " + NIRScanIndex);
+          requestNIRScanData(NIRScanIndex);
+      } 
+  };
+
+  function onScanData(buffer) {
+      // Decode the ArrayBuffer into a typed Array based on the data you expect
+      var raw = new Uint8Array(buffer);
+      var packetNum = raw[0];
+      var payload = new Uint8Array(buffer.slice(1));
+
+      if (packetNum == 0) {
+          scanDataLength = raw[1];
+          scanDataArrayRaw = new Uint8Array(0).buffer;
+          scanDataArrayPayload = new Uint8Array(0).buffer;
+      }
+
+      // append packets
+      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
+      scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
+
+      // We've recived all packets (-4 because the first fou bytes of payload is size header)
+      if (scanDataArrayPayload.byteLength - 4 == scanDataLength) {
+
+          console.log("RAW: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayRaw))).join(","));
+          console.log("PAYLOAD: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayPayload))).join(","));
+
+          var trimmedPayload = new Uint8Array(scanDataArrayPayload.slice(4));
+          console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
+
+          var success = function (scanData) {
+              alert("SCAN DATA: " + scanData);
+              debugger;
+          }
+
+          var failure = function () {
+              alert("Error deserializing scan data");
+          }
+
+          var trimmed64 = base64ArrayBuffer(trimmedPayload.buffer);
+
+          hello.interpretScanData(trimmed64, success, failure);
+      }
+  };
+
+  function requestNIRScanData(index) {
+      var data = new Uint8Array(1);
+      data[0] = index;
+
+      ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanDataNotify, failureMsg("Error: recieve notification for scan data"));
+      ble.write(connected_device_id, scanDataInfoServiceID, requestScanDataCharID, data.buffer,
+          function (res) { console.log("NIRScan Initiated"); },
+          function (res) { alert("NIRScan Scan Failed"); }
+      );
   };
 
   function requestConfigData(index) {
@@ -166,18 +237,19 @@ angular.module('app.services', [])
           alertString += scanConfigNames[i].id + ' : ' + scanConfigNames[i].name + '\n';
       }
       alert(alertString);
+      configDefered.resolve(scanConfigNames);
   }
 
   function onConfigData(buffer) {
       // Decode the ArrayBuffer into a typed Array based on the data you expect
       var raw = new Uint8Array(buffer);
-      var packetNum = new Uint8Array(buffer)[0];
+      var packetNum = raw[0];
       var payload = new Uint8Array(buffer.slice(1));
       
       if (packetNum == 0) {
           scanConfigDataLength = raw[1];
           scanConfigDataArrayRaw = new Uint8Array(0).buffer;
-          scanConfigDataArrayPayload = new Uint8Array(0),buffer;
+          scanConfigDataArrayPayload = new Uint8Array(0).buffer;
       }
 
       // append packets
