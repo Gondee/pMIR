@@ -1,8 +1,9 @@
 angular.module('app.controllers', [])
   
-.controller('pMIRQuickScannerCtrl', function($scope, BLE) {
+.controller('pMIRQuickScannerCtrl', function($scope, $state, BLE) {
     $scope.connected = false;
     $scope.scanConfigs = [];
+    $scope.isTrainingData = false;
 
     var init = function () {
         $scope.connected = BLE.isConnected();
@@ -10,8 +11,8 @@ angular.module('app.controllers', [])
 
     init();
 
-    $scope.disable = function () {
-        false;
+    $scope.toggleTraining = function () {
+        $scope.isTrainingData = !$scope.isTrainingData;
     };
 
     $scope.setConfig = function (id) {
@@ -29,8 +30,19 @@ angular.module('app.controllers', [])
         );
     }
 
-    $scope.NIRScan = function (device_id) {
-        BLE.NIRScan(device_id);
+
+
+    $scope.startScanSteps = function (device_id) {
+        //If data is training data 
+        
+        if (!$scope.isTrainingData) {
+            BLE.NIRScan(device_id);
+        }
+        else {
+            $state.go("menu.posttrainingscan");
+        }
+
+        
     }
 })
       
@@ -83,6 +95,11 @@ angular.module('app.controllers', [])
 })
    
 .controller('profilesCtrl', function($scope) {
+
+})
+.controller('postTrainingScanCtrl', function ($scope) {
+
+
 
 })
  
