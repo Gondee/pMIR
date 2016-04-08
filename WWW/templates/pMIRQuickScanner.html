@@ -1,8 +1,20 @@
 <ion-view title="pMIR Quick Scanner" id="page1">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <div class="card" ui-sref="menu.connections">
-            <div class="item item-text-wrap">
-                Connected: {{connected}}
+
+
+        <div class="list card" ui-sref="menu.connections">
+            <div class="item item-divider">TI NIRScan Nano Connection</div>
+            <div class="item item-body">
+                <div class="item-icon-right">
+                    <p>Connected</p>
+
+                    <i ng-show="connecting"><ion-spinner icon="crescent"></ion-spinner></i>
+                    <div ng-hide="connecting">
+                        <i ng-show="connected" style="color: rgb(51, 205, 95);" class="icon ion-checkmark-circled"></i>
+                        <i ng-hide="connected" style="color: rgb(239, 71, 58);" class="icon ion-close-circled"></i>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="list">
@@ -16,10 +28,6 @@
             </label>
 
         </div>
-        <form class="list">
-            <ion-radio>Profile Set</ion-radio>
-            <ion-radio>Ready to Scan</ion-radio>
-        </form>
         <form class="list">
             <ion-toggle toggle-class="toggle-positive">Training Data</ion-toggle>
             <ion-toggle toggle-class="toggle-positive">Reference</ion-toggle>
