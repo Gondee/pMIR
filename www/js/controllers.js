@@ -10,6 +10,10 @@ angular.module('app.controllers', [])
 
     init();
 
+    $scope.disable = function () {
+        false;
+    };
+
     $scope.setConfig = function (id) {
         alert("config set to #" + id);
     };
@@ -68,6 +72,13 @@ angular.module('app.controllers', [])
 })
    
 .controller('chemometricsCtrl', function($scope) {
+
+    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+    $scope.series = ['Series A', 'Series B'];
+    $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
 
 })
    
