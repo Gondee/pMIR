@@ -22,6 +22,24 @@ import android.os.Bundle;
 
 public class HelloJni {
 
+    public class ScanResult {
+        private String scanName;
+        private int length;
+
+        public ScanResult() {
+            this.scanName = "fakename";
+            this.length = 32;
+        }
+
+        public String getScanName() {
+            return scanName;
+        }
+
+        public int getLength() {
+            return length;
+        }
+    }
+
     /* A native method that is implemented by the
      * 'hello-jni' native library, which is packaged
      * with this application.

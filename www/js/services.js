@@ -9,8 +9,8 @@ angular.module('app.services', [])
     // scan config list globals
     var numScanConfigs = 0;
     var scanConfigIds = [];
+    var scanConfigIdIndex = 0;
     var currentScanConfigId = 0;
-    var currentScanConfigIndex = 0;
     var scanConfigNames = [];
     var configDefered;
 
@@ -92,13 +92,11 @@ angular.module('app.services', [])
                 connected_device_id = deviceId;
                 deferred.resolve(peripheral);
                 
-                alert('connected');
             },
             function (reason) {
                 // failure callback
                 connectedBool = false;
                 deferred.reject(reason);
-                alert('connect failed');
             }
         );
 
@@ -112,7 +110,7 @@ angular.module('app.services', [])
     NIRScan: function () {
         var data = new Uint8Array(1);
 
-        ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onScanData, failureMsg("Error: recieve notification for scan data"));
+        ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onStartScanNotify, failureMsg("Error: recieve notification for scan data"));
         ble.write(connected_device_id, scanDataInfoServiceID, startScanCharID, data.buffer,
             function(res) { console.log("lights"); },
             function(res) { console.log("no lights"); }
@@ -120,6 +118,10 @@ angular.module('app.services', [])
     },
 
     getScanConfigs: function () {
+        scanConfigIdIndex = 0;
+        scanConfigIds = [];
+        scanConfigNames = [];
+
         configDefered = $q.defer();
         var data = new Uint8Array(1);
 
@@ -131,6 +133,8 @@ angular.module('app.services', [])
             function (res) { console.log("config list request completed"); },
             function (res) { console.log("config list request failed"); }
         );
+
+        return configDefered.promise;
 
     }
 
@@ -156,9 +160,13 @@ angular.module('app.services', [])
       var payload = new Uint8Array(buffer.slice(1));
 
       if (packetNum == 0) {
-          scanDataLength = raw[1];
+          scanDataLength = new Uint32Array(buffer.slice(1))[0];
           scanDataArrayRaw = new Uint8Array(0).buffer;
           scanDataArrayPayload = new Uint8Array(0).buffer;
+      }
+
+      if (packetNum == 197) {
+          debugger;
       }
 
       // append packets
@@ -190,10 +198,10 @@ angular.module('app.services', [])
   };
 
   function requestNIRScanData(index) {
-      var data = new Uint8Array(1);
+      var data = new Uint32Array(1);
       data[0] = index;
 
-      ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanDataNotify, failureMsg("Error: recieve notification for scan data"));
+      ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanData, failureMsg("Error: recieve notification for scan data"));
       ble.write(connected_device_id, scanDataInfoServiceID, requestScanDataCharID, data.buffer,
           function (res) { console.log("NIRScan Initiated"); },
           function (res) { alert("NIRScan Scan Failed"); }
@@ -202,13 +210,7 @@ angular.module('app.services', [])
 
   function requestConfigData(index) {
 
-      // stop notifications on scan config list ids
-      ble.stopNotification(connected_device_id, scanConfigsServiceID, returnScanConfigsCharID,
-          function (res) { console.log("config list request notification stopped"); },
-          function (res) { console.log("config list request notifications failed to stop"); }
-      );
-
-      currentScanConfigId = id;
+      currentScanConfigId = scanConfigIds[index];
       var data = new Uint16Array(1);
       data[0] = scanConfigIds[index];
         
@@ -236,7 +238,6 @@ angular.module('app.services', [])
       for (i in scanConfigNames) {
           alertString += scanConfigNames[i].id + ' : ' + scanConfigNames[i].name + '\n';
       }
-      alert(alertString);
       configDefered.resolve(scanConfigNames);
   }
 
@@ -272,8 +273,8 @@ angular.module('app.services', [])
                   returnConfigNames();
                   currentScanConfigId = 0;
               } else {
-                  currentScanConfigId++;
-                  requestConfigData(currentScanConfigId);
+                  scanConfigIdIndex++;
+                  requestConfigData(scanConfigIdIndex);
               }
           }
 
@@ -320,7 +321,7 @@ angular.module('app.services', [])
           for (id in scanConfigIds)
               idString += scanConfigIds[id] + ", ";
           console.log("Here are all the scan config IDs: " + idString);
-          requestConfigData();
+          requestConfigData(scanConfigIdIndex);
       }
       
   };

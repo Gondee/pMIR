@@ -1,7 +1,5 @@
 package com.example.plugin;
 
-import android.os.Bundle;
-
 public class ScanResult {
     private String scanName;
     private int length;

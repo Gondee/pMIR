@@ -11,9 +11,7 @@
                     Scan Config:
                 </div>
                 <select>
-                    <option>Context 1</option>
-                    <option>Harabad</option>
-                    <option>C#C#!</option>
+                    <option ng-repeat="config in scanConfigs" ng-click="setConfig(config.id)">{{config.name}}</option>
                 </select>
             </label>
 
@@ -28,6 +26,10 @@
         </form>
         <div class="button-bar">
             <button id="pMIRQuickScanner-button5" ng-click="NIRScan()" class="button button-balanced  button-block">Scan</button>
+        </div>
+
+        <div class="button-bar">
+            <button id="pMIRQuickScanner-button5" ng-click="loadConfigs()" class="button button-balanced  button-block">loadConfigs</button>
         </div>
     </ion-content>
 </ion-view>

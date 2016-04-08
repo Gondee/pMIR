@@ -2,16 +2,31 @@ angular.module('app.controllers', [])
   
 .controller('pMIRQuickScannerCtrl', function($scope, BLE) {
     $scope.connected = false;
+    $scope.scanConfigs = [];
 
     var init = function () {
         $scope.connected = BLE.isConnected();
-        BLE.getScanConfigs();
     }
 
-    window.setTimeout(init, 5000);
+    init();
 
-    $scope.lights = function (device_id) {
-        BLE.lights(device_id);
+    $scope.setConfig = function (id) {
+        alert("config set to #" + id);
+    };
+
+    $scope.loadConfigs = function () {
+        BLE.getScanConfigs().then(
+            function (configs) {
+                $scope.scanConfigs = configs;
+            },
+            function () {
+                alert("config loading failed");
+            }
+        );
+    }
+
+    $scope.NIRScan = function (device_id) {
+        BLE.NIRScan(device_id);
     }
 })
       
