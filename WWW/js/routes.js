@@ -55,15 +55,26 @@ angular.module('app.routes', [])
       }
     }
   })
-      .state('menu.posttrainscan', {
-          url: '/posttrainscan',
-          views: {
-              'side-menu21': {
-                  templateUrl: 'templates/postTrainScan.html',
-                  controller: 'postTrainScanCtrl'
-              }
-          }
-      })
+
+    .state('menu.posttrainscan', {
+        url: '/posttrainscan',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/postTrainScan.html',
+                controller: 'postTrainScanCtrl'
+            }
+        }
+    })
+
+    .state('menu.scanconfigselect', {
+        url: '/scanconfigselect',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/scanConfigSelect.html',
+                controller: 'scanConfigCtrl'
+            }
+        }
+    })
 
   .state('menu.profiles', {
     url: '/Profiles',

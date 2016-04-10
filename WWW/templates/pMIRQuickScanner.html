@@ -18,15 +18,12 @@
             </div>
         </div>
         <div class="list">
-            <label class="item item-input item-select">
-                <div class="input-label">
-                    Scan Config:
+            <label class="item item-input" ui-sref="menu.scanconfigselect">
+                <div class="input-label item-icon-right">
+                    Select a scan configuration
+                    <i class="icon ion-chevron-right"></i>
                 </div>
-                <select>
-                    <option ng-repeat="config in scanConfigs" ng-click="setConfig(config.id)">{{config.name}}</option>
-                </select>
             </label>
-
         </div>
         <form class="list">
             <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Training Data</ion-toggle>
@@ -36,8 +33,5 @@
             <button id="pMIRQuickScanner-button5" ng-click="startScanSteps()" class="button button-balanced  button-block">Scan</button>
         </div>
 
-        <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="loadConfigs()" class="button button-balanced  button-block">loadConfigs</button>
-        </div>
     </ion-content>
 </ion-view>
