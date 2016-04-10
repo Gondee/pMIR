@@ -34,12 +34,12 @@ angular.module('app.controllers', [])
 
     $scope.startScanSteps = function (device_id) {
         //If data is training data 
-        
+        //alert($scope.isTrainingData);
         if (!$scope.isTrainingData) {
             BLE.NIRScan(device_id);
         }
         else {
-            $state.go("menu.posttrainingscan");
+            $state.go("menu.posttrainscan");
         }
 
         
@@ -97,7 +97,7 @@ angular.module('app.controllers', [])
 .controller('profilesCtrl', function($scope) {
 
 })
-.controller('postTrainingScanCtrl', function ($scope) {
+.controller('postTrainScanCtrl', function ($scope) {
 
 
 
