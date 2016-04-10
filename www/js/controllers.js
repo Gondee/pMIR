@@ -152,15 +152,42 @@ angular.module('app.controllers', [])
 
     $scope.Save = function () {
         
+        validation = false;
+        retrieve = false;
+        save = false;
+        remainder = 0;
+
         //Validate user input % and data. 
+        total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
+
+        if ((total) > 100.0) {
+            alert("Your total concentrations are greater than 100");
+            return;
+        } else if ((total) == 0.0) {
+            alert("You must enter concentration data before proceding");
+            return;
+        }
+
+        //getting remainder if it exists
+        if ((total) < 100.0) {
+            remainder = 100 - total;
+            validation = true;
+        }
+
 
 
 
         //Contact the BLE service to retrieve the data from the scan
+        if (validation) {
 
-        
+
+
+        }
         //Save the data and the user input to the DB
+        if (retrieve) {
 
+
+        }
 
 
     }
