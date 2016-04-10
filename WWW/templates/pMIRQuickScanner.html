@@ -27,11 +27,11 @@
 
         </div>
         <form class="list">
-            <ion-toggle toggle-class="toggle-positive">Training Data</ion-toggle>
+            <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Training Data</ion-toggle>
             <ion-toggle toggle-class="toggle-positive">Reference</ion-toggle>
         </form>
         <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="NIRScan()" class="button button-balanced  button-block">Scan</button>
+            <button id="pMIRQuickScanner-button5" ng-click="startScanSteps()" class="button button-balanced  button-block">Scan</button>
         </div>
 
     </ion-content>
