@@ -15,9 +15,9 @@ var paths = {
 gulp.task('default', ['browserify']);
 
 gulp.task('browserify', function () {
-    return browserify('./www/js/nodeServices.js', { debug: true })
+    return browserify('./WWW/js/nodeServices.js', { debug: true })
      .bundle()
      .pipe(vinylSource('nodeBundle.js'))
-     .pipe(gulp.dest('./www/dist'));
+     .pipe(gulp.dest('./WWW/dist'));
 });
 
