@@ -20,11 +20,9 @@
         <div class="list">
             <label class="item item-input item-select">
                 <div class="input-label">
-                    Scan Config:
+                    Scan Configuration: Current scan config name.
                 </div>
-                <select>
-                    <option ng-repeat="config in scanConfigs" ng-click="setConfig(config.id)">{{config.name}}</option>
-                </select>
+
             </label>
 
         </div>
@@ -36,12 +34,5 @@
             <button id="pMIRQuickScanner-button5" ng-click="NIRScan()" class="button button-balanced  button-block">Scan</button>
         </div>
 
-        <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="loadConfigs()" class="button button-balanced  button-block">loadConfigs</button>
-        </div>
-
-        <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="fakeScan()" class="button button-balanced  button-block">fake Scan</button>
-        </div>
     </ion-content>
 </ion-view>

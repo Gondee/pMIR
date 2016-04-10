@@ -1,0 +1,18 @@
+﻿<ion-view title="Scan Configurations" id="page4">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+
+        <div class="list card">
+            <div class="item item-divider">Select a configuration</div>
+            
+            <ion-list>
+                <ion-item class="item-icon-right" ng-repeat="config in scanConfigs" type="item-text-wrap" ng-click="connect(device.id)">
+                    <h2>{{config.name}}</h2>
+                    <p>ID: {{config.id}}</p>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <button ng-click="loadConfigs()" class="button button-full button-positive">Refresh configurations</button>
+
+    </ion-content>
+</ion-view>
