@@ -46,7 +46,7 @@ Java_com_example_plugin_HelloJni_getConfigName( JNIEnv* env, jobject thiz, jbyte
     return (*env)->NewStringUTF(env, config_name);
 }
 
-/*jobject
+jstring
 Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )
 {
     // get jbyte array from array and it's length
@@ -68,8 +68,8 @@ Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteAr
 
     // return java ScanResult object
     return (*env)->NewStringUTF(env, buffer);
-}*/
-
+}
+/*
 jobject
 Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )
 {
@@ -107,7 +107,7 @@ Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteAr
     // return java ScanResult object
     return (*env)->NewObject(env, scanResultClass, constructor);
 }
-
+*/
 
 jstring
 Java_com_example_plugin_HelloJni_stringFromJNI( JNIEnv* env,

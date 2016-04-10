@@ -24,6 +24,9 @@ angular.module('app.controllers', [])
             }
         );
     }
+    $scope.fakeScan = function () {
+        BLE.fakeScan();
+    };
 
     $scope.NIRScan = function (device_id) {
         BLE.NIRScan(device_id);
