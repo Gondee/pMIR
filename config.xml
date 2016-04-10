@@ -110,4 +110,5 @@
   <plugin name="cordova-plugin-whitelist" version="1.2.1" />
   <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
   <plugin name="com.example.hello" version="0.7.0" src="C:\Users\Miguel\Documents\cordova-plugin-hello" />
+  <plugin name="cordova-plugin-file" version="4.1.1" />
 </widget>

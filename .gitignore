@@ -7,3 +7,8 @@
 
 /bin
 /bld
+/node_modules
+.vs/config/applicationhost.config
+.vs/pMIR/v14/.suo
+pMIR.jsproj
+pMIR.jsproj.user

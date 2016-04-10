@@ -1,14 +1,19 @@
 angular.module('app.controllers', [])
   
-.controller('pMIRQuickScannerCtrl', function($scope, BLE) {
+.controller('pMIRQuickScannerCtrl', function($scope, $state, BLE) {
     $scope.connected = false;
     $scope.scanConfigs = [];
+    $scope.isTrainingData = false;
 
     var init = function () {
         $scope.connected = BLE.isConnected();
     }
 
     init();
+
+    $scope.toggleTraining = function () {
+        $scope.isTrainingData = !$scope.isTrainingData;
+    };
 
     $scope.setConfig = function (id) {
         alert("config set to #" + id);
@@ -28,8 +33,19 @@ angular.module('app.controllers', [])
         BLE.fakeScan();
     };
 
-    $scope.NIRScan = function (device_id) {
-        BLE.NIRScan(device_id);
+
+
+    $scope.startScanSteps = function (device_id) {
+        //If data is training data 
+        
+        if (!$scope.isTrainingData) {
+            BLE.NIRScan(device_id);
+        }
+        else {
+            $state.go("menu.posttrainingscan");
+        }
+
+        
     }
 })
       
@@ -72,9 +88,21 @@ angular.module('app.controllers', [])
    
 .controller('chemometricsCtrl', function($scope) {
 
+    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+    $scope.series = ['Series A', 'Series B'];
+    $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
+
 })
    
 .controller('profilesCtrl', function($scope) {
+
+})
+.controller('postTrainingScanCtrl', function ($scope) {
+
+
 
 })
  
