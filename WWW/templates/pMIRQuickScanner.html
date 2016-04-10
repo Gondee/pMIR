@@ -18,13 +18,12 @@
             </div>
         </div>
         <div class="list">
-            <label class="item item-input item-select">
-                <div class="input-label">
-                    Scan Configuration: Current scan config name.
+            <label class="item item-input" ui-sref="menu.scanconfigselect">
+                <div class="input-label item-icon-right">
+                    Select a scan configuration
+                    <i class="icon ion-chevron-right"></i>
                 </div>
-
             </label>
-
         </div>
         <form class="list">
             <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Training Data</ion-toggle>

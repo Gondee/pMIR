@@ -32,7 +32,8 @@ angular.module('app.services', [])
     var returnScanConfigsCharID =       '43484115-444C-5020-4E49-52204E616E6F';
     var requestScanConfigsCharID =      '43484114-444C-5020-4E49-52204E616E6F';
     var returnScanConfigsDataCharID =   '43484117-444C-5020-4E49-52204E616E6F';
-    var requestScanConfigsDataCharID =  '43484116-444C-5020-4E49-52204E616E6F';
+    var requestScanConfigsDataCharID = '43484116-444C-5020-4E49-52204E616E6F';
+    var activeScanConfigCharID = '43484118-444C-5020-4E49-52204E616E6F';
 
     // scan data characteristic uuids
     var startScanCharID = '4348411D-444C-5020-4E49-52204E616E6F';
@@ -60,8 +61,9 @@ angular.module('app.services', [])
         }
 
         ble.startScan([],  /* scan for all services */
-            function(peripheral){
-                that.devices.push(peripheral);
+            function (peripheral) {
+                if (peripheral.name == 'NIRScanNano')
+                    that.devices.push(peripheral);
             },
             function(error){
                 deferred.reject(error);
@@ -117,6 +119,27 @@ angular.module('app.services', [])
         );
     },
 
+    getCurrentConfigIndex: function (callback) {
+        ble.read(connected_device_id, scanConfigsServiceID, activeScanConfigCharID,
+            function (res) {
+                var resArray = new Uint16Array(res);
+                var index = resArray[0];
+                callback(index);
+            },
+            function () { alert("Error: unable to read current scan config."); }
+        );
+    },
+
+    setScanConfig: function (index, callback) {
+        var data = new Uint16Array(1);
+        data[0] = index;
+
+        ble.write(connected_device_id, scanConfigsServiceID, activeScanConfigCharID, data.buffer,
+            function (res) { callback(); },
+            function (res) { alert("Error: unable to set new scan config."); }
+        );
+    },
+
     getScanConfigs: function () {
         scanConfigIdIndex = 0;
         scanConfigIds = [];
@@ -136,19 +159,6 @@ angular.module('app.services', [])
 
         return configDefered.promise;
 
-    },
-
-    fakeScan: function () {
-        var success = function (scanData) {
-            alert("SCAN DATA: " + scanData);
-            debugger;
-        }
-
-        var failure = function () {
-            alert("Error deserializing scan data");
-        }
-
-        hello.interpretScanData(fakeScanBinary(), success, failure);
     }
 
   };

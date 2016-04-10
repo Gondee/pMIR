@@ -1,13 +1,16 @@
 ﻿<ion-view title="Scan Configurations" id="page4">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
 
-        <div class="list card">
+        <i ng-show="loading"><ion-spinner icon="crescent"></ion-spinner></i>
+
+        <div class="list card" ng-hide="loading">
             <div class="item item-divider">Select a configuration</div>
             
             <ion-list>
-                <ion-item class="item-icon-right" ng-repeat="config in scanConfigs" type="item-text-wrap" ng-click="connect(device.id)">
+                <ion-item class="item-icon-right" ng-repeat="config in scanConfigs" type="item-text-wrap" ng-click="setConfig(config.id)">
                     <h2>{{config.name}}</h2>
                     <p>ID: {{config.id}}</p>
+                    <i ng-show="isActiveConfig(config.id)" style="color: rgb(51, 205, 95);" class="icon ion-checkmark-circled"></i>
                 </ion-item>
             </ion-list>
         </div>

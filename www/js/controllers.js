@@ -2,7 +2,6 @@ angular.module('app.controllers', [])
   
 .controller('pMIRQuickScannerCtrl', function($scope, $state, BLE) {
     $scope.connected = false;
-    $scope.scanConfigs = [];
     $scope.isTrainingData = false;
 
     var init = function () {
@@ -14,26 +13,6 @@ angular.module('app.controllers', [])
     $scope.toggleTraining = function () {
         $scope.isTrainingData = !$scope.isTrainingData;
     };
-
-    $scope.setConfig = function (id) {
-        alert("config set to #" + id);
-    };
-
-    $scope.loadConfigs = function () {
-        BLE.getScanConfigs().then(
-            function (configs) {
-                $scope.scanConfigs = configs;
-            },
-            function () {
-                alert("config loading failed");
-            }
-        );
-    }
-    $scope.fakeScan = function () {
-        BLE.fakeScan();
-    };
-
-
 
     $scope.startScanSteps = function (device_id) {
         //If data is training data 
@@ -81,7 +60,51 @@ angular.module('app.controllers', [])
         );
     }
 })
-   
+
+.controller('scanConfigCtrl', function ($scope, BLE) {
+    $scope.scanConfigs = [];
+    $scope.loading = true;
+    $scope.currentScanConfig = 0;
+
+    $scope.setConfig = function (id) {
+        $scope.currentScanConfig = 0;
+        if (id == $scope.currentScanConfig)
+            return;
+        BLE.setScanConfig(id, init);
+    };
+
+    $scope.isActiveConfig = function (index) {
+        return $scope.currentScanConfig == index;
+    };
+
+    $scope.loadConfigs = function () {
+        $scope.loading = true;
+
+        BLE.getCurrentConfigIndex(function (index) {
+            $scope.currentScanConfig = index;
+        });
+
+        BLE.getScanConfigs().then(
+            function (configs) {
+                $scope.scanConfigs = configs;
+                $scope.loading = false;
+            },
+            function () {
+                alert("config loading failed");
+                $scope.loading = false;
+            }
+        );
+    };
+
+    var init = function () {
+        $scope.loading = true;
+        $scope.loadConfigs();
+    }
+
+    init();
+
+})
+
 .controller('libraryCtrl', function($scope) {
 
 })
