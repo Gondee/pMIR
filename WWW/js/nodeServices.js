@@ -1,7 +1,7 @@
 ﻿//This file includes services which rely on node public modules.
 angular.module('app.nodeServices', ['ionic', 'ngCordova'])
 
-.service('chemo', function(){
+.service('chemo', function(database){
 
     var lib_pls = require('ml-pls');
     var lib_pca = require('ml-pca');
@@ -33,6 +33,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     }
 
     function databaseGetFile(fileID) {
+        var data = database.ouputDataFile(fileID);
+        if (data.success == 0)
+        {
+            return { absorbances: data.absorbances, concentrationLabels: data.concentrationLabels, concentrations: data.concentrations }
+        }
         return { absorbances: [], concentrationLabels: [], concentrations: [] }
     };
 
@@ -40,8 +45,9 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return databaseGetFile(fileID);
     };
 
-    function databaseAddFile(absorbances, concentrationLables, concentrations, fileName) {
-
+    function databaseAddFile(absorbances, concentrationLabels, concentrations, fileName) {
+        var result = database.inputDataFile(absorbances, concentrationLabels, concentrations, fileName);
+        return result;
     };
 
     function chemoAddLabels(labels) {
@@ -71,8 +77,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     };
 
     //Adds a file with the measured absorptions and estimated concentrations.
-    function chemoAddFile(absorbances, concentrationLables, concentrations) {
-        databaseAddFile(absorbances, concentrationLables, concentrations);
+    function chemoAddFile(absorbances, concentrationLabels, concentrations) {
+        databaseAddFile(absorbances, concentrationLabels, concentrations);
     };
 
     function chemoAddConcentration(newConcentration, currRow, currCol) {
@@ -294,7 +300,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             }
 
             if (doSave) {
-                databaseAddFile(measuredAbsorbances, labels, nonZeroConcentrations, fileName);
+                var databaseResult = databaseAddFile(measuredAbsorbances, labels, nonZeroConcentrations, fileName);
                 if (databaseResult.status != chemoFlags.success) {
                     //This fail is a mixed bag- we succeed at getting our data, but we don't manage to save it to the file system.
                     return { compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.failFileNotSaved };
@@ -305,10 +311,41 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         }
     };
 
-    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags };
+    function chemoGetModel() {
+        if (chemoIsTrained) {
+            var model = chemoAlgo.export();
+            model.concentrationLabels = chemoConcentrationLabels;
+            if (!chemoIsPls)
+            {
+                model.PCACompressed = chemoPCACompressed;
+            }
+            return { model: model, status: chemoFlags.success };
+        }
+        return { model: null, status: chemoFlags.failNoTrainingData };
+    };
+
+    //Add better error handling.
+    function chemoLoadModel(model, isPls)
+    {
+        chemoConcentrationLabels = model.concentrationLabels;
+        if(isPls)
+        {
+            chemoIsPls = true;
+            chemoAlgo = new lib_pls(true, model);
+            chemoIsTrained = true;
+        }
+        else {
+            chemoIsPls = false;
+            chemoAlgo = new lib_pca(null, null, true, model);
+            chemoIsTrained = true;
+        }
+    }
+
+    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel };
 
 });
 
+//Service allows calling inputModel, inputDataFile, outputDataFile, and outputModel.
 angular.module('app.nodeServices')
 
 .service('database', function ($cordovaFile) {
@@ -374,6 +411,11 @@ angular.module('app.nodeServices')
         return mngmntArr.entries;
     }
 
+    /*Module level function
+    Input: string fileName- the name of the file to write to.
+           pca algorithm OR pls algorithm- the model we want to save.
+    Success: New file added pcafileName.pmir OR plsfileName.pmir 
+    */
     function inputModel(fileName, algorithm) {
         var output = angular.toJson(algorithm);
         var mngmntArr = { entries: [fileName] };
@@ -423,7 +465,7 @@ angular.module('app.nodeServices')
         return model;
     }
 
-    function inputDataFile(absorbances, concentrationLables, concentrations, fileName) {
+    function inputDataFile(absorbances, concentrationLabels, concentrations, fileName) {
         var fullFileName = getFullName(fileName, false);
         var managementFileName = getManagementName(false);
         var managementExists = $cordovaFile.checkName(cordova.file.dataDirectory, managementFileName);
@@ -448,14 +490,14 @@ angular.module('app.nodeServices')
 
         var outputExists = $cordovaFile.checkName(cordova.file.dataDirectory, fullFileName);
         var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
-        var output = { absorbances: absorbances, concentrations: concentrations, concentrationLables: concentrationLables }
+        var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels }
         output = angular.toJson(output);
         var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output);
     }
 
     function outputDataFile(fileName) {
         var fullFileName = getFullName(fileName, false);
-        var data = { absorbances: [], concentrations: [], concentrationLabels: [] };
+        var data = { absorbances: [], concentrations: [], concentrationLabels: [], status:0 };
         var outputExists = $cordovaFile.checkName(cordova.file.dataDirectory, fullFileName);
         outputExists.then(function (success) {
             var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
