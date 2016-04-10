@@ -305,10 +305,20 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         }
     };
 
+    function chemoGetModel()
+    {
+        if(chemoIsTrained)
+        {
+            return {model:chemoAlgo.export(), status: chemoFlags.success};
+        }
+        return { model: null, status: chemoFlags.failNoTrainingData };
+    }
+
     return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags };
 
 });
 
+//Service allows calling inputModel, inputDataFile, outputDataFile, and outputModel.
 angular.module('app.nodeServices')
 
 .service('database', function ($cordovaFile) {
@@ -374,6 +384,11 @@ angular.module('app.nodeServices')
         return mngmntArr.entries;
     }
 
+    /*Module level function
+    Input: string fileName- the name of the file to write to.
+           pca algorithm OR pls algorithm- the model we want to save.
+    Success: New file added pcafileName.pmir OR plsfileName.pmir 
+    */
     function inputModel(fileName, algorithm) {
         var output = angular.toJson(algorithm);
         var mngmntArr = { entries: [fileName] };
