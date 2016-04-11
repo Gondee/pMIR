@@ -125,9 +125,130 @@ angular.module('app.controllers', [])
 })
 .controller('postTrainScanCtrl', function ($scope) {
 
+    $scope.name = {
+        text: ''
+    };
+    $scope.elem1 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem2 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem3 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem4 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem5 = {
+        text: '',
+        value: 0.0
+    };
+
+
+    $scope.Save = function () {
+        
+        validation = false;
+        retrieve = false;
+        save = false;
+        remainder = 0;
+
+        //Validate user input % and data. 
+        total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
+
+        if ((total) > 100.0) {
+            alert("Your total concentrations are greater than 100");
+            return;
+        } else if ((total) == 0.0) {
+            alert("You must enter concentration data before proceding");
+            return;
+        }
+
+        //getting remainder if it exists
+        if ((total) < 100.0) {
+            remainder = 100 - total;
+            validation = true;
+        }
+
+
+
+
+        //Contact the BLE service to retrieve the data from the scan
+        if (validation) {
+
+
+
+        }
+        //Save the data and the user input to the DB
+        if (retrieve) {
+
+
+        }
+
+
+    }
+
+
+
+    /*
+    $scope.inputs = [{
+        inputType:'text',
+        value: ' ',
+        label: 'Name'
+    }, {
+        inputType: 'text',
+        value: 'some text 1',
+        label: 'input 2'
+    }];
+
+    $scope.doSomething = function () {
+        alert('button clicked');
+    };
+
+    */
+    /*
+     <div class="list card">
+                <div class="item item-divider">Chemical/Material</div>
+                <div class="item item-body">
+                    <form class="list">
+                        <label class="item item-input">
+                            <span class="input-label">Name</span>
+                            <input type="text" placeholder="ex. clorine ">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">Concentraion</span>
+                            <input type="number" placeholder="ex. .5">
+                        </label>
+                    </form>
+                </div>
+            </div>
+*/
+
+
 
 
 })
+    /*.directive('demoDirective', function ($compile) {
+    return {
+        template: ' <div class="list card"><div class="item item-divider">Chemical/Material</div><div class="item item-body"><form class="list">',
+        replace: true,
+        link: function(scope, element) {
+            var el = angular.element('<span/>');
+            switch(scope.input.inputType) {
+                
+                case 'text':
+                    el.append(' <label class="item item-input"><span class="input-label">Name</span><input type="text" placeholder="ex. clorine "></label><label class="item item-input"><span class="input-label">Concentraion</span><input type="number" placeholder="ex. .5"></label></form></div></div>');
+                    //el.append('<input type="text" ng-model="input.value"/><button ng-if="input.value" ng-click="input.value=\'\'; doSomething()">X</button>');
+                    break;
+            }
+            $compile(el)(scope);
+            element.append(el);
+        }
+    }})*/
  
 .controller('BLECtrl', function ($scope, BLE) {
 
