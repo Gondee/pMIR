@@ -6,6 +6,12 @@ angular.module('app.services', [])
     var connectedBool = false;
     var connected_device_id;
 
+    // reference globals
+    var latestScanJSON;
+    var latestScan64;
+    var refCoef64;
+    var refMatrix64;
+
     // scan config list globals
     var numScanConfigs = 0;
     var scanConfigIds = [];
@@ -27,18 +33,25 @@ angular.module('app.services', [])
     // service uuids
     var scanConfigsServiceID =  '53455205-444C-5020-4E49-52204E616E6F';
     var scanDataInfoServiceID = '53455206-444C-5020-4E49-52204E616E6F';
+    var calibrationInfoServiceID = '53455204-444C-5020-4E49-52204E616E6F';
 
     // scan config characteristic uuids
     var returnScanConfigsCharID =       '43484115-444C-5020-4E49-52204E616E6F';
     var requestScanConfigsCharID =      '43484114-444C-5020-4E49-52204E616E6F';
     var returnScanConfigsDataCharID =   '43484117-444C-5020-4E49-52204E616E6F';
-    var requestScanConfigsDataCharID = '43484116-444C-5020-4E49-52204E616E6F';
-    var activeScanConfigCharID = '43484118-444C-5020-4E49-52204E616E6F';
+    var requestScanConfigsDataCharID =  '43484116-444C-5020-4E49-52204E616E6F';
+    var activeScanConfigCharID =        '43484118-444C-5020-4E49-52204E616E6F';
 
     // scan data characteristic uuids
     var startScanCharID = '4348411D-444C-5020-4E49-52204E616E6F';
     var requestScanDataCharID = '43484127-444C-5020-4E49-52204E616E6F';
     var returnScanDataCharID = '43484128-444C-5020-4E49-52204E616E6F';
+
+    // reference calibration char uuids
+    var requestReferenceCoeffCharID = '4348410F-444C-5020-4E49-52204E616E6F';
+    var returnReferenceCoeffCharID = '4348410E-444C-5020-4E49-52204E616E6F';
+    var requestReferenceMatrixCharID = '43484111-444C-5020-4E49-52204E616E6F';
+    var returnReferenceMatrixCharID = '43484112-444C-5020-4E49-52204E616E6F';
 
   return {
 
@@ -159,6 +172,10 @@ angular.module('app.services', [])
 
         return configDefered.promise;
 
+    },
+
+    returnLatestScan: function () {
+        return latestScanJSON;
     }
 
   };
@@ -201,8 +218,9 @@ angular.module('app.services', [])
           var trimmedPayload = new Uint8Array(scanDataArrayPayload.slice(4));
           console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
 
-          var success = function (scanData) {
-              alert("SCAN DATA: " + scanData);
+          var success = function (scanJSONstr) {
+              latestScanJSON = JSON.parse(scanJSONstr);
+              requestReferenceCoefficents();
           }
 
           var failure = function () {
@@ -210,8 +228,87 @@ angular.module('app.services', [])
           }
           
           var trimmed64 = base64ArrayBuffer(trimmedPayload.buffer);
-
+          latestScan64 = trimmed64;
           hello.interpretScanData(trimmed64, success, failure);
+      }
+  };
+
+  function requestReferenceCoefficents() {
+      var data = new Uint8Array(1);
+
+      ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceCoeffCharID, onRefCoeffData, failureMsg("Error: recieve notification for reference coeff"));
+      ble.write(connected_device_id, calibrationInfoServiceID, requestReferenceCoeffCharID, data.buffer,
+          function (res) { console.log("requesting reference coefficents"); },
+          function (res) { alert("coefficent request failed"); }
+      );
+  };
+
+  function requestReferenceMatrix() {
+      var data = new Uint8Array(1);
+
+      ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceMatrixCharID, onRefMatrixData, failureMsg("Error: recieve notification for reference matrix"));
+      ble.write(connected_device_id, calibrationInfoServiceID, requestReferenceMatrixCharID, data.buffer,
+          function (res) { console.log("requesting reference matrix"); },
+          function (res) { alert("coefficent request failed"); }
+      );
+  };
+
+  function onRefMatrixData(buffer) {
+      // Decode the ArrayBuffer into a typed Array based on the data you expect
+      var raw = new Uint8Array(buffer);
+      var packetNum = raw[0];
+      var payload = new Uint8Array(buffer.slice(1));
+
+      if (packetNum == 0) {
+          scanDataLength = new Uint32Array(buffer.slice(1))[0];
+          scanDataArrayRaw = new Uint8Array(0).buffer;
+          scanDataArrayPayload = new Uint8Array(0).buffer;
+      }
+
+      // append packets
+      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
+      scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
+
+      // We've recived all packets (-4 because the first fou bytes of payload is size header)
+      if (scanDataArrayPayload.byteLength - 4 == scanDataLength) {
+
+          var trimmedPayload = new Uint8Array(scanDataArrayPayload.slice(4));
+          console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
+
+          var trimmed64 = base64ArrayBuffer(trimmedPayload.buffer);
+          refMatrix64 = trimmed64;
+      }
+  };
+
+  function onRefCoeffData(buffer) {
+      // Decode the ArrayBuffer into a typed Array based on the data you expect
+      var raw = new Uint8Array(buffer);
+      var packetNum = raw[0];
+      var payload = new Uint8Array(buffer.slice(1));
+
+      if (packetNum == 0) {
+          scanDataLength = new Uint32Array(buffer.slice(1))[0];
+          scanDataArrayRaw = new Uint8Array(0).buffer;
+          scanDataArrayPayload = new Uint8Array(0).buffer;
+      }
+
+      // append packets
+      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
+      scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
+
+      // We've recived all packets (-4 because the first fou bytes of payload is size header)
+      if (scanDataArrayPayload.byteLength - 4 == scanDataLength) {
+
+          console.log("RAW: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayRaw))).join(","));
+          console.log("PAYLOAD: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayPayload))).join(","));
+
+          var trimmedPayload = new Uint8Array(scanDataArrayPayload.slice(4));
+          console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
+
+
+          var trimmed64 = base64ArrayBuffer(trimmedPayload.buffer);
+          refCoef64 = trimmed64;
+          requestReferenceMatrix();
       }
   };
 
