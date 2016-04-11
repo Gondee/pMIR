@@ -6,6 +6,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.json.JSONException;
 import android.app.Activity;
 import android.os.Bundle;
@@ -40,11 +41,30 @@ public class Hello extends CordovaPlugin {
             double[] wavelength = HelloJni.getScanWavelength(buffer);
             JSONArray intensityJSON = new JSONArray(intensity);
             JSONArray wavelengthJSON = new JSONArray(wavelength);
-            System.out.println(intensityJSON.toString());
-            System.out.println(wavelengthJSON.toString());
-            //HelloJni.ScanResult scan = HelloJni.getScanData(buffer);
-            //String scanName = scan.getScanName();
-            callbackContext.success(scanName);
+
+            JSONObject scanJSON = new JSONObject();
+            scanJSON.put("name", scanName);
+            scanJSON.put("intensity", intensityJSON);
+            scanJSON.put("wavelength", wavelengthJSON);
+
+            callbackContext.success(scanJSON.toString());
+            validAction = true;
+        } else if (action.equals("interpretRefScanData")) {
+            byte[] refCoef = data.getArrayBuffer(0);
+            byte[] refMatrix = data.getArrayBuffer(1);
+            byte[] latestScan = data.getArrayBuffer(2);
+
+            int[] intensity = HelloJni.getRefIntensity(refCoef, refMatrix, latestScan);
+            double[] wavelength = HelloJni.getRefWavelength(refCoef, refMatrix, latestScan);
+            JSONArray intensityJSON = new JSONArray(intensity);
+            JSONArray wavelengthJSON = new JSONArray(wavelength);
+
+            JSONObject refJSON = new JSONObject();
+            refJSON.put("name", "latestReference");
+            refJSON.put("intensity", intensityJSON);
+            refJSON.put("wavelength", wavelengthJSON);
+
+            callbackContext.success(refJSON.toString());
             validAction = true;
         } else {
 

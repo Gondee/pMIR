@@ -62,7 +62,7 @@ Java_com_example_plugin_HelloJni_getScanName( JNIEnv* env, jobject thiz, jbyteAr
     (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
 
     char* name = scanResultPtr->scan_name;
-
+    free(scanResultPtr);
     // return java ScanResult object
     return (*env)->NewStringUTF(env, name);
 }
@@ -96,6 +96,7 @@ jintArray  Java_com_example_plugin_HelloJni_getScanIntensity(JNIEnv* env, jobjec
      }
      // move from the temp structure to the java structure
      (*env)->SetIntArrayRegion(env, result, 0, size, fill);
+     free(scanResultPtr);
      return result;
 }
 
@@ -128,48 +129,127 @@ jdoubleArray  Java_com_example_plugin_HelloJni_getScanWavelength(JNIEnv* env, jo
      }
      // move from the temp structure to the java structure
      (*env)->SetDoubleArrayRegion(env, result, 0, size, fill);
+     free(scanResultPtr);
      return result;
 }
 
-/*
-jobject
-Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )
+jintArray  Java_com_example_plugin_HelloJni_getRefIntensity(JNIEnv* env, jobject thiz, jbyteArray refCoeff, jbyteArray refMatrix, jbyteArray latestScan )
 {
-    // JNI get java ScanResult class and constructor
-    jmethodID constructor;
-    jclass scanResultClass = (*env)->FindClass(env, "com/example/plugin/HelloJni$ScanResult");
-    if (scanResultClass == NULL) {
-       printf("Find Class Failed.\n");
-    }else{
-       printf("Found class.\n");
-    }
-
-    constructor = (*env)->GetMethodID(env, scanResultClass, "<init>", "(Lcom/example/plugin/HelloJni;)V");
-    if (constructor == NULL) {
-        printf("Find method Failed.\n");
-    }else {
-        printf("Found method.\n");
-    }
-
     // get jbyte array from array and it's length
-    jbyte* scanBlobPtr = (*env)->GetByteArrayElements(env, array, NULL);
-    jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+     jbyte* latestScanBlobPtr = (*env)->GetByteArrayElements(env, latestScan, NULL);
+     jsize lengthOfLatestScan = (*env)->GetArrayLength(env, latestScan);
 
-    size_t bufSize = lengthOfArray;
-    scanResults * scanResultPtr = malloc(sizeof(scanResults));
+     jbyte* refCoeffBlobPtr = (*env)->GetByteArrayElements(env, refCoeff, NULL);
+     jsize lengthOfRefCoeff = (*env)->GetArrayLength(env, refCoeff);
 
-    dlpspec_scan_interpret(scanBlobPtr, bufSize, scanResultPtr);
+     jbyte* refMatrixBlobPtr = (*env)->GetByteArrayElements(env, refMatrix, NULL);
+     jsize lengthOfRefMatrix = (*env)->GetArrayLength(env, refMatrix);
 
-    jstring scanName = (*env)->NewStringUTF(env, scanResultPtr->scan_name);
-    jint length = (jint)scanResultPtr->length;
+     size_t scanBufSize = lengthOfLatestScan;
+     size_t refCoeffBufSize = lengthOfLatestScan;
+     size_t refMatrixBufSize = lengthOfLatestScan;
 
-    // release array
-    (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
+     scanResults * scanResultPtr = malloc(sizeof(scanResults));
+     scanResults * refScanResultPtr = malloc(sizeof(scanResults));
 
-    // return java ScanResult object
-    return (*env)->NewObject(env, scanResultClass, constructor);
+     dlpspec_scan_interpret(latestScanBlobPtr, scanBufSize, scanResultPtr);
+
+     /*
+     dlpspec_scan_interpReference ( const void * pRefCal, size_t calSize, const void * pMatrix, size_t matrixSize, const scanResults * pScanResults, scanResults * pRefResults )
+    [in]	pRefCal	Pointer to serialized reference calibration data
+    [in]	calSize	Size of reference calibration data blob
+    [in]	pMatrix	Pointer to serialized reference calibration matrix
+    [in]	matrixSize	Size of reference calibration matrix data blob
+    [in]	pScanResults	Scan results from sample scan data (output of dlpspec_scan_interpret function)
+    [out]	pRefResults	Reference scan data result
+     */
+
+     dlpspec_scan_interpReference (refCoeffBlobPtr, refCoeffBufSize, refMatrixBlobPtr, refMatrixBufSize, scanResultPtr, refScanResultPtr);
+
+     // release array
+     (*env)->ReleaseByteArrayElements(env, latestScan, latestScanBlobPtr, 0);
+     (*env)->ReleaseByteArrayElements(env, refCoeff, refCoeffBlobPtr, 0);
+     (*env)->ReleaseByteArrayElements(env, refMatrix, refMatrixBlobPtr, 0);
+
+     int size = ADC_DATA_LEN;
+     jintArray result;
+     result = (*env)->NewIntArray(env, size);
+     if (result == NULL) {
+         return NULL; /* out of memory error thrown */
+     }
+
+     int i;
+     // fill a temp structure to use to populate the java int array
+     jint fill[size];
+     for (i = 0; i < size; i++) {
+         fill[i] = refScanResultPtr->intensity[i];
+     }
+     // move from the temp structure to the java structure
+     (*env)->SetIntArrayRegion(env, result, 0, size, fill);
+
+     free(scanResultPtr);
+     free(refScanResultPtr);
+     return result;
 }
-*/
+
+jdoubleArray  Java_com_example_plugin_HelloJni_getRefWavelength(JNIEnv* env, jobject thiz, jbyteArray refCoeff, jbyteArray refMatrix, jbyteArray latestScan )
+{
+    // get jbyte array from array and it's length
+     jbyte* latestScanBlobPtr = (*env)->GetByteArrayElements(env, latestScan, NULL);
+     jsize lengthOfLatestScan = (*env)->GetArrayLength(env, latestScan);
+
+     jbyte* refCoeffBlobPtr = (*env)->GetByteArrayElements(env, refCoeff, NULL);
+     jsize lengthOfRefCoeff = (*env)->GetArrayLength(env, refCoeff);
+
+     jbyte* refMatrixBlobPtr = (*env)->GetByteArrayElements(env, refMatrix, NULL);
+     jsize lengthOfRefMatrix = (*env)->GetArrayLength(env, refMatrix);
+
+     size_t scanBufSize = lengthOfLatestScan;
+     size_t refCoeffBufSize = lengthOfLatestScan;
+     size_t refMatrixBufSize = lengthOfLatestScan;
+
+     scanResults * scanResultPtr = malloc(sizeof(scanResults));
+     scanResults * refScanResultPtr = malloc(sizeof(scanResults));
+
+     dlpspec_scan_interpret(latestScanBlobPtr, scanBufSize, scanResultPtr);
+
+     /*
+     dlpspec_scan_interpReference ( const void * pRefCal, size_t calSize, const void * pMatrix, size_t matrixSize, const scanResults * pScanResults, scanResults * pRefResults )
+    [in]	pRefCal	Pointer to serialized reference calibration data
+    [in]	calSize	Size of reference calibration data blob
+    [in]	pMatrix	Pointer to serialized reference calibration matrix
+    [in]	matrixSize	Size of reference calibration matrix data blob
+    [in]	pScanResults	Scan results from sample scan data (output of dlpspec_scan_interpret function)
+    [out]	pRefResults	Reference scan data result
+     */
+
+     dlpspec_scan_interpReference (refCoeffBlobPtr, refCoeffBufSize, refMatrixBlobPtr, refMatrixBufSize, scanResultPtr, refScanResultPtr);
+
+     // release array
+     (*env)->ReleaseByteArrayElements(env, latestScan, latestScanBlobPtr, 0);
+     (*env)->ReleaseByteArrayElements(env, refCoeff, refCoeffBlobPtr, 0);
+     (*env)->ReleaseByteArrayElements(env, refMatrix, refMatrixBlobPtr, 0);
+
+      int size = ADC_DATA_LEN;
+      jdoubleArray result;
+      result = (*env)->NewDoubleArray(env, size);
+      if (result == NULL) {
+          return NULL; /* out of memory error thrown */
+      }
+
+      int i;
+      // fill a temp structure to use to populate the java int array
+      jdouble fill[size];
+      for (i = 0; i < size; i++) {
+          fill[i] = refScanResultPtr->wavelength[i];
+      }
+      // move from the temp structure to the java structure
+      (*env)->SetDoubleArrayRegion(env, result, 0, size, fill);
+
+     free(scanResultPtr);
+     free(refScanResultPtr);
+     return result;
+}
 
 jstring
 Java_com_example_plugin_HelloJni_stringFromJNI( JNIEnv* env,
