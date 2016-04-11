@@ -36,10 +36,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var name = "";
         switch (who) {
             case 0:
-                name.concat("chemoTrain: ");
+                name = name.concat("chemoTrain: ");
                 break;
             case 1:
-                name.concat("ChemoInfer: ");
+                name = name.concat("ChemoInfer: ");
                 break;
         }
         name = name.concat(identifier);
@@ -50,9 +50,9 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var data = database.ouputDataFile(fileID);
         if (data.success == 0)
         {
-            return { absorbances: data.absorbances, concentrationLabels: data.concentrationLabels, concentrations: data.concentrations }
+            return { absorbances: data.absorbances, concentrationLabels: data.concentrationLabels, concentrations: data.concentrations };
         }
-        return { absorbances: [], concentrationLabels: [], concentrations: [] }
+        return { absorbances: [], concentrationLabels: [], concentrations: [] };
     };
 
     function chemoGetFile(fileID) {
