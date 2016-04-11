@@ -47,7 +47,7 @@ Java_com_example_plugin_HelloJni_getConfigName( JNIEnv* env, jobject thiz, jbyte
 }
 
 jstring
-Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )
+Java_com_example_plugin_HelloJni_getScanName( JNIEnv* env, jobject thiz, jbyteArray array )
 {
     // get jbyte array from array and it's length
     jbyte* scanBlobPtr = (*env)->GetByteArrayElements(env, array, NULL);
@@ -61,14 +61,76 @@ Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteAr
     // release array
     (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
 
-    int year = scanResultPtr->year;
-
-    char buffer[10];
-    snprintf(buffer, 10, "%d", year);
+    char* name = scanResultPtr->scan_name;
 
     // return java ScanResult object
-    return (*env)->NewStringUTF(env, buffer);
+    return (*env)->NewStringUTF(env, name);
 }
+
+jintArray  Java_com_example_plugin_HelloJni_getScanIntensity(JNIEnv* env, jobject thiz, jbyteArray array )
+{
+ // get jbyte array from array and it's length
+     jbyte* scanBlobPtr = (*env)->GetByteArrayElements(env, array, NULL);
+     jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+     size_t bufSize = lengthOfArray;
+     scanResults * scanResultPtr = malloc(sizeof(scanResults));
+
+     dlpspec_scan_interpret(scanBlobPtr, bufSize, scanResultPtr);
+
+     // release array
+     (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
+
+     int size = ADC_DATA_LEN;
+     jintArray result;
+     result = (*env)->NewIntArray(env, size);
+     if (result == NULL) {
+         return NULL; /* out of memory error thrown */
+     }
+
+     int i;
+     // fill a temp structure to use to populate the java int array
+     jint fill[size];
+     for (i = 0; i < size; i++) {
+         fill[i] = scanResultPtr->intensity[i];
+     }
+     // move from the temp structure to the java structure
+     (*env)->SetIntArrayRegion(env, result, 0, size, fill);
+     return result;
+}
+
+jdoubleArray  Java_com_example_plugin_HelloJni_getScanWavelength(JNIEnv* env, jobject thiz, jbyteArray array )
+{
+ // get jbyte array from array and it's length
+     jbyte* scanBlobPtr = (*env)->GetByteArrayElements(env, array, NULL);
+     jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+     size_t bufSize = lengthOfArray;
+     scanResults * scanResultPtr = malloc(sizeof(scanResults));
+
+     dlpspec_scan_interpret(scanBlobPtr, bufSize, scanResultPtr);
+
+     // release array
+     (*env)->ReleaseByteArrayElements(env, array, scanBlobPtr, 0);
+
+     int size = ADC_DATA_LEN;
+     jdoubleArray result;
+     result = (*env)->NewDoubleArray(env, size);
+     if (result == NULL) {
+         return NULL; /* out of memory error thrown */
+     }
+
+     int i;
+     // fill a temp structure to use to populate the java int array
+     jdouble fill[size];
+     for (i = 0; i < size; i++) {
+         fill[i] = scanResultPtr->wavelength[i];
+     }
+     // move from the temp structure to the java structure
+     (*env)->SetDoubleArrayRegion(env, result, 0, size, fill);
+     return result;
+}
+
 /*
 jobject
 Java_com_example_plugin_HelloJni_getScanData( JNIEnv* env, jobject thiz, jbyteArray array )

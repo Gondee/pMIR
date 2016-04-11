@@ -188,10 +188,6 @@ angular.module('app.services', [])
           scanDataArrayPayload = new Uint8Array(0).buffer;
       }
 
-      if (packetNum == 197) {
-          debugger;
-      }
-
       // append packets
       scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
       scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
@@ -207,7 +203,6 @@ angular.module('app.services', [])
 
           var success = function (scanData) {
               alert("SCAN DATA: " + scanData);
-              debugger;
           }
 
           var failure = function () {

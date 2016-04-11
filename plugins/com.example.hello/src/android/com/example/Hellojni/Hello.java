@@ -35,7 +35,13 @@ public class Hello extends CordovaPlugin {
         } else if (action.equals("interpretScanData")) {
 
             byte[] buffer = data.getArrayBuffer(0);
-            String scanName = HelloJni.getScanData(buffer);
+            String scanName = HelloJni.getScanName(buffer);
+            int[] intensity = HelloJni.getScanIntensity(buffer);
+            double[] wavelength = HelloJni.getScanWavelength(buffer);
+            JSONArray intensityJSON = new JSONArray(intensity);
+            JSONArray wavelengthJSON = new JSONArray(wavelength);
+            System.out.println(intensityJSON.toString());
+            System.out.println(wavelengthJSON.toString());
             //HelloJni.ScanResult scan = HelloJni.getScanData(buffer);
             //String scanName = scan.getScanName();
             callbackContext.success(scanName);

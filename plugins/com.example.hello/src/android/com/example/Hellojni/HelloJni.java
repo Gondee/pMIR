@@ -48,8 +48,11 @@ public class HelloJni {
 
     public static native String  getConfigName(byte[] array);
 
-    public static native String  getScanData(byte[] array);
+    public static native String  getScanName(byte[] array);
 
+    public static native int[] getScanIntensity(byte[] array);
+
+    public static native double[] getScanWavelength(byte[] array);
     /* this is used to load the 'hello-jni' library on application
      * startup. The library has already been unpacked into
      * /data/data/com.example.hellojni/lib/libhello-jni.so at
