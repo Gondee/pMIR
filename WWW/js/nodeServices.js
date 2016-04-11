@@ -30,7 +30,21 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         failFileNotSaved: 9,
         failInferenceRowMismatch: 10,
         failInferenceColumnMismatch: 11
-    }
+    };
+
+    function consoleOutput(who, identifier, message) {
+        var name = "";
+        switch (who) {
+            case 0:
+                name.concat("chemoTrain: ");
+                break;
+            case 1:
+                name.concat("ChemoInfer: ");
+                break;
+        }
+        name = name.concat(identifier);
+        return name.concat(message);
+    };
 
     function databaseGetFile(fileID) {
         var data = database.ouputDataFile(fileID);
@@ -119,10 +133,13 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     };
 
     function chemoTrain(isQuantify, fileIDArr) {
+        consoleOutput(0, "isQuantify", isQuantify);
         chemoIsPls = isQuantify;
         var numFiles = fileIDArr.length;
+        consoleOutput(0, "numFiles", numFiles);
         for (var i = 0; i < numFiles; ++i) {
             var file = chemoGetFile(fileIDArr[i]);
+            consoleOutput(0, "file", file);
             if (file == null) {
                 return chemoFlags.failFileID;
             }
@@ -190,6 +207,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             chemoNumLatentVectors = 2; //Temporary- 2 components so that we can have the x-y of a graph
             //chemoNumLatentVectors = floor(numColAbsorbances * 0.1);
             var explainedVariances = chemoAlgo.getExplainedVariance();
+            consoleOutput(0, "Latent Vectors", chemoNumLatentVectors);
             //How many vectors to get ~85% of variance?
             /*chemoNumLatentVectors = floor(0.85 / explainedVariances);
             if (chemoNumLatentVectors == 0) {
@@ -202,8 +220,15 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             catch (err) {
                 return chemoFlags.failUnknownTrainError;
             }
+            var numPoints = chemoPCACompressed.length;
+            var tempstring = "projected";
+            for (var i = 0; i < numPoints; ++i)
+            {
+                consoleOutput(0, tempstring.concat(i), chemoPCACompressed[i]);
+            }
         }
         chemoIsTrained = true;
+        consoleOutput(0, "isTrained", chemoIsTrained);
         return chemoFlags.success;
     };
 
@@ -260,8 +285,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             catch (err) {
                 return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
             }
+            consoleOutput(1, "Recent Point", measured);
             var distances = [];
             var numPoints = chemoPCACompressed.length;
+            consoleOutput(1, "num points", numPoints);
             if (numPoints != chemoTrainingAbsorbances.length) {
                 return { compounds: [], concentrations: [], status: chemoFlags.failInferenceRowMismatch };
             }
@@ -271,6 +298,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             for (var i = 0; i < numPoints; ++i) {
                 var sum = 0;
                 var numComponents = chemoPCACompressed[i].length;
+                consoleOutput(1, "num components", numComponents);
                 for (var j = 0; j < numComponents; ++j) {
                     //(x1-x2)^2
                     var component = measured[j] - chemoPCACompressed[i][j];
@@ -299,7 +327,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                     nonZeroConcentrations[nonZeroConcentrations.length] = allConcentrations[i];
                 }
             }
-
+            consoleOutput(1, "labels", labels);
             if (doSave) {
                 var databaseResult = databaseAddFile(measuredAbsorbances, labels, nonZeroConcentrations, fileName);
                 if (databaseResult.status != chemoFlags.success) {
@@ -332,11 +360,9 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     };
 
     //Add better error handling.
-    function chemoLoadModel(model, isPls)
-    {
+    function chemoLoadModel(model, isPls) {
         chemoConcentrationLabels = model.concentrationLabels;
-        if(isPls)
-        {
+        if (isPls) {
             chemoIsPls = true;
             chemoAlgo = new lib_pls(true, model);
             chemoIsTrained = true;
@@ -346,9 +372,90 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             chemoAlgo = new lib_pca(null, null, true, model);
             chemoIsTrained = true;
         }
-    }
+    };
 
-    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel };
+    function flagToString(flag) {
+        var result = "NO SUCH FLAG";
+        switch (flag) {
+            case 0:
+                result = "success";
+                break;
+            case 1:
+                result = "failFileID";
+                break;
+            case 2:
+                result = "failTrainingRowMismatch";
+                break;
+            case 3:
+                result = "failNotEnoughLabels";
+                break;
+            case 4:
+                result = "failNoTrainingData";
+                break;
+            case 5:
+                result = "failUnknownTrainError";
+                break;
+            case 6:
+                result = "failUnknownInferenceError";
+                break;
+            case 7:
+                result = "failAbsorbanceMismatch";
+                break;
+            case 8:
+                result = "failConcentrationMismatch";
+                break;
+            case 9:
+                result = "failFileNotSaved";
+                break;
+            case 10:
+                result = "failInferenceRowMismatch";
+                break;
+            case 11:
+                result = "failInferenceColumnMismatch";
+                break;
+        }
+        return result;
+    };
+
+    function pcaTest() {
+        //Results of train?
+        var retTrain = chemoTrain(false, ["x", "y"]);
+        console.log("Training Status: ");
+        console.log(flagToString(retTrain));
+        console.log("\n");
+        if (retTrain == chemoFlags.success) {
+            //Infer, no save
+            var detectedAbsorbances = [1, 0, 0];
+            var retInfer = chemoInfer(detectedAbsorbances, false, null);
+            //results of infer?
+            console.log("Infer Status: ");
+            console.log(flagToString(retInfer.status));
+            console.log("\n");
+            //If we didn't fail, print all results.
+            if (retInfer.status == chemoFlags.success) {
+                console.log("Labels of closest point:\n");
+                console.log(retInfer.compounds);
+                console.log("\n");
+                console.log("Concentrations on closest point:\n");
+                console.log(retInfer.concentrations);
+                console.log("\n");
+                console.log("Points:\n");
+                var numPoints = retInfer.trainingPoints.length; 
+                for(var i =0;i<numPoints;++i)
+                {
+                    console.log(retInfer.trainingPoints[i]);
+                    console.log("\n");
+                }
+                console.log("\n");
+                console.log("Scanned Point:\n");
+                console.log(retInfer.recentPoint);
+                console.log("\n");
+            }
+        }
+    };
+
+
+    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel, pcaTest: pcaTest };
 
 });
 
@@ -373,7 +480,7 @@ angular.module('app.nodeServices')
         fullName = fullName.concat(fileName);
         fullName = fullName.concat(".pmir");
         return fullName
-    }
+    };
 
     function getManagementName(isAlgorithm, isPls) {
         var fileName;
@@ -389,7 +496,7 @@ angular.module('app.nodeServices')
             fileName = "mngmntDat.pmir";
         }
         return fileName;
-    }
+    };
 
     function linearSearch(arr, find) {
         var len = arr.length;
@@ -398,7 +505,7 @@ angular.module('app.nodeServices')
                 return i;
         }
         return null;
-    }
+    };
 
     function listEntries(isAlgorithm, isPls) {
         var managementFileName = getManagementName(isAlgorithm, isPls);
@@ -416,7 +523,7 @@ angular.module('app.nodeServices')
             //If no management file, return no files.
         });
         return mngmntArr.entries;
-    }
+    };
 
     /*Module level function
     Input: string fileName- the name of the file to write to.
@@ -454,7 +561,7 @@ angular.module('app.nodeServices')
         //Add conditionals at later time, account for memory at another time.
         var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
         var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output);
-    }
+    };
 
     function outputModel(fileName, isPls) {
         var fullFileName = getFullName(fileName, true, isPls);
@@ -470,7 +577,7 @@ angular.module('app.nodeServices')
         function (error) {
         });
         return model;
-    }
+    };
 
     function inputDataFile(absorbances, concentrationLabels, concentrations, fileName) {
         var fullFileName = getFullName(fileName, false);
@@ -500,11 +607,11 @@ angular.module('app.nodeServices')
         var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels }
         output = angular.toJson(output);
         var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output);
-    }
+    };
 
     function outputDataFile(fileName) {
         var fullFileName = getFullName(fileName, false);
-        var data = { absorbances: [], concentrations: [], concentrationLabels: [], status:0 };
+        var data = { absorbances: [], concentrations: [], concentrationLabels: [], status: 0 };
         var outputExists = $cordovaFile.checkName(cordova.file.dataDirectory, fullFileName);
         outputExists.then(function (success) {
             var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
@@ -516,7 +623,7 @@ angular.module('app.nodeServices')
         function (error) {
         });
         return data;
-    }
+    };
 
     return {inputModel: inputModel, outputModel: outputModel, inputDataFile: inputDataFile, outputDataFile: outputDataFile, listEntries:listEntries};
 });
