@@ -61,7 +61,6 @@ angular.module('app.controllers', [])
     }
 })
 
-<<<<<<< Updated upstream
 .controller('scanConfigCtrl', function ($scope, BLE) {
     $scope.scanConfigs = [];
     $scope.loading = true;
@@ -106,10 +105,7 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('libraryCtrl', function($scope) {
-=======
 .controller('libraryCtrl', function ($scope) {
->>>>>>> Stashed changes
 
 })
 
@@ -236,7 +232,6 @@ angular.module('app.controllers', [])
 
 
 })
-<<<<<<< Updated upstream
     /*.directive('demoDirective', function ($compile) {
     return {
         template: ' <div class="list card"><div class="item item-divider">Chemical/Material</div><div class="item item-body"><form class="list">',
@@ -255,9 +250,6 @@ angular.module('app.controllers', [])
         }
     }})*/
  
-=======
-
->>>>>>> Stashed changes
 .controller('BLECtrl', function ($scope, BLE) {
 
     // keep a reference since devices will be added
