@@ -187,13 +187,14 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             catch (err) {
                 return chemoFlags.failUnknownTrainError;
             }
+            chemoNumLatentVectors = 2; //Temporary- 2 components so that we can have the x-y of a graph
             //chemoNumLatentVectors = floor(numColAbsorbances * 0.1);
             var explainedVariances = chemoAlgo.getExplainedVariance();
             //How many vectors to get ~85% of variance?
-            chemoNumLatentVectors = floor(0.85 / explainedVariances);
+            /*chemoNumLatentVectors = floor(0.85 / explainedVariances);
             if (chemoNumLatentVectors == 0) {
                 chemoNumLatentVectors += 1;
-            }
+            }*/
             try {
                 //Check parameter requirements
                 chemoPCACompressed = chemoAlgo.project(chemoTrainingAbsorbances, chemoNumLatentVectors);
@@ -307,7 +308,13 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 }
             }
 
-            return { compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success };
+            //New version returns a matrix with the 2D coordinates for every point (trainingPoints)
+            //And the last point (which was just inferred) is recentPoint.
+            //return { compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success };
+            return {
+                trainingPoints: chemoPCACompressed, recentPoint: measured,
+                compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success
+            };
         }
     };
 
