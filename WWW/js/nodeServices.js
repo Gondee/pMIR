@@ -185,7 +185,13 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                     tolerance: 1e-5
                 };
                 try {
-                    chemoAlgo.train(chemoTrainingAbsorbances, chemoTrainingConcentrations, options);
+                    //It is very clean to reprsent all absorbances as a row, but- each one considered
+                    //a variable in PLS, thus each one has its own row (columns differentiate sample)
+                    var absorbancesTranspose = new lib_matrix(chemoTrainingAbsorbances);
+                    absorbancesTranspose = absorbancesTranspose.transpose();
+                    var concentrationsTranspose = new lib_matrix(chemoTrainingConcentrations);
+                    concentrationsTranspose = concentrationsTranspose.transpose();
+                    chemoAlgo.train(absorbancesTranspose, concentrationsTranspose, options);
                 }
                 catch (err) {
                     return chemoFlags.failUnknownTrainError;
@@ -199,7 +205,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         else {
             //Get principle components associated with training set absorbances X.
             try {
-                chemoAlgo = new lib_pca(chemoTrainingAbsorbances);
+                //It is very clean to reprsent all absorbances as a row, but- each one considered
+                //a variable in PLS, thus each one has its own row (columns differentiate sample)
+                var absorbancesTranspose = new lib_matrix(chemoTrainingAbsorbances);
+                absorbancesTranspose = absorbancesTranspose.transpose();
+                chemoAlgo = new lib_pca(absorbancesTranspose);
             }
             catch (err) {
                 return chemoFlags.failUnknownTrainError;
@@ -214,8 +224,12 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 chemoNumLatentVectors += 1;
             }*/
             try {
+                //It is very clean to reprsent all absorbances as a row, but- each one considered
+                //a variable in PLS, thus each one has its own row (columns differentiate sample)
+                var absorbancesTranspose = new lib_matrix(chemoTrainingAbsorbances);
+                absorbancesTranspose = absorbancesTranspose.transpose();
                 //Check parameter requirements
-                chemoPCACompressed = chemoAlgo.project(chemoTrainingAbsorbances, chemoNumLatentVectors);
+                chemoPCACompressed = chemoAlgo.project(absorbancesTranspose, chemoNumLatentVectors).transpose();
             }
             catch (err) {
                 return chemoFlags.failUnknownTrainError;
@@ -243,7 +257,9 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         if (chemoIsPls) {
             var inferred = [];
             try {
-                inferred = chemoAlgo.predict(measuredAbsorbances);
+                var measuredTranspose = new lib_matrix(measuredAbsorbances);
+                measuredTranspose = measuredTranspose.transpose();
+                inferred = chemoAlgo.predict(measuredTranspose);
             }
             catch (err) {
                 return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
@@ -254,8 +270,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             if (inferred[0].length != chemoTrainingConcentrations[0].length) {
                 return { compounds: [], concentrations: [], status: chemoFlags.failConcentrationMismatch };
             }
-            //The implementation provides a row of averages at the bottom (we don't want it)
-            var allConcentrations = inferred[0];
+            //The implementation provides the best answer first
+            var inferredTranspose = new lib_matrix(inferred);
+            inferredTranspose = inferredTranspose.transpose();
+            var allConcentrations = inferredTranspose[0];
 
             //Find the chemical names which have been detected.
             var labels = [];
@@ -280,7 +298,9 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         else {
             var measured = [];
             try {
-                measured = chemoAlgo.project(measuredAbsorbances, chemoNumLatentVectors);
+                var measuredTranspose = new lib_matrix(measuredAbsorbances);
+                measuredTranspose = measuredTranspose.transpose();
+                measured = chemoAlgo.project(measuredTranspose, chemoNumLatentVectors).transpose();
             }
             catch (err) {
                 return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
