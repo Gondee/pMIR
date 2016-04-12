@@ -1,13 +1,4 @@
 {
-    "cordova-plugin-ble-central": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/don/cordova-plugin-ble-central",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -28,6 +19,14 @@
         "source": {
             "type": "local",
             "path": "C:\\Users\\Miguel\\Documents\\cordova-plugin-hello"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-ble-central": {
+        "source": {
+            "type": "local",
+            "path": "C:\\Users\\Miguel\\Documents\\GitHub\\cordova-plugin-ble-central"
         },
         "is_top_level": true,
         "variables": {}

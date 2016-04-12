@@ -30,6 +30,7 @@ angular.module('app.services', [])
     var scanDataLength;
     var scanDataArrayRaw;
     var scanDataArrayPayload;
+    var scanDefered;
 
     // service uuids
     var scanConfigsServiceID =  '53455205-444C-5020-4E49-52204E616E6F';
@@ -124,6 +125,11 @@ angular.module('app.services', [])
     },
 
     NIRScan: function () {
+        latestScanJSON = null;
+        latestRefScanJSON = null;
+
+        scanDefered = $q.defer();
+
         var data = new Uint8Array(1);
 
         ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onStartScanNotify, failureMsg("Error: recieve notification for scan data"));
@@ -131,6 +137,8 @@ angular.module('app.services', [])
             function(res) { console.log("lights"); },
             function(res) { console.log("no lights"); }
         );
+
+        return scanDefered.promise;
     },
 
     getCurrentConfigIndex: function (callback) {
@@ -175,14 +183,51 @@ angular.module('app.services', [])
 
     },
 
-    returnLatestScan: function () {
+    getLatestScan: function () {
+        if (latestScanJSON == null)
+            return JSON.parse('{"status":"not ready"}');
+        else
+            latestScanJSON.status = 'ok';
         return latestScanJSON;
     },
 
-    returnLatestReference: function () {
+    getLatestReference: function () {
+        if (latestRefScanJSON == null)
+            return JSON.parse('{"status":"not ready"}');
+        else
+            latestRefScanJSON.status = 'ok';
         return latestRefScanJSON
     }
 
+  };
+
+  function returnLatestAbsAndRefl() {
+      if (latestRefScanJSON == null || latestScanJSON == null)
+          scanDefered.reject();
+
+      var absorbance = [];
+      var reflectance = [];
+      var wavelength = latestScanJSON.wavelength;
+      var sampleIntensity = latestScanJSON.intensity;
+      var referenceIntesity = latestRefScanJSON.intensity;
+
+      var reflect = 0;
+      for (w in wavelength) {
+          // ignore trailing zeroes
+          if (wavelength[w] != 0) {
+              reflect = sampleIntensity[w] / referenceIntesity[w];
+              reflectance.push(reflect);
+              absorbance.push(-Math.log10(reflect));
+          }
+      }
+
+      var result = {};
+      result.wavelength = wavelength;
+      result.absorbance = absorbance;
+      result.reflectance = reflectance;
+      result.status = 'ok';
+
+      scanDefered.resolve(result);
   };
 
   function requestReferenceCoefficents() {
@@ -367,7 +412,9 @@ angular.module('app.services', [])
   function getReferenceScanResults() {
       var success = function (JSONstr) {
           latestRefScanJSON = JSON.parse(JSONstr);
-          console.log('lol that actually worked');
+
+          //everything should be ready to return to the UI, complete the promise.
+          returnLatestAbsAndRefl();
       }
 
       var failure = function () {
