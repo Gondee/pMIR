@@ -256,6 +256,11 @@ angular.module('app.controllers', [])
             concentrations.push(($scope.elem5.value / 100));
         }
 
+        if (remainder != 0) {
+            clabels.push('NA');
+            concentrations.push((remainder / 100));
+        }
+
         //alert(concentrations + clabels);
 
 
