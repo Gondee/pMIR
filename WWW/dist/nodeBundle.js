@@ -48,17 +48,14 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return name.concat(message);
     };
 
-    function databaseGetFile(fileID) {
-        var data = database.ouputDataFile(fileID);
-        if (data.success == 0)
-        {
-            return { absorbances: data.absorbances, concentrationLabels: data.concentrationLabels, concentrations: data.concentrations };
-        }
-        return { absorbances: [], concentrationLabels: [], concentrations: [] };
-    };
-
-    function chemoGetFile(fileID) {
-        return databaseGetFile(fileID);
+    function databaseGetFile(fileID, callback) {
+        database.outputDataFile(fileID, function (data) {
+            if (data.success == 0) {
+                return { absorbances: data.absorbances, concentrationLabels: data.concentrationLabels, concentrations: data.concentrations };
+            }
+            return { absorbances: [], concentrationLabels: [], concentrations: [] };
+            callback();
+        });
     };
 
     function databaseAddFile(absorbances, concentrationLabels, concentrations, fileName) {
@@ -134,30 +131,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         }
     };
 
-    function chemoTrain(isQuantify, fileIDArr) {
-        consoleOutput(0, "isQuantify", isQuantify);
-        chemoIsPls = isQuantify;
-        var numFiles = fileIDArr.length;
-        consoleOutput(0, "numFiles", numFiles);
-        for (var i = 0; i < numFiles; ++i) {
-            var file = chemoGetFile(fileIDArr[i]);
-            consoleOutput(0, "file", file);
-            if (file == null) {
-                return chemoFlags.failFileID;
-            }
-            else {
-                //Add new chemical labels if there are any new ones in this file and associate labels with concentration indices
-                var locationArr = chemoAddLabels(file.concentrationLabels);
-                var numChemicals = locationArr.length;
-                //Add absorbances as next row of matrix training-Y
-                chemoTrainingAbsorbances[i] = file.absorbances;
-                //Add chem concentration in correct part of training matrix X.
-                for (var j = 0; j < numChemicals; ++j) {
-                    //Each chem conc goes in ith row (as represents ith scan) at the index representing the appropriate label
-                    chemoAddConcentration(file.concentrations[j], i, locationArr[j]);
-                }
-            }
-        }
+    function trainStatistics() {
         if (chemoTrainingAbsorbances.length == 0) {
             //No training data means no success (also sometimes we use 0th row to find num of col)
             return chemoFlags.failNoTrainingData;
@@ -238,14 +212,48 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             }
             var numPoints = chemoPCACompressed.length;
             var tempstring = "projected";
-            for (var i = 0; i < numPoints; ++i)
-            {
+            for (var i = 0; i < numPoints; ++i) {
                 consoleOutput(0, tempstring.concat(i), chemoPCACompressed[i]);
             }
         }
         chemoIsTrained = true;
         consoleOutput(0, "isTrained", chemoIsTrained);
         return chemoFlags.success;
+    };
+
+    function chemoTrain(isQuantify, fileIDArr, callback) {
+        consoleOutput(0, "isQuantify", isQuantify);
+        chemoIsPls = isQuantify;
+        var numFiles = fileIDArr.length;
+        consoleOutput(0, "numFiles", numFiles);
+        var countDown = numFiles;
+        for (var i = 0; i < numFiles; ++i) {
+            databaseGetFile(fileIDArr[i], function (file) {
+                consoleOutput(0, "file", file);
+                if (file == null) {
+                    return chemoFlags.failFileID;
+                }
+                else {
+                    //Add new chemical labels if there are any new ones in this file and associate labels with concentration indices
+                    var locationArr = chemoAddLabels(file.concentrationLabels);
+                    var numChemicals = locationArr.length;
+                    //Add absorbances as next row of matrix training-Y
+                    chemoTrainingAbsorbances[i] = file.absorbances;
+                    //Add chem concentration in correct part of training matrix X.
+                    for (var j = 0; j < numChemicals; ++j) {
+                        //Each chem conc goes in ith row (as represents ith scan) at the index representing the appropriate label
+                        chemoAddConcentration(file.concentrations[j], i, locationArr[j]);
+                    }
+                }
+
+                countDown--;
+                if (countDown == 0) {
+                    var flag = trainStatistics();
+                    callback(flag);
+                }
+                
+            });
+        }
     };
 
     //Expect a 1D array containing absorbances, flag telling to save, (if save, provide a file name)
@@ -719,15 +727,6 @@ angular.module('app.nodeServices')
         var dumpFileCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
         var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, outputObj);
     }
-
-    function databaseTest() {
-        var absorb = [1, -3, 2, 6, 8, 3, -2];
-        var conc = [1, 1, 1, 0, -1];
-        var lables = ["a", "b", "c", "d", "e"];
-        var wave = [2, 4, 6, 8, 10, 12, 14];
-        inputDataFile(absorb, conc, lables, wave, "test");
-        var output = outputDataFile("test");
-    };
 
     return {inputModel: inputModel, outputModel: outputModel, inputDataFile: inputDataFile, outputDataFile: outputDataFile, listEntries:listEntries, inputNVD:inputNVD};
 });
