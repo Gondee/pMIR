@@ -1,0 +1,1370 @@
+[
+  {
+    "absorbance": -0.765773,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 901.364703
+  },
+  {
+    "absorbance": -0.755362,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 905.267683
+  },
+  {
+    "absorbance": -0.764936,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 909.166327
+  },
+  {
+    "absorbance": -0.691396667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 913.060637
+  },
+  {
+    "absorbance": -0.715760333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 916.950611
+  },
+  {
+    "absorbance": -0.714011667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 922.130501
+  },
+  {
+    "absorbance": -0.728986333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 926.01036
+  },
+  {
+    "absorbance": -0.698326333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 929.885884
+  },
+  {
+    "absorbance": -0.703601667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 933.757074
+  },
+  {
+    "absorbance": -0.660518667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 937.623928
+  },
+  {
+    "absorbance": -0.661541667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 941.486448
+  },
+  {
+    "absorbance": -0.631785667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 945.344632
+  },
+  {
+    "absorbance": -0.625093,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 949.198482
+  },
+  {
+    "absorbance": -0.617427667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 953.047996
+  },
+  {
+    "absorbance": -0.591532,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 958.173938
+  },
+  {
+    "absorbance": -0.581993667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 962.013338
+  },
+  {
+    "absorbance": -0.615171667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 965.848402
+  },
+  {
+    "absorbance": -0.560689,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 969.679132
+  },
+  {
+    "absorbance": -0.559161,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 973.505526
+  },
+  {
+    "absorbance": -0.559406,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 977.327585
+  },
+  {
+    "absorbance": -0.562066667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 981.14531
+  },
+  {
+    "absorbance": -0.553445,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 984.958699
+  },
+  {
+    "absorbance": -0.565318333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 988.767753
+  },
+  {
+    "absorbance": -0.590291667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 993.839749
+  },
+  {
+    "absorbance": -0.559254667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 997.638689
+  },
+  {
+    "absorbance": -0.582422667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1001.433293
+  },
+  {
+    "absorbance": -0.576666,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1005.223562
+  },
+  {
+    "absorbance": -0.579961,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1009.009496
+  },
+  {
+    "absorbance": -0.575716,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1012.791096
+  },
+  {
+    "absorbance": -0.583901667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1016.56836
+  },
+  {
+    "absorbance": -0.589918333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1020.341289
+  },
+  {
+    "absorbance": -0.586692333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1024.109884
+  },
+  {
+    "absorbance": -0.609547,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1029.127933
+  },
+  {
+    "absorbance": -0.612291,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1032.886412
+  },
+  {
+    "absorbance": -0.600874333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1036.640556
+  },
+  {
+    "absorbance": -0.629129,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1040.390365
+  },
+  {
+    "absorbance": -0.586395667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1044.13584
+  },
+  {
+    "absorbance": -0.595778667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1047.876979
+  },
+  {
+    "absorbance": -0.574191333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1051.613783
+  },
+  {
+    "absorbance": -0.575300667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1055.346252
+  },
+  {
+    "absorbance": -0.571125,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1059.074387
+  },
+  {
+    "absorbance": -0.561857667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1064.038489
+  },
+  {
+    "absorbance": -0.551757667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1067.756508
+  },
+  {
+    "absorbance": -0.545704667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1071.470192
+  },
+  {
+    "absorbance": -0.537233,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1075.179542
+  },
+  {
+    "absorbance": -0.517938,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1078.884556
+  },
+  {
+    "absorbance": -0.516602667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1082.585235
+  },
+  {
+    "absorbance": -0.554790667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1086.281579
+  },
+  {
+    "absorbance": -0.524674667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1089.973588
+  },
+  {
+    "absorbance": -0.524977333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1093.661262
+  },
+  {
+    "absorbance": -0.535669,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1098.571418
+  },
+  {
+    "absorbance": -0.537716667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1102.248977
+  },
+  {
+    "absorbance": -0.519551667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1105.922201
+  },
+  {
+    "absorbance": -0.527367667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1109.59109
+  },
+  {
+    "absorbance": -0.510381,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1113.255645
+  },
+  {
+    "absorbance": -0.499354667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1116.915864
+  },
+  {
+    "absorbance": -0.487601333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1120.571748
+  },
+  {
+    "absorbance": -0.493684667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1124.223297
+  },
+  {
+    "absorbance": -0.417895,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1129.085286
+  },
+  {
+    "absorbance": -0.409746667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1132.72672
+  },
+  {
+    "absorbance": -0.375282,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1136.363819
+  },
+  {
+    "absorbance": -0.357620667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1139.996583
+  },
+  {
+    "absorbance": -0.35812,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1143.625012
+  },
+  {
+    "absorbance": -0.338005333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1147.249106
+  },
+  {
+    "absorbance": -0.322363667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1150.868865
+  },
+  {
+    "absorbance": -0.328224667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1154.484289
+  },
+  {
+    "absorbance": -0.320826,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1158.095378
+  },
+  {
+    "absorbance": -0.295086,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1162.90342
+  },
+  {
+    "absorbance": -0.289352,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1166.504394
+  },
+  {
+    "absorbance": -0.285095667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1170.101033
+  },
+  {
+    "absorbance": -0.267713333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1173.693337
+  },
+  {
+    "absorbance": -0.275107667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1177.281307
+  },
+  {
+    "absorbance": -0.272986333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1180.864941
+  },
+  {
+    "absorbance": -0.282804333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1184.44424
+  },
+  {
+    "absorbance": -0.271613667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1188.019204
+  },
+  {
+    "absorbance": -0.288159667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1191.589833
+  },
+  {
+    "absorbance": -0.299387,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1196.343928
+  },
+  {
+    "absorbance": -0.287402,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1199.904442
+  },
+  {
+    "absorbance": -0.290475667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1203.460621
+  },
+  {
+    "absorbance": -0.271041667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1207.012465
+  },
+  {
+    "absorbance": -0.304787,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1210.559974
+  },
+  {
+    "absorbance": -0.287322,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1214.103148
+  },
+  {
+    "absorbance": -0.295600667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1217.641987
+  },
+  {
+    "absorbance": -0.287979333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1221.176491
+  },
+  {
+    "absorbance": -0.269631667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1224.70666
+  },
+  {
+    "absorbance": -0.279276333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1229.406808
+  },
+  {
+    "absorbance": -0.269403333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1232.926862
+  },
+  {
+    "absorbance": -0.270142667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1236.442581
+  },
+  {
+    "absorbance": -0.26694,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1239.953965
+  },
+  {
+    "absorbance": -0.250036333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1243.461014
+  },
+  {
+    "absorbance": -0.265703667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1246.963728
+  },
+  {
+    "absorbance": -0.270005333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1250.462107
+  },
+  {
+    "absorbance": -0.252489,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1253.95615
+  },
+  {
+    "absorbance": -0.245253333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1257.445859
+  },
+  {
+    "absorbance": -0.227426333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1262.092061
+  },
+  {
+    "absorbance": -0.220819,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1265.571655
+  },
+  {
+    "absorbance": -0.228221,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1269.046914
+  },
+  {
+    "absorbance": -0.242657,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1272.517838
+  },
+  {
+    "absorbance": -0.246414667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1275.984426
+  },
+  {
+    "absorbance": -0.225711333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1279.44668
+  },
+  {
+    "absorbance": -0.231787333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1282.904599
+  },
+  {
+    "absorbance": -0.221540667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1286.358183
+  },
+  {
+    "absorbance": -0.228167,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1289.807432
+  },
+  {
+    "absorbance": -0.19432,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1294.399687
+  },
+  {
+    "absorbance": -0.21165,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1297.838821
+  },
+  {
+    "absorbance": -0.194914333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1301.273619
+  },
+  {
+    "absorbance": -0.169008,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1304.704083
+  },
+  {
+    "absorbance": -0.176579,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1308.130212
+  },
+  {
+    "absorbance": -0.145030667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1311.552006
+  },
+  {
+    "absorbance": -0.131696,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1314.969465
+  },
+  {
+    "absorbance": -0.121805333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1318.382588
+  },
+  {
+    "absorbance": -0.096678,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1322.926677
+  },
+  {
+    "absorbance": -0.101857667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1326.329685
+  },
+  {
+    "absorbance": -0.080744,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1329.728359
+  },
+  {
+    "absorbance": -0.050926,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1333.122698
+  },
+  {
+    "absorbance": -0.035525333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1336.512702
+  },
+  {
+    "absorbance": -0.024997,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1339.89837
+  },
+  {
+    "absorbance": -0.021256333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1343.279704
+  },
+  {
+    "absorbance": -0.004948,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1346.656703
+  },
+  {
+    "absorbance": 0.020037667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1350.029367
+  },
+  {
+    "absorbance": 0.036401667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1354.519508
+  },
+  {
+    "absorbance": 0.024504333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1357.882057
+  },
+  {
+    "absorbance": 0.044438667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1361.240271
+  },
+  {
+    "absorbance": 0.041815333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1364.594149
+  },
+  {
+    "absorbance": 0.062761,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1367.943693
+  },
+  {
+    "absorbance": 0.095212,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1371.288902
+  },
+  {
+    "absorbance": 0.115397667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1374.629775
+  },
+  {
+    "absorbance": 0.163987,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1377.966314
+  },
+  {
+    "absorbance": 0.195636667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1381.298517
+  },
+  {
+    "absorbance": 0.212448333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1385.734712
+  },
+  {
+    "absorbance": 0.237101333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1389.056801
+  },
+  {
+    "absorbance": 0.262960667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1392.374555
+  },
+  {
+    "absorbance": 0.241895667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1395.687973
+  },
+  {
+    "absorbance": 0.283410667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1398.997057
+  },
+  {
+    "absorbance": 0.287339667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1402.301805
+  },
+  {
+    "absorbance": 0.301937667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1405.602219
+  },
+  {
+    "absorbance": 0.315538,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1408.898298
+  },
+  {
+    "absorbance": 0.327195333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1412.190041
+  },
+  {
+    "absorbance": 0.350736667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1416.572289
+  },
+  {
+    "absorbance": 0.343447333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1419.853918
+  },
+  {
+    "absorbance": 0.386778,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1423.131211
+  },
+  {
+    "absorbance": 0.399684333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1426.40417
+  },
+  {
+    "absorbance": 0.396065,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1429.672794
+  },
+  {
+    "absorbance": 0.386707667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1432.937082
+  },
+  {
+    "absorbance": 0.39546,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1436.197036
+  },
+  {
+    "absorbance": 0.374193667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1439.452654
+  },
+  {
+    "absorbance": 0.388010667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1442.703938
+  },
+  {
+    "absorbance": 0.365974333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1447.032239
+  },
+  {
+    "absorbance": 0.32271,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1450.273408
+  },
+  {
+    "absorbance": 0.314041667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1453.510241
+  },
+  {
+    "absorbance": 0.287396,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1456.74274
+  },
+  {
+    "absorbance": 0.277612667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1459.970903
+  },
+  {
+    "absorbance": 0.278821333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1463.194732
+  },
+  {
+    "absorbance": 0.279779,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1466.414225
+  },
+  {
+    "absorbance": 0.257410333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1469.629384
+  },
+  {
+    "absorbance": 0.269245667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1472.840207
+  },
+  {
+    "absorbance": 0.297347333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1477.114562
+  },
+  {
+    "absorbance": 0.310642333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1480.31527
+  },
+  {
+    "absorbance": 0.298887667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1483.511644
+  },
+  {
+    "absorbance": 0.290849333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1486.703682
+  },
+  {
+    "absorbance": 0.278852667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1489.891385
+  },
+  {
+    "absorbance": 0.241339667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1493.074754
+  },
+  {
+    "absorbance": 0.245260333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1496.253787
+  },
+  {
+    "absorbance": 0.309354333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1499.428486
+  },
+  {
+    "absorbance": 0.307551667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1503.654674
+  },
+  {
+    "absorbance": 0.342091,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1506.819257
+  },
+  {
+    "absorbance": 0.323178,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1509.979505
+  },
+  {
+    "absorbance": 0.335276667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1513.135419
+  },
+  {
+    "absorbance": 0.324714,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1516.286997
+  },
+  {
+    "absorbance": 0.333052667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1519.43424
+  },
+  {
+    "absorbance": 0.298411,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1522.577149
+  },
+  {
+    "absorbance": 0.276057,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1525.715722
+  },
+  {
+    "absorbance": 0.255892667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1528.849961
+  },
+  {
+    "absorbance": 0.20588,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1533.022202
+  },
+  {
+    "absorbance": 0.198687333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1536.146325
+  },
+  {
+    "absorbance": 0.140418,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1539.266113
+  },
+  {
+    "absorbance": 0.202144333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1542.381567
+  },
+  {
+    "absorbance": 0.185306667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1545.492685
+  },
+  {
+    "absorbance": 0.193773,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1548.599468
+  },
+  {
+    "absorbance": 0.151555333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1551.701917
+  },
+  {
+    "absorbance": 0.170836667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1554.80003
+  },
+  {
+    "absorbance": 0.166241,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1557.893808
+  },
+  {
+    "absorbance": 0.150265333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1562.012103
+  },
+  {
+    "absorbance": 0.165891667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1565.095766
+  },
+  {
+    "absorbance": 0.153203,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1568.175094
+  },
+  {
+    "absorbance": 0.171978667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1571.250087
+  },
+  {
+    "absorbance": 0.135035333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1574.320746
+  },
+  {
+    "absorbance": 0.171056333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1577.387069
+  },
+  {
+    "absorbance": 0.226193,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1580.449057
+  },
+  {
+    "absorbance": 0.172017,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1583.506711
+  },
+  {
+    "absorbance": 0.250897667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1586.560029
+  },
+  {
+    "absorbance": 0.272258333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1590.624376
+  },
+  {
+    "absorbance": 0.181365,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1593.66758
+  },
+  {
+    "absorbance": 0.163707333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1596.706448
+  },
+  {
+    "absorbance": 0.163864667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1599.740981
+  },
+  {
+    "absorbance": 0.151830333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1602.771179
+  },
+  {
+    "absorbance": 0.149407,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1605.797042
+  },
+  {
+    "absorbance": 0.106329667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1608.818571
+  },
+  {
+    "absorbance": 0.078809,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1611.835764
+  },
+  {
+    "absorbance": 0.070746,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1614.848622
+  },
+  {
+    "absorbance": 0.11149,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1618.859023
+  },
+  {
+    "absorbance": 0.038959333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1621.861766
+  },
+  {
+    "absorbance": 0.080831,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1624.860174
+  },
+  {
+    "absorbance": 0.091370667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1627.854247
+  },
+  {
+    "absorbance": 0.075120667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1630.843986
+  },
+  {
+    "absorbance": 0.004750333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1633.829389
+  },
+  {
+    "absorbance": 0.003488667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1636.810457
+  },
+  {
+    "absorbance": 0.067449333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1639.78719
+  },
+  {
+    "absorbance": 0.039094667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1642.759588
+  },
+  {
+    "absorbance": 0.102002667,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1646.716042
+  },
+  {
+    "absorbance": 0.057333333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1649.678325
+  },
+  {
+    "absorbance": 0.162127333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1652.636273
+  },
+  {
+    "absorbance": 0.250274333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1655.589886
+  },
+  {
+    "absorbance": 0.077106333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1658.539165
+  },
+  {
+    "absorbance": 0.233324,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1661.484108
+  },
+  {
+    "absorbance": 0.255321,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1664.424716
+  },
+  {
+    "absorbance": 0.362438333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1667.360989
+  },
+  {
+    "absorbance": -0.049200333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1671.269276
+  },
+  {
+    "absorbance": -0.073282333,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1674.195434
+  },
+  {
+    "absorbance": -0.470448,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1677.117257
+  },
+  {
+    "absorbance": -0.3148285,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1680.034745
+  },
+  {
+    "absorbance": -0.904675,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1682.947898
+  },
+  {
+    "absorbance": -0.717254,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1685.856716
+  },
+  {
+    "absorbance": -0.887588,
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1688.761199
+  },
+  {
+    "absorbance": "#VALUE!",
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1691.661347
+  },
+  {
+    "absorbance": "#NAME?",
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1694.55716
+  },
+  {
+    "absorbance": "#VALUE!",
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1698.411501
+  },
+  {
+    "absorbance": "#NAME?",
+    "concentrationLabels": "Skim Milk",
+    "concentration": 1,
+    "wavelength": 1701.297199
+  }
+]
