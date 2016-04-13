@@ -274,7 +274,14 @@ angular.module('app.controllers', [])
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
                      //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName);
+                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
+                         // run PCA
+                         database.outputDataFile(fileName, function (result) {
+                             debugger;
+                         });
+                     });
+
+
                  },
                  // failure callback
                  function () {

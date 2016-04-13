@@ -603,7 +603,7 @@ angular.module('app.nodeServices')
         return model;
     };
 
-    function inputDataFile(absorbances, concentrationLabels, concentrations, wavelength, fileName) {
+    function inputDataFile(absorbances, concentrationLabels, concentrations, wavelength, fileName, callback) {
         var fullFileName = getFullName(fileName, false);
         var managementFileName = getManagementName(false);
         var managementExists = $cordovaFile.checkFile(cordova.file.dataDirectory, managementFileName);
@@ -631,26 +631,29 @@ angular.module('app.nodeServices')
 
         var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
         outputExists.then(function (success) {
-            var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, managementFileName);
+            var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, fullFileName).then(
+                function () {
+                    var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true).then(
+                        function () {
+                            var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
+                            output = angular.toJson(output);
+                            var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
+                                callback();
+                            }, function () {
+                                debugger;
+                            });
+                        },
+                        function () {
+                            debugger;
+                        }
+                    );
+                },
+                function () {
+                    debugger;
+                }
+            );
         },
         function (failure) {
-        });
-        var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
-        var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
-        output = angular.toJson(output);
-        var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
-            var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
-                fileRead.then(
-                    function (success) {
-                        debugger;
-                        data = angular.fromJson(success);
-                    },
-                    function (error) {
-                        debugger;
-                    }
-                );
-
-        }, function () {
             debugger;
         });
 
@@ -664,18 +667,16 @@ angular.module('app.nodeServices')
             var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
             fileRead.then(
                 function (success) {
-                    debugger;
+                    success = success.replace(/"/g, "'"); // json doesn't like parsing double quotes
                     data = angular.fromJson(success);
                     callback(data);
                 },
                 function (error) {
-                    debugger;
                 }
             );
         },
         function (error) {
         });
-        return data;
     };
 
     function inputNVD(wavelengths, absorbances)
