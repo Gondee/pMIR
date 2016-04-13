@@ -205,7 +205,7 @@ angular.module('app.controllers', [])
         remainder = 0;
 
         var fileName = fname;
-        alert(fileName);
+        //alert(fileName);
         //Validate user input % and data. 
         total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
 
