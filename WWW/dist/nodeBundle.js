@@ -638,7 +638,22 @@ angular.module('app.nodeServices')
         var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
         var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
         output = angular.toJson(output);
-        var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output);
+        var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
+            var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
+                fileRead.then(
+                    function (success) {
+                        debugger;
+                        data = angular.fromJson(success);
+                    },
+                    function (error) {
+                        debugger;
+                    }
+                );
+
+        }, function () {
+            debugger;
+        });
+
     };
 
     function outputDataFile(fileName, callback) {

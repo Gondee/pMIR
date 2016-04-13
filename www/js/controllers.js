@@ -275,19 +275,13 @@ angular.module('app.controllers', [])
                      $scope.scanResults = res;
                      //(absorbances, concentrationLabels, concentrations, fileName)
                      database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName);
-
-                     var file = database.outputDataFile(fileName, function (fileData) {
-                         console.log("WGHY");
-                     });
                  },
                  // failure callback
                  function () {
                      $scope.loading = !$scope.loading;
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
                  });
-                 
-
-
+ 
         }
     }
 
