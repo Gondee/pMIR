@@ -1,11 +1,14 @@
 ﻿<ion-view title="Enter Training Data" id="page8">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
+        
+        <center><i ng-show="loading"><ion-spinner icon="lines"></ion-spinner>Scanning...</i></center>
+
         <!--<form class="list">-->
-            <label class="item item-input">
+            <label class="item item-input" ng-hide="loading">
                 <span class="input-label">Data Name</span>
                 <input type="text" ng-model="name.text" placeholder="ex. Apple">
             </label>
-            <div class="list card">
+            <div class="list card" ng-hide="loading">
                 <div class="item item-divider">Chemical/Material</div>
                 <div class="item item-body">
                     <form class="list">
@@ -20,7 +23,7 @@
                     </form>
                 </div>
             </div>
-            <div class="list card">
+            <div class="list card" ng-hide="loading">
                 <div class="item item-divider">Chemical/Material</div>
                 <div class="item item-body">
                     <form class="list">
@@ -35,7 +38,7 @@
                     </form>
                 </div>
             </div>
-            <div class="list card">
+            <div class="list card" ng-hide="loading">
                 <div class="item item-divider">Chemical/Material</div>
                 <div class="item item-body">
                     <form class="list">
@@ -50,7 +53,7 @@
                     </form>
                 </div>
             </div>
-            <div class="list card">
+            <div class="list card" ng-hide="loading">
                 <div class="item item-divider">Chemical/Material</div>
                 <div class="item item-body">
                     <form class="list">
@@ -65,7 +68,7 @@
                     </form>
                 </div>
             </div>
-            <div class="list card">
+            <div class="list card" ng-hide="loading">
                 <div class="item item-divider">Chemical/Material</div>
                 <div class="item item-body">
                     <form class="list">
@@ -83,7 +86,7 @@
             <!--<div demo-directive ng-repeat="input in inputs"></div>-->
             <!--<button id="page-button7" class="button button-positive button-small button-block icon ion-android-add-circle"> Add Chemical/Material</button>-->
         <!--</form>-->
-        <button ng-click="Save()" id="page-button8" class="button button-balanced  button-block icon ion-android-checkmark-circle">Start/Save</button>
-        <i>Note: Remainders will be calculated as Unknown and refelected in chemometics analysis. </i>
+        <button ng-hide="loading" ng-click="Save()" id="page-button8" class="button button-balanced  button-block icon ion-android-checkmark-circle">Start/Save</button>
+        <i ng-hide="loading">Note: Remainders will be calculated as Unknown and refelected in chemometics analysis. </i>
     </ion-content>
 </ion-view>

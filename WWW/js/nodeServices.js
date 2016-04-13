@@ -1,5 +1,5 @@
 ﻿//This file includes services which rely on node public modules.
-angular.module('app.nodeServices', ['ionic', 'ngCordova'])
+angular.module('app.nodeServices', ['ionic', 'ngCordova','chemo','database'])
 
 .service('chemo', function(database){
 

@@ -122,7 +122,7 @@ angular.module('app.controllers', [])
 
     BLE.NIRScan().then(
         function (res) {
-            $scope.scanResults = res;
+            git$scope.scanResults = res;
             getChartVals(res);
             $scope.loading = false;
         },

@@ -5,7 +5,10 @@ div.spinner {
   height: 85px;
   text-align: center;
 }
+
 .spinner svg {
-  width: 19% !important;
-  height: 85px !important;
-} 
+  width: 112px;
+  height: 112px;
+  stroke: #444;
+  fill: #444;
+}
