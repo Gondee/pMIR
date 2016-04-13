@@ -478,7 +478,13 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     };
 
 
-    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel, pcaTest: pcaTest };
+    var getPCA = function () {
+        return chemoPCACompressed;
+
+    };
+
+
+    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel, pcaTest: pcaTest , getPCA };
 
 });
 
