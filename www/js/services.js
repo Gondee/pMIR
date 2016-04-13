@@ -23,12 +23,10 @@ angular.module('app.services', [])
 
     //scan config data globals
     var scanConfigDataLength;
-    var scanConfigDataArrayRaw;
     var scanConfigDataArrayPayload;
 
     // NIRScan data globals
     var scanDataLength;
-    var scanDataArrayRaw;
     var scanDataArrayPayload;
     var scanDefered;
 
@@ -207,17 +205,19 @@ angular.module('app.services', [])
 
       var absorbance = [];
       var reflectance = [];
-      var wavelength = latestScanJSON.wavelength;
+      var wavelength = []
+      var rawWavelength = latestScanJSON.wavelength;
       var sampleIntensity = latestScanJSON.intensity;
       var referenceIntesity = latestRefScanJSON.intensity;
 
       var reflect = 0;
-      for (w in wavelength) {
+      for (w in rawWavelength) {
           // ignore trailing zeroes
-          if (wavelength[w] != 0) {
+          if (rawWavelength[w] != 0) {
               reflect = sampleIntensity[w] / referenceIntesity[w];
               reflectance.push(reflect);
               absorbance.push(-Math.log10(reflect));
+              wavelength.push(rawWavelength[w]);
           }
       }
 
@@ -258,19 +258,14 @@ angular.module('app.services', [])
 
       if (packetNum == 0) {
           scanConfigDataLength = raw[1];
-          scanConfigDataArrayRaw = new Uint8Array(0).buffer;
           scanConfigDataArrayPayload = new Uint8Array(0).buffer;
       }
 
       // append packets
-      scanConfigDataArrayRaw = appendBuffer(scanConfigDataArrayRaw, raw.buffer);
       scanConfigDataArrayPayload = appendBuffer(scanConfigDataArrayPayload, payload.buffer);
 
       // We've recived all packets (-4 because the first fou bytes of payload is size header)
       if (scanConfigDataArrayPayload.byteLength - 4 == scanConfigDataLength) {
-
-          console.log("RAW: " + Array.apply([], Array.from(new Uint8Array(scanConfigDataArrayRaw))).join(","));
-          console.log("PAYLOAD: " + Array.apply([], Array.from(new Uint8Array(scanConfigDataArrayPayload))).join(","));
 
           var trimmedPayload = new Uint8Array(scanConfigDataArrayPayload.slice(4));
           console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
@@ -319,19 +314,14 @@ angular.module('app.services', [])
 
       if (packetNum == 0) {
           scanDataLength = new Uint32Array(buffer.slice(1))[0];
-          scanDataArrayRaw = new Uint8Array(0).buffer;
           scanDataArrayPayload = new Uint8Array(0).buffer;
       }
 
       // append packets
-      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
       scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
 
       // We've recived all packets (-4 because the first fou bytes of payload is size header)
       if (scanDataArrayPayload.byteLength - 4 == scanDataLength) {
-
-          console.log("RAW: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayRaw))).join(","));
-          console.log("PAYLOAD: " + Array.apply([], Array.from(new Uint8Array(scanDataArrayPayload))).join(","));
 
           var trimmedPayload = new Uint8Array(scanDataArrayPayload.slice(4));
           console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
@@ -359,12 +349,10 @@ angular.module('app.services', [])
 
       if (packetNum == 0) {
           scanDataLength = new Uint32Array(buffer.slice(1))[0];
-          scanDataArrayRaw = new Uint8Array(0).buffer;
           scanDataArrayPayload = new Uint8Array(0).buffer;
       }
 
       // append packets
-      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
       scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
 
       // We've recived all packets (-4 because the first fou bytes of payload is size header)
@@ -389,12 +377,10 @@ angular.module('app.services', [])
 
       if (packetNum == 0) {
           scanDataLength = new Uint32Array(buffer.slice(1))[0];
-          scanDataArrayRaw = new Uint8Array(0).buffer;
           scanDataArrayPayload = new Uint8Array(0).buffer;
       }
 
       // append packets
-      scanDataArrayRaw = appendBuffer(scanDataArrayRaw, raw.buffer);
       scanDataArrayPayload = appendBuffer(scanDataArrayPayload, payload.buffer);
 
       // We've recived all packets (-4 because the first fou bytes of payload is size header)

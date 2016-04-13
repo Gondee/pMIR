@@ -76,6 +76,16 @@ angular.module('app.routes', [])
         }
     })
 
+    .state('menu.simplescanresult', {
+        url: '/simplescanresult',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/simpleScanResult.html',
+                controller: 'simpleScanCtrl'
+            }
+        }
+    })
+
   .state('menu.profiles', {
     url: '/Profiles',
     views: {
