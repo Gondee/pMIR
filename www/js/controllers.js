@@ -276,6 +276,7 @@ angular.module('app.controllers', [])
                      //(absorbances, concentrationLabels, concentrations, fileName)
                      database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
                          // run PCA
+
                          database.outputDataFile(fileName, function (result) {
                              debugger;
                          });
