@@ -7,8 +7,13 @@ angular.module('app.controllers', [])
     $scope.scanResults = {};
 
     var init = function () {
-        $scope.connected = BLE.isConnected();
+        setInterval(checkConnect, 2000);
     }
+
+    var checkConnect = function () {
+        $scope.connected = BLE.isConnected();
+        console.log($scope.connected);
+    };
 
     init();
 
@@ -21,14 +26,6 @@ angular.module('app.controllers', [])
         //alert($scope.isTrainingData);
         if (!$scope.isTrainingData) {
             $state.go("menu.simplescanresult");
-            /*BLE.NIRScan().then(
-                // success callback
-                function (res) {
-                    $scope.scanResults = res;
-                },
-                // failure callback
-                function () { alert('Error: unable to retrieve reflectance and absorbance from scan.') }
-            );*/
         }
         else {
             $state.go("menu.posttrainscan");
@@ -122,7 +119,7 @@ angular.module('app.controllers', [])
 
     BLE.NIRScan().then(
         function (res) {
-            git$scope.scanResults = res;
+            $scope.scanResults = res;
             getChartVals(res);
             $scope.loading = false;
         },
