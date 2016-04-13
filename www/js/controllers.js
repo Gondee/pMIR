@@ -171,7 +171,10 @@ angular.module('app.controllers', [])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope) {
+.controller('postTrainScanCtrl', function ($scope, BLE) {
+
+    $scope.scanResults = {};
+    $scope.loading = false;
 
     $scope.name = {
         text: ''
@@ -199,7 +202,7 @@ angular.module('app.controllers', [])
 
 
     $scope.Save = function () {
-        
+
         validation = false;
         retrieve = false;
         save = false;
@@ -215,6 +218,12 @@ angular.module('app.controllers', [])
             alert("You must enter concentration data before proceding");
             return;
         }
+        if ($scope.name.text = '') {
+            alert("You must enter a name for this training data");
+            return;
+        }
+
+
 
         //getting remainder if it exists
         if ((total) < 100.0) {
@@ -223,23 +232,60 @@ angular.module('app.controllers', [])
         }
 
 
+        var clabels = [];
+        var concentrations = [];
+
+        if ($scope.elem1.text != '' && $scope.elem1.value > 0 && $scope.elem1.value <= 100) {
+            clabels.push($scope.elem1.text);
+            concentrations.push(($scope.elem1.value / 100));
+        }
+        if ($scope.elem2.text != '' && $scope.elem2.value > 0 && $scope.elem2.value <= 100) {
+            clabels.push($scope.elem2.text);
+            concentrations.push(($scope.elem2.value / 100));
+        }
+        if ($scope.elem3.text != '' && $scope.elem3.value > 0 && $scope.elem3.value <= 100) {
+            clabels.push($scope.elem3.text);
+            concentrations.push(($scope.elem3.value / 100));
+        }
+        if ($scope.elem4.text != '' && $scope.elem4.value > 0 && $scope.elem4.value <= 100) {
+            clabels.push($scope.elem4.text);
+            concentrations.push(($scope.elem4.value / 100));
+        }
+        if ($scope.elem5.text != '' && $scope.elem5.value > 0 && $scope.elem5.value <= 100) {
+            clabels.push($scope.elem5.text);
+            concentrations.push(($scope.elem5.value / 100));
+        }
+
+        //alert(concentrations + clabels);
 
 
         //Contact the BLE service to retrieve the data from the scan
         if (validation) {
+            $scope.loading = !$scope.loading;
+
+            /*BLE.NIRScan().then(
+                 // success callback
+                 function (res) {
+                     $scope.loading = !$scope.loading;
+                     $scope.scanResults = res;
+                     alert($scope.scanResults);
+                     
+                     //(absorbances, concentrationLabels, concentrations, fileName)
+                     database.importDataFile($scope.scanResults.absorbance, clabels,concentrations,$scope.name.text);
+
+
+                     debugger;
+                 },
+                 // failure callback
+                 function () {
+                     $scope.loading = !$scope.loading;
+                     alert('Error: unable to retrieve reflectance and absorbance from scan.')
+                 });*/
 
 
 
         }
-        //Save the data and the user input to the DB
-        if (retrieve) {
-
-
-        }
-
-
     }
-
 
 
     /*
