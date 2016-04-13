@@ -130,7 +130,7 @@ angular.module('app.services', [])
 
             var data = new Uint8Array(1);
 
-            ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onStartScanNotify, failureMsg("Error: recieve notification for scan data"));
+            ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onStartScanNotify, failureMsg("Notify: recieve notification for scan data"));
             ble.write(connected_device_id, scanDataInfoServiceID, startScanCharID, data.buffer,
                 function (res) { console.log("lights"); },
                 function (res) { console.log("no lights"); }
@@ -169,7 +169,7 @@ angular.module('app.services', [])
             var data = new Uint8Array(1);
 
             // start notification when characteristic changes (config indicies)
-            ble.startNotification(connected_device_id, scanConfigsServiceID, returnScanConfigsCharID, onConfigListData, failureMsg("Error: recieve notification for scan config list"));
+            ble.startNotification(connected_device_id, scanConfigsServiceID, returnScanConfigsCharID, onConfigListData, failureMsg("Notify: recieve notification for scan config list"));
 
             // request scan configuration list notification.
             ble.write(connected_device_id, scanConfigsServiceID, requestScanConfigsCharID, data.buffer,
@@ -233,7 +233,7 @@ angular.module('app.services', [])
     function requestReferenceCoefficents() {
         var data = new Uint8Array(1);
 
-        ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceCoeffCharID, onRefCoeffData, failureMsg("Error: recieve notification for reference coeff"));
+        ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceCoeffCharID, onRefCoeffData, failureMsg("Notify: recieve notification for reference coeff"));
         ble.write(connected_device_id, calibrationInfoServiceID, requestReferenceCoeffCharID, data.buffer,
             function (res) { console.log("requesting reference coefficents"); },
             function (res) { alert("coefficent request failed"); }
@@ -243,7 +243,7 @@ angular.module('app.services', [])
     function requestReferenceMatrix() {
         var data = new Uint8Array(1);
 
-        ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceMatrixCharID, onRefMatrixData, failureMsg("Error: recieve notification for reference matrix"));
+        ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceMatrixCharID, onRefMatrixData, failureMsg("Notify: recieve notification for reference matrix"));
         ble.write(connected_device_id, calibrationInfoServiceID, requestReferenceMatrixCharID, data.buffer,
             function (res) { console.log("requesting reference matrix"); },
             function (res) { alert("coefficent request failed"); }
@@ -423,7 +423,7 @@ angular.module('app.services', [])
         var data = new Uint32Array(1);
         data[0] = index;
 
-        ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanData, failureMsg("Error: recieve notification for scan data"));
+        ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanData, failureMsg("Notify: recieve notification for scan data"));
         ble.write(connected_device_id, scanDataInfoServiceID, requestScanDataCharID, data.buffer,
             function (res) { console.log("NIRScan Initiated"); },
             function (res) { alert("NIRScan Scan Failed"); }
@@ -437,7 +437,7 @@ angular.module('app.services', [])
         data[0] = scanConfigIds[index];
 
         // start notification when characteristic changes (config data)
-        ble.startNotification(connected_device_id, scanConfigsServiceID, returnScanConfigsDataCharID, onConfigData, failureMsg("Error: recieve notification for scan config data"));
+        ble.startNotification(connected_device_id, scanConfigsServiceID, returnScanConfigsDataCharID, onConfigData, failureMsg("Notify: recieve notification for scan config data"));
 
         // request scan configuration data notification.
         ble.write(connected_device_id, scanConfigsServiceID, requestScanConfigsDataCharID, data.buffer,

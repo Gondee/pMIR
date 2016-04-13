@@ -204,6 +204,8 @@ angular.module('app.controllers', [])
         save = false;
         remainder = 0;
 
+        var fileName = '';
+
         //Validate user input % and data. 
         total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
 
@@ -218,6 +220,8 @@ angular.module('app.controllers', [])
             alert("You must enter a name for this training data");
             return;
         }
+
+        fileName = $scope.name.text;
 
 
 
@@ -269,13 +273,12 @@ angular.module('app.controllers', [])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
-                     alert($scope.scanResults);
-                     
                      //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.inputDataFile($scope.scanResults.absorbance, clabels,concentrations, $scope.wavelength, $scope.name.text);
+                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName);
 
-
-                     debugger;
+                     var file = database.outputDataFile(fileName, function (fileData) {
+                         debugger;
+                     });
                  },
                  // failure callback
                  function () {
