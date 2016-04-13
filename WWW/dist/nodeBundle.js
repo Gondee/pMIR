@@ -660,7 +660,20 @@ angular.module('app.nodeServices')
             );
         },
         function (failure) {
-            debugger;
+            var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true).then(
+                function () {
+                    var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
+                    output = angular.toJson(output);
+                    var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
+                        callback();
+                    }, function () {
+                        debugger;
+                    });
+                },
+                function () {
+                    debugger;
+                }
+            );
         });
 
     };
@@ -673,7 +686,6 @@ angular.module('app.nodeServices')
             var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
             fileRead.then(
                 function (success) {
-                    success = success.replace(/"/g, "'"); // json doesn't like parsing double quotes
                     data = angular.fromJson(success);
                     callback(data);
                 },
