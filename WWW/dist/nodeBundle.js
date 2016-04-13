@@ -616,10 +616,13 @@ angular.module('app.nodeServices')
                 mngmntArr = angular.fromJson(success);
                 var numEntries = mngmntArr.entries.length;
                 mngmntArr.entries[numEntries] = fileName;
+                var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, managementFileName);
                 var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
                 var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, managementFileName, angular.toJson(mngmntArr));
             },
-                function (error) { });
+                function (error) {
+                    debugger;
+                });
         }, function (error) {
             //If no management file, create new one and output JSON
             var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
@@ -627,6 +630,11 @@ angular.module('app.nodeServices')
         });
 
         var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        outputExists.then(function (success) {
+            var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, managementFileName);
+        },
+        function (failure) {
+        });
         var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
         var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
         output = angular.toJson(output);
@@ -645,7 +653,9 @@ angular.module('app.nodeServices')
                     data = angular.fromJson(success);
                     callback(data);
                 },
-                function (error) { }
+                function (error) {
+                    debugger;
+                }
             );
         },
         function (error) {

@@ -277,7 +277,7 @@ angular.module('app.controllers', [])
                      database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName);
 
                      var file = database.outputDataFile(fileName, function (fileData) {
-                         debugger;
+                         console.log("WGHY");
                      });
                  },
                  // failure callback
