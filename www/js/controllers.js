@@ -197,15 +197,15 @@ angular.module('app.controllers', [])
     };
 
 
-    $scope.Save = function () {
+    $scope.Save = function (fname) {
 
         validation = false;
         retrieve = false;
         save = false;
         remainder = 0;
 
-        var fileName = '';
-
+        var fileName = fname;
+        alert(fileName);
         //Validate user input % and data. 
         total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
 
@@ -221,7 +221,7 @@ angular.module('app.controllers', [])
             return;
         }
 
-        fileName = $scope.name.text;
+        //fileName = $scope.name.text;
 
 
 
@@ -285,7 +285,7 @@ angular.module('app.controllers', [])
                      $scope.loading = !$scope.loading;
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
                  });
-
+                 
 
 
         }
