@@ -12,7 +12,6 @@ angular.module('app.controllers', [])
 
     var checkConnect = function () {
         $scope.connected = BLE.isConnected();
-        console.log($scope.connected);
     };
 
     init();
@@ -168,7 +167,7 @@ angular.module('app.controllers', [])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope, BLE) {
+.controller('postTrainScanCtrl', function ($scope, BLE, database) {
 
     $scope.scanResults = {};
     $scope.loading = false;
@@ -265,7 +264,7 @@ angular.module('app.controllers', [])
         if (validation) {
             $scope.loading = !$scope.loading;
 
-            /*BLE.NIRScan().then(
+            BLE.NIRScan().then(
                  // success callback
                  function (res) {
                      $scope.loading = !$scope.loading;
@@ -273,7 +272,7 @@ angular.module('app.controllers', [])
                      alert($scope.scanResults);
                      
                      //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.importDataFile($scope.scanResults.absorbance, clabels,concentrations,$scope.name.text);
+                     database.inputDataFile($scope.scanResults.absorbance, clabels,concentrations, $scope.wavelength, $scope.name.text);
 
 
                      debugger;
@@ -282,7 +281,7 @@ angular.module('app.controllers', [])
                  function () {
                      $scope.loading = !$scope.loading;
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
-                 });*/
+                 });
 
 
 
