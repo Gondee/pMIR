@@ -388,6 +388,11 @@ angular.module('app.controllers', [])
     output = chemo.getPCA();
     console.log(output);
 
+
+
+
+
+
     //need to make output the correct format for exampleData
     $scope.exampleData = output;
     var colorArray = ['#CC0000', '#FF6666', '#FF3333', '#FF6666', '#FFE6E6'];
