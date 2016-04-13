@@ -253,7 +253,6 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 }
                 
             });
-
         }
     };
 

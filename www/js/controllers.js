@@ -167,7 +167,7 @@ angular.module('app.controllers', [])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope, BLE, database) {
+.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo) {
 
     $scope.scanResults = {};
     $scope.loading = false;
@@ -273,15 +273,24 @@ angular.module('app.controllers', [])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
+
+                     var fileIds = [];
                      //(absorbances, concentrationLabels, concentrations, fileName)
                      database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
-                         // run PCA
-
-                         database.outputDataFile(fileName, function (result) {
-                             debugger;
-                         });
+                         fileIds.push(fileName);
                      });
+                     var secondName = fileName+'2';
+                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
+                         fileIds.push(secondName);
 
+                         if (fileIds.length == 2) {
+                             chemo.train(fileIds, function (flag) {
+                                 debugger;
+                             });
+                         } else {
+                             debugger;
+                         }
+                     });
 
                  },
                  // failure callback
