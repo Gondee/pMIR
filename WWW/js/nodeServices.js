@@ -1,4 +1,6 @@
-﻿//This file includes services which rely on node public modules.
+﻿var lib_cordova = require('ng-cordova');
+
+//This file includes services which rely on node public modules.
 angular.module('app.nodeServices', ['ionic', 'ngCordova','chemo','database'])
 
 .service('chemo', function(database){
