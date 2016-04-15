@@ -32,11 +32,15 @@ angular.module('app.controllers', [])
     }
 
     $scope.databaseTest = function () {
-        var File = '{"absorbances":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
+        var File = '{"absorbances":[1, 2, 2, 3, 4,  4, 5, 6, 6, 6],"wavelength":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
         var obj = JSON.parse(File);
-
-        database.inputDataFile(obj.absorbances, function () {
+        var fileName = 'data';
+        database.inputDataFile(obj.absorbances, obj.concentrationLabels, obj.concentrations, obj.wavelength, fileName, function () {
             console.log('wrote file');
+
+            database.outputDataFile(fileName, function (data) {
+                alert("success: " + (obj.absorbances[1] == data.absorbances[1]));
+            });
         });
     };
 })
