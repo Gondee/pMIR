@@ -492,7 +492,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     };
 
 
-    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel:chemoGetModel, loadModel:chemoLoadModel, pcaTest: pcaTest , getPCA };
+    return { train: chemoTrain, infer: chemoInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, getPCA };
 
 });
 

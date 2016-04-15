@@ -24,10 +24,12 @@
         </div>
         <form class="list">
             <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Training Data</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Reference</ion-toggle>
+            <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanRAW.value">{{ScanRAW.textRaw}}</ion-radio>
+            <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanPCA.value">{{ScanPCA.textPCA}}</ion-radio>
+            <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanPLS.value">{{ScanPLS.textPLS}}</ion-radio>
         </form>
         <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="startScanSteps()" class="button button-balanced  button-block">Scan</button>
+            <button id="pMIRQuickScanner-button5" ng-click="startScanSteps()" class="button button-balanced  button-block">Scan</button><!-- ng-disabled="!connected"     Add in production-->
         </div>
 
     </ion-content>
