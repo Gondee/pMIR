@@ -562,3 +562,270 @@ angular.module('app.services', [])
 
 });
 
+
+//Service allows calling inputModel, inputDataFile, outputDataFile, and outputModel.
+angular.module('app.services')
+
+.service('database', function ($cordovaFile) {
+
+    //Takes a string filename, attaches 
+    function getFullName(fileName, isAlgorithm, isPls) {
+        var fullName;
+        if (isAlgorithm) {
+            if (isPls) {
+                fullName = "PLS";
+            }
+            else {
+                fullName = "PCA";
+            }
+        }
+        else {
+            fullName = "DAT";
+        }
+        fullName = fullName.concat(fileName);
+        fullName = fullName.concat(".pmir");
+        return fullName
+    };
+
+    function getManagementName(isAlgorithm, isPls) {
+        var fileName;
+        if (isAlgorithm) {
+            if (isPls) {
+                fileName = "mngmntPls.pmir";
+            }
+            else {
+                fileName = "mngmntPca.pmir";
+            }
+        }
+        else {
+            fileName = "mngmntDat.pmir";
+        }
+        return fileName;
+    };
+
+    function exists(arr, find) {
+        var len = arr.length;
+        for (var i = 0; i < len; ++i) {
+            if (arr[i] == find)
+                return true;
+        }
+        return false;
+    };
+
+    function listEntries(isAlgorithm, isPls) {
+        var managementFileName = getManagementName(isAlgorithm, isPls);
+        var mngmntArr = { entries: [] };
+        var managementExists = $cordovaFile.checkFile(cordova.file.dataDirectory, managementFileName);
+        managementExists.then(function (success) {
+            //If exists read in Json string and convert to object, add elements and push back to file.
+            var mngmntRead = $cordovaFile.readAsText(cordova.file.dataDirectory, managementFileName);
+            mngmntRead.then(function (success) {
+                mngmntArr = angular.fromJson(success);
+            },
+                function (error) { });
+
+        }, function (error) {
+            //If no management file, return no files.
+        });
+        return mngmntArr.entries;
+    };
+
+    /*Module level function
+    Input: string fileName- the name of the file to write to.
+           pca algorithm OR pls algorithm- the model we want to save.
+    Success: New file added pcafileName.pmir OR plsfileName.pmir 
+    */
+    function inputModel(fileName, algorithm) {
+        var output = angular.toJson(algorithm);
+        var mngmntArr = { entries: [fileName] };
+
+        var isPls = algorithm.modelName == "PLS";
+        var fullFileName = getFullName(fileName, true, isPls);
+        var managementFileName = getManagementName(true, isPls);
+
+        var managementExists = $cordovaFile.checkFile(cordova.file.dataDirectory, managementFileName);
+        managementExists.then(function (success) {
+            //If exists read in Json string and convert to object, add elements and push back to file.
+            var mngmntRead = $cordovaFile.readAsText(cordova.file.dataDirectory, managementFileName);
+            mngmntRead.then(function (success) {
+                mngmntArr = angular.fromJson(success);
+                var numEntries = mngmntArr.entries.length;
+                mngmntArr.entries[numEntries] = fileName;
+                var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
+                var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, managementFileName, angular.toJson(mngmntArr));
+            },
+                function (error) { });
+
+        }, function (error) {
+            //If no management file, create new one and output JSON
+            var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
+            var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, managementFileName, angular.toJson(mngmntArr));
+        });
+
+        var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        //Add conditionals at later time, account for memory at another time.
+        var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true);
+        var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output);
+    };
+
+    function outputModel(fileName, isPls) {
+        var fullFileName = getFullName(fileName, true, isPls);
+        var model = null;
+        var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        outputExists.then(function (success) {
+            var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
+            fileRead.then(function (success) {
+                model = angular.fromJson(success);
+            },
+                 function (error) { });
+        },
+        function (error) {
+        });
+        return model;
+    };
+
+    function inputDataFile(absorbances, concentrationLabels, concentrations, wavelength, fileName, callback) {
+        var fullFileName = getFullName(fileName, false);
+        var managementFileName = getManagementName(false);
+        var managementExists = $cordovaFile.checkFile(cordova.file.dataDirectory, managementFileName);
+        var mngmntArr = { entries: [fileName] };
+
+        managementExists.then(function (success) {
+            //If exists read in Json string and convert to object, add elements and push back to file.
+            var mngmntRead = $cordovaFile.readAsText(cordova.file.dataDirectory, managementFileName);
+            mngmntRead.then(function (success) {
+                mngmntArr = angular.fromJson(success);
+
+                // only update mngmt if new file created
+                if (!exists(mngmntArr.entries, fileName)) {
+                    
+                    mngmntArr.entries.push(fileName);
+                    var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, managementFileName).then(
+                        function () {
+                            // management file delete success
+                            var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true).then(
+                                function () {
+                                    var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, managementFileName, angular.toJson(mngmntArr)).then(
+                                         function () {console.log(JSON.stringify(mngmntArr) + " written to existing MGNT file");},
+                                         function () {console.log("Management file write failed");}
+                                     );
+                                },
+                                function () {/*create file failed*/debugger;}
+                            );
+                        },
+                        function () {/*  management file delete failed*/debugger;}
+                    );
+                }
+            },
+            function (error) {
+                // mngmntRead failed
+                debugger;
+            });
+        }, function (error) {
+            //If no management file, create new one and output JSON
+            var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true).then(
+                 function () {
+                     var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, managementFileName, angular.toJson(mngmntArr)).then(
+                         function () { console.log(JSON.stringify(mngmntArr) + " written to new MGNT file"); },
+                         function () {console.log("Management file creation/write failed");}
+                     );
+                 },
+                 function () {
+                     // create file failed
+                     debugger;
+                 }
+             );
+        });
+
+        var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        outputExists.then(function (success) {
+            var fileDeleted = $cordovaFile.removeFile(cordova.file.dataDirectory, fullFileName).then(
+                function () {
+                    // file deleted success
+                    var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true).then(
+                        function () {
+                            var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
+                            output = angular.toJson(output);
+                            var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
+                                callback();
+                            }, function () {
+                                debugger;
+                            });
+                        },
+                        function () {
+                            debugger;
+                        }
+                    );
+                },
+                function () {
+                    // file deleted failed
+                    debugger;
+                }
+            );
+        },
+        function (failure) {
+            var outputCreated = $cordovaFile.createFile(cordova.file.dataDirectory, fullFileName, true).then(
+                function () {
+                    var output = { absorbances: absorbances, concentrations: concentrations, concentrationLabels: concentrationLabels, wavelength: wavelength };
+                    output = angular.toJson(output);
+                    var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, output).then(function () {
+                        console.log(fullFileName + " written to file.");
+                        callback();
+                    }, function () {
+                        debugger;
+                    });
+                },
+                function () {
+                    debugger;
+                }
+            );
+        });
+
+    };
+
+    function outputDataFile(fileName, callback) {
+        var fullFileName = getFullName(fileName, false);
+        var data;
+        var outputExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        outputExists.then(function (success) {
+            var fileRead = $cordovaFile.readAsText(cordova.file.dataDirectory, fullFileName);
+            fileRead.then(
+                function (success) {
+                    data = angular.fromJson(success);
+                    data.success = 0;
+                    callback(data);
+                },
+                function (error) {
+                    debugger;
+                }
+            );
+        },
+        function (error) {
+            // file does not exist
+            debugger;
+        });
+    };
+
+    function inputNVD(wavelengths, absorbances) {
+        var outputObj = [];
+        var numWavelengths = wavelengths.length;
+        var numAbsorbances = absorbances.length;
+        if (numWavelengths != numAbsorbances) {
+            return false;
+        }
+        for (var i = 0; i < numWavelengths; ++i) {
+            var newObj = {
+                "key": {},
+                "value": { "x": wavelengths[i], "y": absorbances[i] }
+            };
+            outputObj[i] = newObj;
+        }
+        var fullFileName = "nvdDump.pmir";
+        var dumpExists = $cordovaFile.checkFile(cordova.file.dataDirectory, fullFileName);
+        var dumpFileCreated = $cordovaFile.createFile(cordova.file.dataDirectory, managementFileName, true);
+        var outputWritten = $cordovaFile.writeExistingFile(cordova.file.dataDirectory, fullFileName, outputObj);
+    }
+
+    return { inputModel: inputModel, outputModel: outputModel, inputDataFile: inputDataFile, outputDataFile: outputDataFile, listEntries: listEntries, inputNVD: inputNVD };
+});
+
