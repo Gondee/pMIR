@@ -44,11 +44,11 @@ angular.module('app.controllers', [])
                 $state.go("menu.simplescanresult");
             }
             else if ($scope.testType.type == "PCA") {
-
+                $state.go("menu.pcaccanresult");
 
             }
             else if ($scope.testType.type == "PLS") {
-
+                $state.go("menu.plsscanresult");
             }
             else {
                 alert("You must select the type of Scan");
@@ -399,5 +399,13 @@ angular.module('app.controllers', [])
             return colorArray[i];
         };
     }
+})
+
+.controller('plsScanCtrl', function ($scope, BLE) {
+
+})
+.controller('pcaScanCtrl', function ($scope, BLE) {
+
+
 });
  

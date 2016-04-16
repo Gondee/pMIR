@@ -1,0 +1,46 @@
+﻿<ion-view title="Scan Results" id="page6">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <center ng-show="loading" class="spinner">
+            <ion-spinner icon="crescent"></ion-spinner>
+        </center>
+
+        <div ng-hide="loading">
+            <div class="card">
+                <div class="item item-divider">
+                    Absorbance
+                </div>
+                <div class="item item-text-wrap">
+                    <nvd3-line-chart data="absorbance"
+                                     id="showXAxisExample"
+                                     width="550"
+                                     height="300"
+                                     xAxisTickFormat="xAxisTickFormatFunction()"
+                                     yAxisTickFormat="yAxisTickFormatFunction()"
+                                     showXAxis="false"
+                                     showYAxis="true">
+                        <svg></svg>
+                    </nvd3-line-chart>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="item item-divider">
+                    Reflectance
+                </div>
+                <div class="item item-text-wrap">
+                    <nvd3-line-chart data="reflectance"
+                                     id="showXAxisExample2"
+                                     width="550"
+                                     height="300"
+                                     xAxisTickFormat="xAxisTickFormatFunction()"
+                                     yAxisTickFormat="yAxisTickFormatFunction()"
+                                     showXAxis="false"
+                                     showYAxis="true">
+                        <svg></svg>
+                    </nvd3-line-chart>
+                </div>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>
