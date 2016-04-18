@@ -86,6 +86,26 @@ angular.module('app.routes', [])
         }
     })
 
+    .state('menu.pcaccanresult', {
+        url: '/pcascanresult',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/pcaScanResult.html',
+                controller: 'pcaScanCtrl'
+            }
+        }
+    })
+
+    .state('menu.plsscanresult', {
+        url: '/plsscanresult',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/plsScanResult.html',
+                controller: 'plsScanCtrl'
+            }
+        }
+    })
+
   .state('menu.profiles', {
     url: '/Profiles',
     views: {

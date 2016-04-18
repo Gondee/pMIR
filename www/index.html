@@ -19,19 +19,22 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+    
     <script src="dist/nodeBundle.js"></script>
+
     <script src="dist/ng-cordova.js"></script>
+
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/services.js"></script>
     <script src="js/directives.js"></script>
+      
     
     <script src="dist/angularjs-nvd3-directives.js"></script>
     <script src="js/d3.js"></script>
     <script src="js/nv.d3.js"></script>
-
+      
       <link rel="stylesheet" href="css/nv.d3.css" />
       <link rel="stylesheet" href="css/style.css" />
     <!-- Only required for Tab projects w/ pages in multiple tabs 
@@ -39,7 +42,11 @@
     -->
 
   </head>
+    
   <body ng-app="app" animation="slide-left-right-ios7">
+      <script>
+        app = angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services', 'app.nodeServices', 'app.directives', 'nvd3ChartDirectives']);
+      </script>
   <div>
     <div>
         <ion-nav-bar class="bar-stable">

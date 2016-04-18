@@ -1,10 +1,26 @@
 angular.module('app.controllers', [])
 
 .controller('pMIRQuickScannerCtrl', function ($scope, $state, BLE, chemo, database) {
-    $scope.connected = false;
+    $scope.connected = false; 
     $scope.isTrainingData = false;
 
     $scope.scanResults = {};
+
+    $scope.ScanRAW = {
+        textRaw: 'Raw Scan',
+        value: 'RAW',
+    };
+    $scope.ScanPCA={
+        textPCA: 'PCA Mode',
+        value: 'PCA'
+    }
+    $scope.ScanPLS ={
+        textPLS: 'PLS Mode',
+        value: 'PLS'
+    };
+    $scope.testType = {
+        type: ''
+    };
 
     var init = function () {
         setInterval(checkConnect, 2000);
@@ -21,16 +37,32 @@ angular.module('app.controllers', [])
     };
 
     $scope.startScanSteps = function (device_id) {
-        //If data is training data 
-        //alert($scope.isTrainingData);
+
         if (!$scope.isTrainingData) {
-            $state.go("menu.simplescanresult");
+
+            if ($scope.testType.type == "RAW") {
+                $state.go("menu.simplescanresult");
+            }
+            else if ($scope.testType.type == "PCA") {
+                $state.go("menu.pcaccanresult");
+
+            }
+            else if ($scope.testType.type == "PLS") {
+                $state.go("menu.plsscanresult");
+            }
+            else {
+                alert("You must select the type of Scan");
+                return;
+            }
+
+
+
         }
         else {
             $state.go("menu.posttrainscan");
         }
     }
-    $scope.numba = 0;
+
     $scope.databaseTest = function () {
         var File = '{"absorbances":[1, 2, 2, 3, 4,  4, 5, 6, 6],"wavelength":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
         var obj = JSON.parse(File);
@@ -201,6 +233,9 @@ angular.module('app.controllers', [])
     $scope.scanResults = {};
     $scope.loading = false;
 
+
+
+
     $scope.name = {
         text: ''
     };
@@ -338,61 +373,10 @@ angular.module('app.controllers', [])
     }
 
 
-    /*
-    $scope.inputs = [{
-        inputType:'text',
-        value: ' ',
-        label: 'Name'
-    }, {
-        inputType: 'text',
-        value: 'some text 1',
-        label: 'input 2'
-    }];
-
-    $scope.doSomething = function () {
-        alert('button clicked');
-    };
-
-    */
-    /*
-     <div class="list card">
-                <div class="item item-divider">Chemical/Material</div>
-                <div class="item item-body">
-                    <form class="list">
-                        <label class="item item-input">
-                            <span class="input-label">Name</span>
-                            <input type="text" placeholder="ex. clorine ">
-                        </label>
-                        <label class="item item-input">
-                            <span class="input-label">Concentraion</span>
-                            <input type="number" placeholder="ex. .5">
-                        </label>
-                    </form>
-                </div>
-            </div>
-*/
-
 
 
 
 })
-    /*.directive('demoDirective', function ($compile) {
-    return {
-        template: ' <div class="list card"><div class="item item-divider">Chemical/Material</div><div class="item item-body"><form class="list">',
-        replace: true,
-        link: function(scope, element) {
-            var el = angular.element('<span/>');
-            switch(scope.input.inputType) {
-                
-                case 'text':
-                    el.append(' <label class="item item-input"><span class="input-label">Name</span><input type="text" placeholder="ex. clorine "></label><label class="item item-input"><span class="input-label">Concentraion</span><input type="number" placeholder="ex. .5"></label></form></div></div>');
-                    //el.append('<input type="text" ng-model="input.value"/><button ng-if="input.value" ng-click="input.value=\'\'; doSomething()">X</button>');
-                    break;
-            }
-            $compile(el)(scope);
-            element.append(el);
-        }
-    }})*/
 
 .controller('ScatterPlotCtrl', function ScatterPlotCtrl($scope, database, chemo) {
     var output;
@@ -401,6 +385,7 @@ angular.module('app.controllers', [])
     var conc = [1, 1, 1, 0, -1];
     var lables = ["a", "b", "c", "d", "e"];
     var wave = [2, 4, 6, 8, 10, 12, 14];
+
     database.inputDataFile(absorb, conc, lables, wave, "test", function () {
         //console.log("outtermost");
         output = database.outputDataFile("test", function () {
@@ -421,11 +406,20 @@ angular.module('app.controllers', [])
             });
         });
     });
+
     var colorArray = ['#CC0000', '#FF6666', '#FF3333', '#FF6666', '#FFE6E6'];
     $scope.colorFunction = function () {
         return function (d, i) {
             return colorArray[i];
         };
     }
+})
+
+.controller('plsScanCtrl', function ($scope, BLE) {
+
+})
+.controller('pcaScanCtrl', function ($scope, BLE) {
+
+
 });
  
