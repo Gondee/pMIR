@@ -30,18 +30,34 @@ angular.module('app.controllers', [])
             $state.go("menu.posttrainscan");
         }
     }
-
+    $scope.numba = 0;
     $scope.databaseTest = function () {
-        var File = '{"absorbances":[1, 2, 2, 3, 4,  4, 5, 6, 6, 6],"wavelength":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
+        var File = '{"absorbances":[1, 2, 2, 3, 4,  4, 5, 6, 6],"wavelength":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
         var obj = JSON.parse(File);
-        var fileName = 'data';
+        obj.modelName = 'PLS';
+        var fileName = 'model2';
         database.inputDataFile(obj.absorbances, obj.concentrationLabels, obj.concentrations, obj.wavelength, fileName, function () {
             console.log('wrote file');
 
             database.outputDataFile(fileName, function (data) {
-                alert("success: " + (obj.absorbances[1] == data.absorbances[1]));
+                //alert("success: " + (obj.absorbances[1] == data.absorbances[1]));
+                database.listEntries(false, false, function (entries) {
+                    debugger;
+                    
+                });
             });
         });
+
+        /*fileName = fileName + $scope.numba;
+        database.inputModel(fileName, obj, function (data) {
+            database.outputModel(fileName, true, function (data) {
+
+                database.listEntries(true, true, function (entries) {
+                    debugger;
+
+                });
+            });
+        });*/
     };
 })
 
