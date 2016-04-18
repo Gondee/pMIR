@@ -1,4 +1,4 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['app.nodeServices'])
 
 .controller('pMIRQuickScannerCtrl', function ($scope, $state, BLE, chemo, database) {
     $scope.connected = false; 
