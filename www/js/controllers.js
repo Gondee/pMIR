@@ -210,8 +210,8 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
 })
 
-.controller('libraryCtrl', function ($scope) {
-
+.controller('libraryCtrl', function ($scope, chemo) {
+    chemo.pcaTest();
 })
 
 .controller('chemometricsCtrl', function ($scope) {

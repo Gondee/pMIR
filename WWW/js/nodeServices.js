@@ -436,7 +436,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return result;
     };
 
-    function newPlsTrain() {
+    function newTrainPls() {
         var numColAbsorbances = chemoTrainingAbsorbances[0].length;
         var numColConcentrations = chemoTrainingConcentrations[0].length;
         //Take 10% of data (probably of Y).
@@ -472,14 +472,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return chemoFlags.success;
     };
 
-    function newPcaTrain(absorbances, concentrations, concentrations) {
+    function newTrainPca() {
         //Get principle components associated with training set absorbances X.
         try {
-            //It is very clean to reprsent all absorbances as a row, but- each one considered
-            //a variable in PLS, thus each one has its own row (columns differentiate sample)
-            var absorbancesTranspose = new lib_matrix(chemoTrainingAbsorbances);
-            absorbancesTranspose = absorbancesTranspose.transpose();
-            chemoAlgo = new lib_pca(absorbancesTranspose);
+            chemoAlgo = new lib_pca(chemoTrainingAbsorbances);
         }
         catch (err) {
             return chemoFlags.failUnknownTrainError;
@@ -494,12 +490,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             chemoNumLatentVectors += 1;
         }*/
         try {
-            //It is very clean to reprsent all absorbances as a row, but- each one considered
-            //a variable in PLS, thus each one has its own row (columns differentiate sample)
-            var absorbancesTranspose = new lib_matrix(chemoTrainingAbsorbances);
-            absorbancesTranspose = absorbancesTranspose.transpose();
             //Check parameter requirements
-            chemoPCACompressed = chemoAlgo.project(absorbancesTranspose, chemoNumLatentVectors).transpose();
+            chemoPCACompressed = chemoAlgo.project(chemoTrainingAbsorbances, chemoNumLatentVectors);
         }
         catch (err) {
             return chemoFlags.failUnknownTrainError;
@@ -515,6 +507,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     function newTrain(isQuantify, absorbances, concentrations, labels) {
         chemoTrainingAbsorbances = absorbances;
         chemoTrainingConcentrations = concentrations;
+        chemoConcentrationLabels = labels;
         if (chemoTrainingAbsorbances.length == 0) {
             //No training data means no success (also sometimes we use 0th row to find num of col)
             return { status: chemoFlags.failNoTrainingData };
@@ -529,10 +522,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         }
         var result = false;
         if (isQuantify) {
-            result = newPlsTrain(absorbances, concentrations, concentrations);
+            result = newTrainPls();
         }
         else {
-            result = newPcaTrain(absorbances, concentrations, concentrations);
+            result = newTrainPca();
         }
         if (result == chemoFlags.success) {
             chemoIsTrained = true;
@@ -543,14 +536,19 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     function newInferPls(measuredAbsorbances) {
         var inferred = [];
         try {
+            alert("Before transpose");
             var measuredTranspose = new lib_matrix(measuredAbsorbances);
             measuredTranspose = measuredTranspose.transpose();
+            alert("After transpose");
             inferred = chemoAlgo.predict(measuredTranspose);
+            alert("After Inferred");
         }
         catch (err) {
+            alert("Really bad");
             return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
         }
         if (inferred.length == 0) {
+            alert("No length");
             return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
         }
         if (inferred[0].length != chemoTrainingConcentrations[0].length) {
@@ -577,9 +575,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     function newInferPca(measuredAbsorbances) {
         var measured = [];
         try {
-            var measuredTranspose = new lib_matrix(measuredAbsorbances);
-            measuredTranspose = measuredTranspose.transpose();
-            measured = chemoAlgo.project(measuredTranspose, chemoNumLatentVectors).transpose();
+            //Append observed data to training data (temporary, observed data is NOT training data)
+            var matForm = chemoTrainingAbsorbances.slice(0);
+            matForm[matForm.length] = measuredAbsorbances;
+            measured = chemoAlgo.project(matForm, chemoNumLatentVectors);
+            measured = measured[measured.length - 1];
         }
         catch (err) {
             return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
@@ -587,6 +587,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         consoleOutput(1, "Recent Point", measured);
         var distances = [];
         var numPoints = chemoPCACompressed.length;
+        alert(numPoints);
+        alert(chemoTrainingAbsorbances.length);
         consoleOutput(1, "num points", numPoints);
         if (numPoints != chemoTrainingAbsorbances.length) {
             return { compounds: [], concentrations: [], status: chemoFlags.failInferenceRowMismatch };
@@ -594,6 +596,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         if (chemoNumLatentVectors != chemoPCACompressed[0].length) {
             return { compounds: [], concentrations: [], status: chemoFlags.failInferenceColumnMismatch };
         }
+        var distance = [];
         for (var i = 0; i < numPoints; ++i) {
             var sum = 0;
             var numComponents = chemoPCACompressed[i].length;
@@ -605,7 +608,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 sum += component;
             }
             //Square root of distances squared is the euclidean distance formula
-            sum = sqrt(sum);
+            sum = Math.sqrt(sum);
             distance[i] = sum;
         }
         //Linear search to find point with minimum distance from new observation
@@ -672,7 +675,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
          0.333052667, 0.298411, 0.276057, 0.255892667, 0.20588, 0.198687333, 0.140418, 0.202144333, 0.185306667, 0.193773, 0.151555333, 0.170836667, 0.166241, 0.150265333, 0.165891667, 0.153203,
          0.171978667, 0.135035333, 0.171056333, 0.226193, 0.172017, 0.250897667, 0.272258333, 0.181365, 0.163707333, 0.163864667, 0.151830333, 0.149407, 0.106329667, 0.078809, 0.070746,
          0.11149, 0.038959333, 0.080831, 0.091370667, 0.075120667, 0.004750333, 0.003488667, 0.067449333, 0.039094667, 0.102002667, 0.057333333, 0.162127333, 0.250274333, 0.077106333, 0.233324,
-         0.255321, 0.362438333, -0.049200333, -0.073282333, -0.470448, -0.3148285, -0.904675, -0.717254, -0.887588, "#VALUE!", "#NAME?", "#VALUE!", "#NAME?"],
+         0.255321, 0.362438333, -0.049200333, -0.073282333, -0.470448, -0.3148285, -0.904675, -0.717254, -0.887588, 0, 0, 0, 0],
          [-0.346494, -0.333019667, -0.345209333, -0.273450667, -0.296618, -0.319806667, -0.357994667, -0.359194667, -0.390678333, -0.352351333, -0.375375333, -0.365283667, -0.367786,
 -0.377347, -0.364150667, -0.360935333, -0.391549333, -0.340471, -0.343162, -0.350235333, -0.354796667, -0.345711667, -0.343914333, -0.375251333, -0.340335, -0.351494667, -0.341482667,
 -0.342958667, -0.335297, -0.337005, -0.342445333, -0.336498, -0.359284333, -0.357069667, -0.356951333, -0.380603, -0.342713, -0.353195, -0.338417333, -0.348366667, -0.344996333,
@@ -688,24 +691,42 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
 -0.210493, -0.239733, -0.23053, -0.269905, -0.269036333, -0.283078333, -0.303841333, -0.281968333, -0.272035, -0.258029, -0.282042333, -0.290066667, -0.280494667, -0.283161333,
 -0.274223333, -0.280196, -0.236101, -0.266142667, -0.233335667, -0.228822667, -0.256266, -0.216391333, -0.202526333, -0.256290333, -0.237121, -0.244544, -0.253072, -0.185395,
 -0.256954, -0.215199, -0.206192333, -0.176378, -0.210793, -0.112357, -0.062179333, -0.075509333, -0.093995, -0.03337, 0.008804333, -0.039890333, 0.117843333, 0.024056, 0.112199333,
-0.139959, 0.028608667, 0.203605667, 0.129774667, 0.237091667, 0.183765333, -0.104337667, -0.3766715, -0.444768, -0.6960855, -0.4592855, -0.722666, "#NAME?", "#NAME?", "#NAME?",
-"#NAME?", ]
+0.139959, 0.028608667, 0.203605667, 0.129774667, 0.237091667, 0.183765333, -0.104337667, -0.3766715, -0.444768, -0.6960855, -0.4592855, -0.722666, 0, 0, 0,
+0, ]
             ],
             "concentration": [[1, 0], [0, 1]],
             "concentrationLabels": ["Skim Milk", "Olive Oil"]
         };
 
+        var detectedAbsorbances = [-0.765773, -0.755362, -0.764936, -0.691396667, -0.715760333, -0.714011667, -0.728986333, -0.698326333, -0.703601667, -0.660518667, -0.661541667, -0.631785667,
+                 -0.625093, -0.617427667, -0.591532, -0.581993667, -0.615171667, -0.560689, -0.559161, -0.559406, -0.562066667, -0.553445, -0.565318333, -0.590291667, -0.559254667,
+                 -0.582422667, -0.576666, -0.579961, -0.575716, -0.583901667, -0.589918333, -0.586692333, -0.609547, -0.612291, -0.600874333, -0.629129, -0.586395667, -0.595778667,
+                 -0.574191333, -0.575300667, -0.571125, -0.561857667, -0.551757667, -0.545704667, -0.537233, -0.517938, -0.516602667, -0.554790667, -0.524674667, -0.524977333, -0.535669,
+                 -0.537716667, -0.519551667, -0.527367667, -0.510381, -0.499354667, -0.487601333, -0.493684667, -0.417895, -0.409746667, -0.375282, -0.357620667, -0.35812, -0.338005333, -0.322363667,
+                 -0.328224667, -0.320826, -0.295086, -0.289352, -0.285095667, -0.267713333, -0.275107667, -0.272986333, -0.282804333, -0.271613667, -0.288159667, -0.299387, -0.287402, -0.290475667,
+                 -0.271041667, -0.304787, -0.287322, -0.295600667, -0.287979333, -0.269631667, -0.279276333, -0.269403333, -0.270142667, -0.26694, -0.250036333, -0.265703667, -0.270005333, -0.252489,
+                 -0.245253333, -0.227426333, -0.220819, -0.228221, -0.242657, -0.246414667, -0.225711333, -0.231787333, -0.221540667, -0.228167, -0.19432, -0.21165, -0.194914333, -0.169008, -0.176579,
+                 -0.145030667, -0.131696, -0.121805333, -0.096678, -0.101857667, -0.080744, -0.050926, -0.035525333, -0.024997, -0.021256333, -0.004948, 0.020037667, 0.036401667, 0.024504333, 0.044438667,
+                 0.041815333, 0.062761, 0.095212, 0.115397667, 0.163987, 0.195636667, 0.212448333, 0.237101333, 0.262960667, 0.241895667, 0.283410667, 0.287339667, 0.301937667, 0.315538, 0.327195333,
+                 0.350736667, 0.343447333, 0.386778, 0.399684333, 0.396065, 0.386707667, 0.39546, 0.374193667, 0.388010667, 0.365974333, 0.32271, 0.314041667, 0.287396, 0.277612667, 0.278821333, 0.279779,
+                 0.257410333, 0.269245667, 0.297347333, 0.310642333, 0.298887667, 0.290849333, 0.278852667, 0.241339667, 0.245260333, 0.309354333, 0.307551667, 0.342091, 0.323178, 0.335276667, 0.324714,
+                 0.333052667, 0.298411, 0.276057, 0.255892667, 0.20588, 0.198687333, 0.140418, 0.202144333, 0.185306667, 0.193773, 0.151555333, 0.170836667, 0.166241, 0.150265333, 0.165891667, 0.153203,
+                 0.171978667, 0.135035333, 0.171056333, 0.226193, 0.172017, 0.250897667, 0.272258333, 0.181365, 0.163707333, 0.163864667, 0.151830333, 0.149407, 0.106329667, 0.078809, 0.070746,
+                 0.11149, 0.038959333, 0.080831, 0.091370667, 0.075120667, 0.004750333, 0.003488667, 0.067449333, 0.039094667, 0.102002667, 0.057333333, 0.162127333, 0.250274333, 0.077106333, 0.233324,
+                 0.255321, 0.362438333, -0.049200333, -0.073282333, -0.470448, -0.3148285, -0.904675, -0.717254, -0.887588, 0, 0, 0, 0];
+
         alert("PCA test commence");
 
         //Results of train?
-        /*var retTrain = newTrain(false,trainObj.absorbance, trainObj.concentration, trainObj.concentrationLabels);
+        var retTrain = newTrain(false,trainObj.absorbance, trainObj.concentration, trainObj.concentrationLabels);
         console.log("Training Status: ");
         console.log(flagToString(retTrain));
         console.log("\n");
+        console.log(chemoPCACompressed.length);
+        console.log(chemoPCACompressed[0].length);
         if (retTrain == chemoFlags.success) {
             //Infer, no save
-            var detectedAbsorbances = [1, 0, 0];
-            var retInfer = chemoInfer(detectedAbsorbances, false, null);
+            var retInfer = newInfer(detectedAbsorbances);
             //results of infer?
             console.log("Infer Status: ");
             console.log(flagToString(retInfer.status));
@@ -730,7 +751,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 console.log(retInfer.recentPoint);
                 console.log("\n");
             }
-        }*/
+        }
     };
 
 
