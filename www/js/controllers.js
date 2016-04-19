@@ -211,7 +211,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('libraryCtrl', function ($scope, chemo) {
-    chemo.pcaTest();
+    chemo.plsTest();
 })
 
 .controller('chemometricsCtrl', function ($scope) {
