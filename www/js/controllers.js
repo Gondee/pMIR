@@ -379,38 +379,75 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('ScatterPlotCtrl', function ScatterPlotCtrl($scope, database, chemo) {
-    var output;
-    $scope.exampleData;
-    var absorb = [1, -3, 2, 6, 8, 3, -2];
-    var conc = [1, 1, 1, 0, -1];
-    var lables = ["a", "b", "c", "d", "e"];
-    var wave = [2, 4, 6, 8, 10, 12, 14];
+    /* var output;
+     $scope.exampleData;
+     var absorb = [1, -3, 2, 6, 8, 3, -2];
+     var conc = [1, 1, 1, 0, -1];
+     var lables = ["a", "b", "c", "d", "e"];
+     var wave = [2, 4, 6, 8, 10, 12, 14];
+ 
+     database.inputDataFile(absorb, conc, lables, wave, "test", function () {
+         output = database.outputDataFile("test", function () {
+             database.inputDataFile(absorb, conc, lables, wave, "test2", function () {
+                 output = database.outputDataFile("test2", function () {
+                     var result = chemo.train(false, ['test', 'test2'], function () {
+                         output = chemo.getPCA();
+                         console.log(output);
+                         //= output;
+                     });
+                     console.log(result);
+                 });
+             });
+         });
+     });*/
+    //this and piechart controller need to be integrated, messy until we meet up tomorrow
+    var test = [[0.1, 0.2]]; //testing 2D array
 
-    database.inputDataFile(absorb, conc, lables, wave, "test", function () {
-        //console.log("outtermost");
-        output = database.outputDataFile("test", function () {
-            // console.log("innner 1");
-            database.inputDataFile(absorb, conc, lables, wave, "test2", function () {
-                // console.log("innner 2");
-                output = database.outputDataFile("test2", function () {
-                    console.log("innner 3");
-                    var result = chemo.train(false, ['test', 'test2'], function () {
-                        console.log("innner 4");
-                        output = chemo.getPCA();
-                        console.log(output);
-                        //= output;
-                    });
-                    console.log(result);
-                    //console.log(result);
-                });
-            });
+    //putting the data into a json object
+    var data = [];
+
+    for (var num in test) {
+        data.push({
+            key: {},
+            values: []
         });
-    });
+        data[num].key = "Sample " + num;
+        data[num].values.push({
+            x: test[num][0],
+            y: test[num][1],
+            size: 10
+        });
+    }
+    //console.log(data);
+    $scope.exampleData = data; //sets data for chart
 
-    var colorArray = ['#CC0000', '#FF6666', '#FF3333', '#FF6666', '#FFE6E6'];
+    //colors, hopefully different colors for each sample
+    var colorArray = ['#CC0000', '#FF6666', '#FF3333'];//, '#FF6666', '#FFE6E6'];
     $scope.colorFunction = function () {
         return function (d, i) {
             return colorArray[i];
+        };
+    }
+})
+
+.controller('PieChartCtrl', function PieChartCtrl($scope, database, chemo) {
+    $scope.exampleData = [
+     	{ key: "One", y: 5 },
+        { key: "Two", y: 2 },
+        { key: "Three", y: 9 },
+        { key: "Four", y: 7 },
+        { key: "Five", y: 4 },
+        { key: "Six", y: 3 },
+        { key: "Seven", y: 9 }
+    ];
+    $scope.xFunction = function () {
+        return function (d) {
+            return d.key;
+        };
+    }
+    $scope.yFunction = function () {
+        return function (d) {
+            return d.y;
         };
     }
 })
