@@ -584,11 +584,11 @@ angular.module('app.controllers', ['app.nodeServices'])
 
     function getPCAValues(scan) {
         if (!chemo.isTrained()) {
-            chemo.train(scan.absorbances, concentrations, labels);
+            chemo.train(false, scan.absorbances, concentrations, labels);
         }
-        var results = chemo.chemoInfer();
+        var results = chemo.infer(scan.absorbances);
         debugger;
-        var trainignPoints = results.trainingPoints; //2D array
+        var trainingPoints = results.trainingPoints; //2D array
         var trainingNames = results.trainingSampleNames;
         var inferredPoint = results.recentPoint;    //1D array
         var closestSample = results.closestSample;
