@@ -431,7 +431,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                              });
                          }
                      });*/
-                     chemo.updateData($scope.scanResults.absorbance, clabels, concentrations, fileName);
+                     chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
                  },
                  // failure callback
                  function () {
