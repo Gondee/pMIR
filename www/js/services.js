@@ -133,7 +133,10 @@ angular.module('app.services', [])
             ble.startNotification(connected_device_id, scanDataInfoServiceID, startScanCharID, onStartScanNotify, failureMsg("Notify: recieve notification for scan data"));
             ble.write(connected_device_id, scanDataInfoServiceID, startScanCharID, data.buffer,
                 function (res) { console.log("lights"); },
-                function (res) { console.log("no lights"); }
+                function (res) {
+                    console.log("no lights");
+                    scanDefered.reject('not connected to NIRSCAN');
+                }
             );
 
             return scanDefered.promise;
@@ -236,7 +239,7 @@ angular.module('app.services', [])
         ble.startNotification(connected_device_id, calibrationInfoServiceID, returnReferenceCoeffCharID, onRefCoeffData, failureMsg("Notify: recieve notification for reference coeff"));
         ble.write(connected_device_id, calibrationInfoServiceID, requestReferenceCoeffCharID, data.buffer,
             function (res) { console.log("requesting reference coefficents"); },
-            function (res) { alert("coefficent request failed"); }
+            function (res) { alert("coefficent request failed"); scanDefered.reject('Error requesting coeff'); }
         );
     };
 
@@ -332,7 +335,7 @@ angular.module('app.services', [])
             }
 
             var failure = function () {
-                alert("Error deserializing scan data");
+                scanDefered.reject('Error deserializing scan data');
             }
 
             var trimmed64 = base64ArrayBuffer(trimmedPayload.buffer);
@@ -404,7 +407,7 @@ angular.module('app.services', [])
         }
 
         var failure = function () {
-            alert("Error deserializing scan data");
+            scanDefered.reject('Error deserializing scan data');
         }
 
         /* interpretRefScanData requires:
@@ -426,7 +429,7 @@ angular.module('app.services', [])
         ble.startNotification(connected_device_id, scanDataInfoServiceID, returnScanDataCharID, onScanData, failureMsg("Notify: recieve notification for scan data"));
         ble.write(connected_device_id, scanDataInfoServiceID, requestScanDataCharID, data.buffer,
             function (res) { console.log("NIRScan Initiated"); },
-            function (res) { alert("NIRScan Scan Failed"); }
+            function (res) { scanDefered.reject('Scan Failed to initiate'); }
         );
     };
 
