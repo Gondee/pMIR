@@ -755,7 +755,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return chemoPCACompressed;
     };
 
-    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest, updateTest:updateTest, updateData:updateData, getPCA: getPCA };
+    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest, updateTest: updateTest, updateData: updateData, getPCA: getPCA, isTrained: isTrained };
 
 });
 },{"ml-matrix":9,"ml-pca":23,"ml-pls":37,"ng-cordova":41}],2:[function(require,module,exports){
