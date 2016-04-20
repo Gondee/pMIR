@@ -383,6 +383,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             }
         }
         var closestSample = chemoSampleNames[minimumIndex];
+        var closestSampleXY = chemoPCACompressed[minimumIndex];
         var allConcentrations = chemoTrainingConcentrations[minimumIndex];
         var labels = [];
         var nonZeroConcentrations = [];
@@ -397,9 +398,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         //New version returns a matrix with the 2D coordinates for every point (trainingPoints)
         //And the last point (which was just inferred) is recentPoint.
         //return { compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success };
+        //Someone should refactor this project. My naming conventions are just bad.
         return {
-            trainingPoints: chemoPCACompressed, recentPoint: measured, closestSample: closestSample,
-            compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success
+            trainingPoints: chemoPCACompressed, trainingSampleNames: chemoSampleNames, recentPoint: measured,
+            closestSample: closestSample, closestSampleXY: closestSampleXY, compounds: labels,
+            concentrations: nonZeroConcentrations, status: chemoFlags.success
         };
     };
 
