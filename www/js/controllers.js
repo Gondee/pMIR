@@ -53,7 +53,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                 chemo.newTrain(true);
             }
             else {
-                alert("You must select the type of Scan");
+                alert("You must select the type of Scan");he
                 return;
             }
 
@@ -389,16 +389,25 @@ angular.module('app.controllers', ['app.nodeServices'])
         if (validation) {
             $scope.loading = !$scope.loading;
 
+            var timeout = setTimeout(onTimeout, 15000);
+
+            function onTimeout(){
+                $state.go("menu.reset");
+            }
+
             BLE.NIRScan().then(
                  // success callback
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
+                     alert("clear timeout");
+                     clearTimeout(timeout);
 
                      var fileIds = [];
                      //(absorbances, concentrationLabels, concentrations, fileName)
                      database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
                          fileIds.push(fileName);
+
 
                          if (fileIds.length == 2) {
                              debugger;
@@ -507,6 +516,10 @@ angular.module('app.controllers', ['app.nodeServices'])
             return d.y;
         };
     }
+})
+
+.controller('resetCtrl', function ($scope, BLE) {
+
 })
 
 .controller('plsScanCtrl', function ($scope, BLE) {

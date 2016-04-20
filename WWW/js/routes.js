@@ -105,6 +105,15 @@ angular.module('app.routes', [])
             }
         }
     })
+    .state('menu.reset', {
+        url: '/reset',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/reset.html',
+                controller: 'resetCtrl'
+            }
+        }
+    })
 
   .state('menu.profiles', {
     url: '/Profiles',
