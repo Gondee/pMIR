@@ -407,9 +407,9 @@ angular.module('app.controllers', ['app.nodeServices'])
                      //alert("clear timeout");
                      clearTimeout(timeout);
 
-                     var fileIds = [];
+                     //var fileIds = [];
                      //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
+                     /*database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
                          fileIds.push(fileName);
 
 
@@ -430,8 +430,8 @@ angular.module('app.controllers', ['app.nodeServices'])
                                  debugger;
                              });
                          }
-                     });
-
+                     });*/
+                     chemo.updateData($scope.scanResults.absorbance, clabels, concentrations, fileName);
                  },
                  // failure callback
                  function () {
