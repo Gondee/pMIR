@@ -626,7 +626,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         chartData[2].key = "Sample";
         chartData[2].color = '228B22';
         chartData[2].values.push({
-            x: inferedPoint[0],
+            x: inferredPoint[0],
             y: inferredPoint[1],
             size: 10
         });
