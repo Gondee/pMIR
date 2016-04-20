@@ -173,20 +173,30 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
-.controller('simpleScanCtrl', function ($scope, BLE) {
+.controller('simpleScanCtrl', function ($scope, BLE, $state) {
     $scope.loading = true;
 
     $scope.absorbance = [];
     $scope.reflectance = [];
 
+    var timeout = setTimeout(onTimeout, 15000);
+
+    function onTimeout() {
+        $state.go("menu.reset");
+    }
+
+
+
     BLE.NIRScan().then(
         function (res) {
             getChartVals(res);
             $scope.loading = false;
+            clearTimeout(timeout);
         },
         function (error) { 
             alert('Error: ' + error);
             $scope.loading = false;
+            clearTimeout(timeout);
         }
     );
 
@@ -232,7 +242,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo) {
+.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo, $state) {
 
     $scope.scanResults = {};
     $scope.loading = false;
@@ -394,7 +404,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
-                     alert("clear timeout");
+                     //alert("clear timeout");
                      clearTimeout(timeout);
 
                      var fileIds = [];
@@ -427,6 +437,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function () {
                      $scope.loading = !$scope.loading;
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
+                     clearTimeout(timeout);
                  });
  
         }
