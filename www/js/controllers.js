@@ -45,12 +45,12 @@ angular.module('app.controllers', ['app.nodeServices'])
             }
             else if ($scope.testType.type == "PCA") {
                 $state.go("menu.pcaccanresult");
-                chemo.newTrain(false);
+                chemo.train(false);
 
             }
             else if ($scope.testType.type == "PLS") {
                 $state.go("menu.plsscanresult");
-                chemo.newTrain(true);
+                chemo.train(true);
             }
             else {
                 alert("You must select the type of Scan");he
@@ -583,5 +583,54 @@ angular.module('app.controllers', ['app.nodeServices'])
         ];
     };
 
+    function getPCAValues() {
+        var results = chemo.chemoInfer();
+        debugger;
+        var trainginPoints = results.trainingPoints; //2D array
+        var trainingNames = results.trainingSampleNames;
+        var inferredPoint = results.recentPoint;    //1D array
+        var closestSample = results.closestSample;
+        var chartData = [];
+        debugger;
+        //store training points first
+        //set their colors to black
+        for (var num in trainingPoints) {
+            chartData.push({
+                key: {},
+                color: {},
+                values: []
+            });
+            chartData[num].key = trainingNames[num];
+            chartData[num].color = '#000000';
+            chartData[num].values.push({
+                x: trainingPoints[num][0],
+                y: trainingPoints[num][1],
+                size: 10
+            });
+        }
+        //look for the closest sample and turn it red
+        for (var i in chartData) {
+            if (chartData[i].key == closestSample) {
+                chartData[i].color = '#FF0000';
+            }
+        }
+
+        //add infered point, colored forest green
+        chartData.push({
+            key: {},
+            color: {},
+            values: []
+        });
+        chartData[2].key = "Sample";
+        chartData[2].color = '228B22';
+        chartData[2].values.push({
+            x: inferedPoint[0],
+            y: inferredPoint[1],
+            size: 10
+        });
+        //console.log(data);
+        $scope.PCAData = charData; //sets data for chart
+    }
+    debugger;
 });
  
