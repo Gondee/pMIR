@@ -386,9 +386,6 @@ angular.module('app.controllers', ['app.nodeServices'])
             concentrations.push((remainder / 100));
         }
 
-        //alert(concentrations + clabels);
-
-
         //Contact the BLE service to retrieve the data from the scan
         if (validation) {
             $scope.loading = !$scope.loading;
@@ -404,34 +401,9 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
-                     //alert("clear timeout");
                      clearTimeout(timeout);
-
-                     //var fileIds = [];
-                     //(absorbances, concentrationLabels, concentrations, fileName)
-                     /*database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
-                         fileIds.push(fileName);
-
-
-                         if (fileIds.length == 2) {
-                             debugger;
-                             chemo.train(fileIds, function (flag) {
-                                 debugger;
-                             });
-                         }
-                     });
-                     var secondName = fileName+'2';
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
-                         fileIds.push(secondName);
-
-                         if (fileIds.length == 2) {
-                             debugger;
-                             chemo.train(false, fileIds, function (flag) {
-                                 debugger;
-                             });
-                         }
-                     });*/
                      chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
+
                  },
                  // failure callback
                  function () {
@@ -439,38 +411,13 @@ angular.module('app.controllers', ['app.nodeServices'])
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
                      clearTimeout(timeout);
                  });
- 
         }
     }
-
-
-
-
 
 })
 
 .controller('ScatterPlotCtrl', function ScatterPlotCtrl($scope, database, chemo) {
-    /* var output;
-     $scope.exampleData;
-     var absorb = [1, -3, 2, 6, 8, 3, -2];
-     var conc = [1, 1, 1, 0, -1];
-     var lables = ["a", "b", "c", "d", "e"];
-     var wave = [2, 4, 6, 8, 10, 12, 14];
- 
-     database.inputDataFile(absorb, conc, lables, wave, "test", function () {
-         output = database.outputDataFile("test", function () {
-             database.inputDataFile(absorb, conc, lables, wave, "test2", function () {
-                 output = database.outputDataFile("test2", function () {
-                     var result = chemo.train(false, ['test', 'test2'], function () {
-                         output = chemo.getPCA();
-                         console.log(output);
-                         //= output;
-                     });
-                     console.log(result);
-                 });
-             });
-         });
-     });*/
+    
     //this and piechart controller need to be integrated, messy until we meet up tomorrow
     var test = [[0.1, 0.2]]; //testing 2D array
 
@@ -549,8 +496,6 @@ angular.module('app.controllers', ['app.nodeServices'])
 
             getChartVals(res);
             getPCAValues(res);
-
-            debugger;
         },
         // failure callback
         function (error) {
@@ -584,11 +529,11 @@ angular.module('app.controllers', ['app.nodeServices'])
 
     function getPCAValues(scan) {
         if (!chemo.isTrained()) {
-            chemo.train(scan.absorbances, concentrations, labels);
+            chemo.train(false, scan.absorbance, concentrations, labels);
         }
-        var results = chemo.chemoInfer();
+        var results = chemo.infer(scan.absorbance);
         debugger;
-        var trainignPoints = results.trainingPoints; //2D array
+        var trainingPoints = results.trainingPoints; //2D array
         var trainingNames = results.trainingSampleNames;
         var inferredPoint = results.recentPoint;    //1D array
         var closestSample = results.closestSample;
@@ -596,17 +541,17 @@ angular.module('app.controllers', ['app.nodeServices'])
         debugger;
         //store training points first
         //set their colors to black
-        for (var num in trainingPoints) {
+        for (var x = 0; x < trainingPoints.length; x++){
             chartData.push({
                 key: {},
                 color: {},
                 values: []
             });
-            chartData[num].key = trainingNames[num];
-            chartData[num].color = '#000000';
-            chartData[num].values.push({
-                x: trainingPoints[num][0],
-                y: trainingPoints[num][1],
+            chartData[x].key = trainingNames[x];
+            chartData[x].color = '#000000';
+            chartData[x].values.push({
+                x: trainingPoints[x][0],
+                y: trainingPoints[x][1],
                 size: 10
             });
         }
@@ -623,16 +568,16 @@ angular.module('app.controllers', ['app.nodeServices'])
             color: {},
             values: []
         });
-        chartData[2].key = "Sample";
-        chartData[2].color = '228B22';
-        chartData[2].values.push({
-            x: inferedPoint[0],
+        var length = chartData.length;
+        chartData[length - 1].key = "Sample";
+        chartData[length - 1].color = '228B22';
+        chartData[length - 1].values.push({
+            x: inferredPoint[0],
             y: inferredPoint[1],
             size: 10
         });
         //console.log(data);
-        $scope.PCAData = charData; //sets data for chart
+        $scope.PCAData = chartData; //sets data for chart
     }
-    debugger;
 });
  
