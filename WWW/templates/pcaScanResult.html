@@ -1,8 +1,6 @@
 ﻿<ion-view title="Scan Results" id="page6">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <center ng-show="loading" class="spinner">
-            <ion-spinner icon="crescent"></ion-spinner>
-        </center>
+        <center><i ng-show="loading"><ion-spinner icon="lines"></ion-spinner>Scanning...</i></center>
 
         <div ng-hide="loading">
             <div class="card">

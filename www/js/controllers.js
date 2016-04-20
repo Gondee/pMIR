@@ -23,7 +23,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
 
     var init = function () {
-        setInterval(checkConnect, 2000);
+        setInterval(checkConnect, 500);
     }
 
     var checkConnect = function () {
@@ -173,20 +173,31 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
-.controller('simpleScanCtrl', function ($scope, BLE) {
-    $scope.scanResults = {};
+.controller('simpleScanCtrl', function ($scope, BLE, $state) {
     $scope.loading = true;
 
     $scope.absorbance = [];
     $scope.reflectance = [];
 
+    var timeout = setTimeout(onTimeout, 15000);
+
+    function onTimeout() {
+        $state.go("menu.reset");
+    }
+
+
+
     BLE.NIRScan().then(
         function (res) {
-            $scope.scanResults = res;
             getChartVals(res);
             $scope.loading = false;
+            clearTimeout(timeout);
         },
-        function () { alert('Error: unable to retrieve reflectance and absorbance from scan.') }
+        function (error) { 
+            alert('Error: ' + error);
+            $scope.loading = false;
+            clearTimeout(timeout);
+        }
     );
 
     function getChartVals(scan) {
@@ -214,7 +225,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('libraryCtrl', function ($scope, chemo) {
-    chemo.plsTest();
+    chemo.pcaTest();
 })
 
 .controller('chemometricsCtrl', function ($scope) {
@@ -231,14 +242,12 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo) {
+.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo, $state) {
 
     $scope.scanResults = {};
     $scope.loading = false;
     $scope.loadingsetTwo = true;
     $scope.setTwoText = 'Add Additional Materials'
-
-
 
     $scope.name = {
         text: ''
@@ -322,16 +331,11 @@ angular.module('app.controllers', ['app.nodeServices'])
             return;
         }
 
-        //fileName = $scope.name.text;
-
-
-
         //getting remainder if it exists
         if ((total) < 100.0) {
             remainder = 100 - total;
             validation = true;
         }
-
 
         var clabels = [];
         var concentrations = [];
@@ -400,7 +404,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
-                     alert("clear timeout");
+                     //alert("clear timeout");
                      clearTimeout(timeout);
 
                      var fileIds = [];
@@ -433,6 +437,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function () {
                      $scope.loading = !$scope.loading;
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
+                     clearTimeout(timeout);
                  });
  
         }
@@ -525,8 +530,58 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('plsScanCtrl', function ($scope, BLE) {
 
 })
-.controller('pcaScanCtrl', function ($scope, BLE) {
+.controller('pcaScanCtrl', function ($scope, BLE, chemo) {
+    $scope.loading = true;
 
+    $scope.absorbance = [];
+    $scope.reflectance = [];
+
+    var labels = ['label1', 'label2'];
+    var concentrations = [1, 2];
+
+    BLE.NIRScan().then(
+        // success callback
+        function (res) {
+            $scope.loading = !$scope.loading;
+            var absorbances = res.absorbance;
+            var retTrain = chemo.train(false, absorbances, concentrations, labels);
+            if (retTrain == chemo.flags.success) {
+              debugger;
+            }
+
+            getChartVals(res);
+
+            debugger;
+        },
+        // failure callback
+        function (error) {
+            $scope.loading = !$scope.loading;
+            alert('Error: ' + error)
+        }
+    );
+
+    function getChartVals(scan) {
+        var absValues = [];
+        var refValues = [];
+        for (w in scan.wavelength) {
+            absValues.push([scan.wavelength[w], scan.absorbance[w]]);
+            refValues.push([scan.wavelength[w], scan.reflectance[w]]);
+        }
+
+        $scope.absorbance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": absValues
+     	    }
+        ];
+
+        $scope.reflectance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": refValues
+     	    }
+        ];
+    };
 
 });
  
