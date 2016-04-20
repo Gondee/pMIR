@@ -19,7 +19,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         value: 'PLS'
     };
     $scope.testType = {
-        type: ''
+        type: 'RAW'
     };
 
     var init = function () {
