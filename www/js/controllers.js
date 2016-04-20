@@ -187,7 +187,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 
 
-    BLE.NIRScan().then(
+    BLE.FakeNIRScan().then(
         function (res) {
             getChartVals(res);
             $scope.loading = false;
