@@ -530,6 +530,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('plsScanCtrl', function ($scope, BLE) {
 
 })
+
 .controller('pcaScanCtrl', function ($scope, BLE, chemo) {
     $scope.loading = true;
 
