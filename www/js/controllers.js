@@ -407,9 +407,9 @@ angular.module('app.controllers', ['app.nodeServices'])
                      //alert("clear timeout");
                      clearTimeout(timeout);
 
-                     var fileIds = [];
+                     //var fileIds = [];
                      //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
+                     /*database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
                          fileIds.push(fileName);
 
 
@@ -430,8 +430,8 @@ angular.module('app.controllers', ['app.nodeServices'])
                                  debugger;
                              });
                          }
-                     });
-
+                     });*/
+                     chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
                  },
                  // failure callback
                  function () {
@@ -545,12 +545,10 @@ angular.module('app.controllers', ['app.nodeServices'])
         function (res) {
             $scope.loading = !$scope.loading;
             var absorbances = res.absorbance;
-            var retTrain = chemo.train(false, absorbances, concentrations, labels);
-            if (retTrain == chemo.flags.success) {
-              debugger;
-            }
+            
 
             getChartVals(res);
+            getPCAValues(res);
 
             debugger;
         },
@@ -584,10 +582,13 @@ angular.module('app.controllers', ['app.nodeServices'])
         ];
     };
 
-    function getPCAValues() {
+    function getPCAValues(scan) {
+        if (!chemo.isTrained()) {
+            chemo.train(scan.absorbances, concentrations, labels);
+        }
         var results = chemo.chemoInfer();
         debugger;
-        var trainginPoints = results.trainingPoints; //2D array
+        var trainignPoints = results.trainingPoints; //2D array
         var trainingNames = results.trainingSampleNames;
         var inferredPoint = results.recentPoint;    //1D array
         var closestSample = results.closestSample;

@@ -406,6 +406,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         };
     };
 
+    function isTrained() {
+        return chemoIsTrained;
+    }
+
     function newInfer(measuredAbsorbances) {
         //Replace NaNs with 0s in the absorbances
         for (var i = 0; i < measuredAbsorbances.length; ++i) {
