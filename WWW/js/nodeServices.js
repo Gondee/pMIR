@@ -16,6 +16,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
     var chemoPCACompressed = [];
     var chemoNumLatentVectors = 0;
     var chemoIsTrained = false;
+    var chemoSampleNames = [];
     //represents a Pls or PCA module.
     var chemoAlgo;
 
@@ -617,7 +618,71 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
 
     };
 
-    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest };
+    function orientLabels(labels, concentrations)
+    {
+        var numLabelsOld = chemoConcentrationLabels.length;
+        var currentEnd = numLabelsOld;
+        var numNotFound = 0;
+        //For each index i of locationArr, take ith index of labels and put it at locationArr[i]
+        var locationArr = [];
+        //For each label, look for it in the previous labels.
+        for (var i = 0; i < labels.length; ++i)
+        {
+            var notFound = true;
+            for(var j = 0; j<numLabelsOld; ++j)
+            {
+                if(labels[i]==chemoConcentrationLabels[j])
+                {
+                    locationArr[i] = j;
+                }
+            }
+            if(notFound)
+            {
+                var nextLabel = chemoConcentrationLabels.length;
+                chemoConcentrationLabels[nextLabel] = labels[i];
+                locationArr[i] = currentEnd;
+                currentEnd += 1;
+                numNotFound += 1;
+            }
+        }
+        var newConcentrations = [];
+        var totalElem = chemoConcentrationLabels.length;
+        for (var i = 0; i < totalElem; ++i)
+        {
+            newConcentrations[newConcentrations.length] = 0;
+        }
+        for(var i = 0; i<locationArr.length;++i)
+        {
+            newConcentrations[i] = concentrations[locationArr[i]];
+        }
+    }
+
+    function updateData(absorbances, concentrations, labels, sampleName) {
+        //Add a new row to absorbances
+        var nextAbsorbanceIndex = chemoTrainingAbsorbances.length;
+        chemoTrainingAbsorbances[nextAbsorbanceIndex] = absorbances;
+        if(chemoTrainingConcentrations.length==0)
+        {
+            chemoTrainingConcentrations[0] = concentrations;
+            chemoConcentrationLabels[0]=labels;
+            chemoSampleNames[0]=sampleName;
+        }
+        else
+        {
+            var nextSampleName = chemoSampleNames.length;
+            chemoSampleNames[nextSampleName] = sampleName;
+            orientLabels(labels, concentrations);
+            var nextConcentrationIndex = chemoTrainingAbsorbances.length;
+            chemoTrainingConcentrations[nextConcentrationIndex] = concentrations;
+            var nextLabelIndex = chemoConcentrationLabels
+        }
+    };
+
+    function getPCA() {
+        return chemoPCACompressed;
+    };
+
+    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest, getPCA: getPCA };
 
 });
 
