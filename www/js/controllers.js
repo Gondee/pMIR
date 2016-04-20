@@ -232,7 +232,8 @@ angular.module('app.controllers', ['app.nodeServices'])
 
     $scope.scanResults = {};
     $scope.loading = false;
-
+    $scope.loadingsetTwo = true;
+    $scope.setTwoText = 'Add Additional Materials'
 
 
 
@@ -259,9 +260,41 @@ angular.module('app.controllers', ['app.nodeServices'])
         text: '',
         value: 0.0
     };
+    $scope.elem6 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem7 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem8 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem9 = {
+        text: '',
+        value: 0.0
+    };
+    $scope.elem10 = {
+        text: '',
+        value: 0.0
+    };
 
+
+    $scope.AddFields = function () {
+        $scope.loadingsetTwo = !$scope.loadingsetTwo;
+        if ($scope.loadingsetTwo == false) {
+            $scope.setTwoText = 'Remove Additional Materials';
+        }
+        else {
+            $scope.setTwoText = 'Add Additional Materials'
+        }
+    }
 
     $scope.Save = function (fname) {
+
+        $scope.loadingsetTwo = true;
 
         validation = false;
         retrieve = false;
@@ -272,6 +305,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         //alert(fileName);
         //Validate user input % and data. 
         total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
+        total = total + $scope.elem6.value + $scope.elem7.value + $scope.elem8.value + $scope.elem9.value + $scope.elem10.value;
 
         if ((total) > 100.0) {
             alert("Your total concentrations are greater than 100");
@@ -318,6 +352,26 @@ angular.module('app.controllers', ['app.nodeServices'])
         if ($scope.elem5.text != '' && $scope.elem5.value > 0 && $scope.elem5.value <= 100) {
             clabels.push($scope.elem5.text);
             concentrations.push(($scope.elem5.value / 100));
+        }
+        if ($scope.elem6.text != '' && $scope.elem6.value > 0 && $scope.elem6.value <= 100) {
+            clabels.push($scope.elem6.text);
+            concentrations.push(($scope.elem6.value / 100));
+        }
+        if ($scope.elem7.text != '' && $scope.elem7.value > 0 && $scope.elem7.value <= 100) {
+            clabels.push($scope.elem7.text);
+            concentrations.push(($scope.elem7.value / 100));
+        }
+        if ($scope.elem8.text != '' && $scope.elem8.value > 0 && $scope.elem8.value <= 100) {
+            clabels.push($scope.elem8.text);
+            concentrations.push(($scope.elem8.value / 100));
+        }
+        if ($scope.elem9.text != '' && $scope.elem9.value > 0 && $scope.elem9.value <= 100) {
+            clabels.push($scope.elem9.text);
+            concentrations.push(($scope.elem9.value / 100));
+        }
+        if ($scope.elem10.text != '' && $scope.elem10.value > 0 && $scope.elem10.value <= 100) {
+            clabels.push($scope.elem10.text);
+            concentrations.push(($scope.elem10.value / 100));
         }
 
         if (remainder != 0) {
