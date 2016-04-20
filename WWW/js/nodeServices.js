@@ -398,8 +398,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         //And the last point (which was just inferred) is recentPoint.
         //return { compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success };
         return {
-            trainingPoints: chemoPCACompressed, recentPoint: measured, closestSample: closestSample,
-            compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success
+            trainingPoints: chemoPCACompressed, trainingSampleNames: chemoSampleNames, recentPoint: measured,
+            closestSample: closestSample, compounds: labels, concentrations: nonZeroConcentrations, status: chemoFlags.success
         };
     };
 
