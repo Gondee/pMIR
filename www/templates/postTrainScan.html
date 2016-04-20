@@ -160,7 +160,7 @@
             </div>
         </div>
 
-            <button id="page-button7" ng-click="AddFields()" class="button button-positive button-small button-block icon ion-android-add-circle"> {{setTwoText}}</button>
+            <button id="page-button7" ng-hide="loading" ng-click="AddFields()" class="button button-positive button-small button-block icon ion-android-add-circle"> {{setTwoText}}</button>
        
         <button ng-hide="loading" ng-click="Save(name.text)" id="page-button8" class="button button-balanced  button-block icon ion-android-checkmark-circle">Start/Save</button>
         <i ng-hide="loading">Note: Remainders will be calculated as Unknown and refelected in chemometics analysis. </i>

@@ -45,10 +45,12 @@ angular.module('app.controllers', ['app.nodeServices'])
             }
             else if ($scope.testType.type == "PCA") {
                 $state.go("menu.pcaccanresult");
+                chemo.newTrain(false);
 
             }
             else if ($scope.testType.type == "PLS") {
                 $state.go("menu.plsscanresult");
+                chemo.newTrain(true);
             }
             else {
                 alert("You must select the type of Scan");
@@ -59,6 +61,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
         }
         else {
+            //Chemo is called post scan
             $state.go("menu.posttrainscan");
         }
     }
