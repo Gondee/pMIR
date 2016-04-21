@@ -316,11 +316,13 @@ angular.module('app.controllers', ['app.nodeServices'])
         save = false;
         remainder = 0;
 
+        
         var fileName = fname;
         //alert(fileName);
         //Validate user input % and data. 
         total = $scope.elem1.value + $scope.elem2.value + $scope.elem3.value + $scope.elem4.value + $scope.elem5.value;
         total = total + $scope.elem6.value + $scope.elem7.value + $scope.elem8.value + $scope.elem9.value + $scope.elem10.value;
+        
 
         if ((total) > 100.0) {
             alert("Your total concentrations are greater than 100");
@@ -339,9 +341,9 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 
         //getting remainder if it exists
-        if ((total) < 100.0) {
+        if ((total) < 100) {
             remainder = 100 - total;
-            validation = true;
+            //validation = true;
         }
 
 
@@ -396,9 +398,21 @@ angular.module('app.controllers', ['app.nodeServices'])
 
         //alert(concentrations + clabels);
 
+        var i;
+        var contCheck;
+        for (i = 0; i < concentrations.length; i++) {
+            contCheck += concentrations[i];
+        }
+        if (contCheck != 100) {
+            alert("Your Concentrations don't add to 100%");
+            return;
+        }
+
+
+
 
         //Contact the BLE service to retrieve the data from the scan
-        if (validation) {
+        
             $scope.loading = !$scope.loading;
 
             var timeout = setTimeout(onTimeout, 15000);
@@ -448,7 +462,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                      clearTimeout(timeout);
                  });
  
-        }
+        
     }
 
 
