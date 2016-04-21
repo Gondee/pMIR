@@ -3,6 +3,24 @@
         <center><i ng-show="loading"><ion-spinner icon="lines"></ion-spinner>Scanning...</i></center>
 
         <div ng-hide="loading">
+
+            <div class="card">
+                <div class="item item-divider">
+                    PCA Results
+                </div>
+                <div class="item item-text-wrap">
+                    <nvd3-scatter-chart data="PCAData"
+                                        id="PCAid"
+                                        width="550"
+                                        height="400"
+                                        showLegend="true"
+                                        yAxisTickFormat="yAxisTickFormatFunction()"
+                                        xAxisTickFormat="xAxisTickFormatFunction()">
+                        <svg></svg>
+                    </nvd3-scatter-chart>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="item item-divider">
                     Absorbance
@@ -38,7 +56,7 @@
                     </nvd3-line-chart>
                 </div>
             </div>
-
+            
         </div>
     </ion-content>
 </ion-view>

@@ -46,6 +46,66 @@ Java_com_example_plugin_HelloJni_getConfigName( JNIEnv* env, jobject thiz, jbyte
     return (*env)->NewStringUTF(env, config_name);
 }
 
+jint
+Java_com_example_plugin_HelloJni_getConfigStart( JNIEnv* env, jobject thiz, jbyteArray array )
+{
+    // get jbyte array from array and it's length
+    jbyte* configPtr = (*env)->GetByteArrayElements(env, array, NULL);
+    jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+    size_t bufSize = lengthOfArray;
+
+    dlpspec_scan_read_configuration	(configPtr, bufSize );
+    uScanConfig *config = (uScanConfig *)configPtr;
+
+    jint result = (jint)config->scanCfg.wavelength_start_nm;
+
+    // release array
+    (*env)->ReleaseByteArrayElements(env, array, configPtr, 0);
+
+    return result;
+}
+
+jint
+Java_com_example_plugin_HelloJni_getConfigEnd( JNIEnv* env, jobject thiz, jbyteArray array )
+{
+    // get jbyte array from array and it's length
+    jbyte* configPtr = (*env)->GetByteArrayElements(env, array, NULL);
+    jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+    size_t bufSize = lengthOfArray;
+
+    dlpspec_scan_read_configuration	(configPtr, bufSize );
+    uScanConfig *config = (uScanConfig *)configPtr;
+
+    jint result = (jint)config->scanCfg.wavelength_end_nm;
+
+    // release array
+    (*env)->ReleaseByteArrayElements(env, array, configPtr, 0);
+
+    return result;
+}
+
+jint
+Java_com_example_plugin_HelloJni_getConfigRepeats( JNIEnv* env, jobject thiz, jbyteArray array )
+{
+    // get jbyte array from array and it's length
+    jbyte* configPtr = (*env)->GetByteArrayElements(env, array, NULL);
+    jsize lengthOfArray = (*env)->GetArrayLength(env, array);
+
+    size_t bufSize = lengthOfArray;
+
+    dlpspec_scan_read_configuration	(configPtr, bufSize );
+    uScanConfig *config = (uScanConfig *)configPtr;
+
+    jint result = (jint)config->scanCfg.num_repeats;
+
+    // release array
+    (*env)->ReleaseByteArrayElements(env, array, configPtr, 0);
+
+    return result;
+}
+
 jstring
 Java_com_example_plugin_HelloJni_getScanName( JNIEnv* env, jobject thiz, jbyteArray array )
 {

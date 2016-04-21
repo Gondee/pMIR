@@ -23,7 +23,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
 
     var init = function () {
-        setInterval(checkConnect, 2000);
+        setInterval(checkConnect, 500);
     }
 
     var checkConnect = function () {
@@ -45,12 +45,12 @@ angular.module('app.controllers', ['app.nodeServices'])
             }
             else if ($scope.testType.type == "PCA") {
                 $state.go("menu.pcaccanresult");
-                chemo.newTrain(false);
+                chemo.train(false);
 
             }
             else if ($scope.testType.type == "PLS") {
                 $state.go("menu.plsscanresult");
-                chemo.newTrain(true);
+                chemo.train(true);
             }
             else {
                 alert("You must select the type of Scan");he
@@ -174,7 +174,6 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('simpleScanCtrl', function ($scope, BLE, $state) {
-    $scope.scanResults = {};
     $scope.loading = true;
 
     $scope.absorbance = [];
@@ -188,16 +187,16 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 
 
-    BLE.NIRScan().then(
+    BLE.FakeNIRScan().then(
         function (res) {
-            $scope.scanResults = res;
             getChartVals(res);
             $scope.loading = false;
             clearTimeout(timeout);
         },
-        function () {
+        function (error) { 
+            alert('Error: ' + error);
+            $scope.loading = false;
             clearTimeout(timeout);
-            alert('Error: unable to retrieve reflectance and absorbance from scan.')
         }
     );
 
@@ -226,7 +225,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('libraryCtrl', function ($scope, chemo) {
-    chemo.plsTest();
+    chemo.pcaTest();
 })
 
 .controller('chemometricsCtrl', function ($scope) {
@@ -249,8 +248,6 @@ angular.module('app.controllers', ['app.nodeServices'])
     $scope.loading = false;
     $scope.loadingsetTwo = true;
     $scope.setTwoText = 'Add Additional Materials'
-
-
 
     $scope.name = {
         text: ''
@@ -336,16 +333,11 @@ angular.module('app.controllers', ['app.nodeServices'])
             return;
         }
 
-        //fileName = $scope.name.text;
-
-
-
         //getting remainder if it exists
         if ((total) < 100) {
             remainder = 100 - total;
             //validation = true;
         }
-
 
         var clabels = [];
         var concentrations = [];
@@ -396,19 +388,19 @@ angular.module('app.controllers', ['app.nodeServices'])
             concentrations.push((remainder / 100));
         }
 
+
         //alert(concentrations + clabels);
 
         var i;
-        var contCheck;
+        var contCheck = 0;
         for (i = 0; i < concentrations.length; i++) {
-            contCheck += concentrations[i];
+            contCheck = contCheck + concentrations[i];
         }
-        if (contCheck != 100) {
+        if (contCheck != 1) {
+            alert(contCheck);
             alert("Your Concentrations don't add to 100%");
             return;
         }
-
-
 
 
         //Contact the BLE service to retrieve the data from the scan
@@ -426,33 +418,8 @@ angular.module('app.controllers', ['app.nodeServices'])
                  function (res) {
                      $scope.loading = !$scope.loading;
                      $scope.scanResults = res;
-                     //alert("clear timeout");
                      clearTimeout(timeout);
-
-                     var fileIds = [];
-                     //(absorbances, concentrationLabels, concentrations, fileName)
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
-                         fileIds.push(fileName);
-
-
-                         if (fileIds.length == 2) {
-                             debugger;
-                             chemo.train(fileIds, function (flag) {
-                                 debugger;
-                             });
-                         }
-                     });
-                     var secondName = fileName+'2';
-                     database.inputDataFile($scope.scanResults.absorbance, clabels, concentrations, $scope.wavelength, fileName, function () {
-                         fileIds.push(secondName);
-
-                         if (fileIds.length == 2) {
-                             debugger;
-                             chemo.train(false, fileIds, function (flag) {
-                                 debugger;
-                             });
-                         }
-                     });
+                     chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
 
                  },
                  // failure callback
@@ -461,38 +428,15 @@ angular.module('app.controllers', ['app.nodeServices'])
                      alert('Error: unable to retrieve reflectance and absorbance from scan.')
                      clearTimeout(timeout);
                  });
- 
-        
-    }
 
+        }
 
-
-
+    
 
 })
 
 .controller('ScatterPlotCtrl', function ScatterPlotCtrl($scope, database, chemo) {
-    /* var output;
-     $scope.exampleData;
-     var absorb = [1, -3, 2, 6, 8, 3, -2];
-     var conc = [1, 1, 1, 0, -1];
-     var lables = ["a", "b", "c", "d", "e"];
-     var wave = [2, 4, 6, 8, 10, 12, 14];
- 
-     database.inputDataFile(absorb, conc, lables, wave, "test", function () {
-         output = database.outputDataFile("test", function () {
-             database.inputDataFile(absorb, conc, lables, wave, "test2", function () {
-                 output = database.outputDataFile("test2", function () {
-                     var result = chemo.train(false, ['test', 'test2'], function () {
-                         output = chemo.getPCA();
-                         console.log(output);
-                         //= output;
-                     });
-                     console.log(result);
-                 });
-             });
-         });
-     });*/
+    
     //this and piechart controller need to be integrated, messy until we meet up tomorrow
     var test = [[0.1, 0.2]]; //testing 2D array
 
@@ -552,8 +496,107 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('plsScanCtrl', function ($scope, BLE) {
 
 })
-.controller('pcaScanCtrl', function ($scope, BLE) {
 
+.controller('pcaScanCtrl', function ($scope, BLE, chemo) {
+    $scope.loading = true;
 
+    $scope.absorbance = [];
+    $scope.reflectance = [];
+
+    var labels = ['label1', 'label2'];
+    var concentrations = [1, 2];
+
+    BLE.NIRScan().then(
+        // success callback
+        function (res) {
+            $scope.loading = !$scope.loading;
+            var absorbances = res.absorbance;
+            
+
+            getChartVals(res);
+            getPCAValues(res);
+        },
+        // failure callback
+        function (error) {
+            $scope.loading = !$scope.loading;
+            alert('Error: ' + error)
+        }
+    );
+
+    function getChartVals(scan) {
+        var absValues = [];
+        var refValues = [];
+        for (w in scan.wavelength) {
+            absValues.push([scan.wavelength[w], scan.absorbance[w]]);
+            refValues.push([scan.wavelength[w], scan.reflectance[w]]);
+        }
+
+        $scope.absorbance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": absValues
+     	    }
+        ];
+
+        $scope.reflectance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": refValues
+     	    }
+        ];
+    };
+
+    function getPCAValues(scan) {
+        if (!chemo.isTrained()) {
+            chemo.train(false, scan.absorbance, concentrations, labels);
+        }
+        var results = chemo.infer(scan.absorbance);
+        debugger;
+        var trainingPoints = results.trainingPoints; //2D array
+        var trainingNames = results.trainingSampleNames;
+        var inferredPoint = results.recentPoint;    //1D array
+        var closestSample = results.closestSample;
+        var chartData = [];
+        debugger;
+        //store training points first
+        //set their colors to black
+        for (var x = 0; x < trainingPoints.length; x++){
+            chartData.push({
+                key: {},
+                color: {},
+                values: []
+            });
+            chartData[x].key = trainingNames[x];
+            chartData[x].color = '#000000';
+            chartData[x].values.push({
+                x: trainingPoints[x][0],
+                y: trainingPoints[x][1],
+                size: 10
+            });
+        }
+        //look for the closest sample and turn it red
+        for (var i in chartData) {
+            if (chartData[i].key == closestSample) {
+                chartData[i].color = '#FF0000';
+            }
+        }
+
+        //add infered point, colored forest green
+        chartData.push({
+            key: {},
+            color: {},
+            values: []
+        });
+        var length = chartData.length;
+        chartData[length - 1].key = "Sample";
+        chartData[length - 1].color = '228B22';
+        chartData[length - 1].values.push({
+            x: inferredPoint[0],
+            y: inferredPoint[1],
+            size: 10
+        });
+        //console.log(data);
+        $scope.PCAData = chartData; //sets data for chart
+    }
 });
  
