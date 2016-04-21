@@ -26,6 +26,12 @@ public class HelloJni {
 
     public static native String  getConfigName(byte[] array);
 
+    public static native int  getConfigStart(byte[] array);
+
+    public static native int  getConfigEnd(byte[] array);
+
+    public static native int  getConfigRepeats(byte[] array);
+
     public static native String  getScanName(byte[] array);
 
     public static native int[] getScanIntensity(byte[] array);

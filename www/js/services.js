@@ -282,8 +282,8 @@ angular.module('app.services', [])
             var trimmedPayload = new Uint8Array(scanConfigDataArrayPayload.slice(4));
             console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
 
-            var success = function (configName) {
-                scanConfigNames.push({ id: currentScanConfigId, name: configName });
+            var success = function (config) {
+                scanConfigNames.push({ id: currentScanConfigId, name: config.name, startNM: config.startNM, endNM: config.endNM, repeats: config.repeats });
 
                 if (scanConfigNames.length == scanConfigIds.length) {
                     returnConfigNames();

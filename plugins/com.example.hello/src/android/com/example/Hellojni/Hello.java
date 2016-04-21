@@ -30,8 +30,18 @@ public class Hello extends CordovaPlugin {
         } else if (action.equals("interpretConfig")) {
 
             byte[] buffer = data.getArrayBuffer(0);
-            String message = HelloJni.getConfigName(buffer);
-            callbackContext.success(message);
+            String configName = HelloJni.getConfigName(buffer);
+            int startNM = HelloJni.getConfigStart(buffer);
+            int endNM = HelloJni.getConfigStart(buffer);
+            int repeats = HelloJni.getConfigStart(buffer);
+
+            JSONObject configJSON = new JSONObject();
+            configJSON.put("name", configName);
+            configJSON.put("startNM", startNM);
+            configJSON.put("endNM", endNM);
+            configJSON.put("repeats", repeats);
+
+            callbackContext.success(configJSON.toString());
             validAction = true;
         } else if (action.equals("interpretScanData")) {
 
