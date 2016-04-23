@@ -1,0 +1,21 @@
+﻿<ion-view title="Load A Model" id="page16">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    
+        
+        <div class="list card">
+            <div class="item item-divider">Select a Type of Model To Load</div>
+            <div class="item item-body">
+                <form class="list">
+                    <ion-radio ng-click="showModels()" ng-model="testType.type" ng-value="ScanPCA.value">{{ScanPCA.textPCA}}</ion-radio>
+                    <ion-radio ng-click="showModels()" ng-model="testType.type" ng-value="ScanPLS.value">{{ScanPLS.textPLS}}</ion-radio>
+                </form>
+            </div>
+        </div>
+        
+        <ion-content>
+            <ion-item collection-repeat="file in filenames">
+                {{file}}
+            </ion-item>
+        </ion-content>   
+    
+</ion-view>

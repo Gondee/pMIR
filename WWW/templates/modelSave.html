@@ -1,0 +1,29 @@
+﻿<ion-view title="Save A Model" id="page17">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        
+        <div class="list card">
+            <div class="item item-divider">Help: Saving a Working "Model"</div>
+            <div class="item item-body">
+
+                <p>What is a Model?</p>
+                A model is the output of a PLS or PCA analysis on data. By saving this data for later use, you can
+                run analysis against samples taken previously. Saveing a model here will save the output of the last PLS or PCA that
+                has been done during this sensing session.
+                <p>Save isnt avaliable?</p>
+                Before you can save your model, you must first peform PLS or PCA on a set of scans. The result of that analysis is saved.
+
+            </div>
+        </div>
+
+        <label ng-show="isTrained" class="item item-input">
+            <span class="input-label">Filename</span>
+            <input ng-model="filename.text" name="name1" type="text" placeholder="Ex. apples ">
+        </label>
+        <div class="button-bar">
+            <button id="pMIRQuickScanner-button5" ng-model="isTrained" ng-disabled="!isTrained" ng-click="saveModel()" class="button button-balanced  button-block">Save</button><!-- ng-disabled="!connected"     Add in production-->
+        </div>
+        
+        
+        
+        
+</ion-view>

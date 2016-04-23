@@ -23,7 +23,7 @@ angular.module('app.routes', [])
   .state('menu', {
     url: '/side-menu21',
     templateUrl: 'templates/menu.html',
-    abstract:true
+    abstract: true
   })
 
   .state('menu.connections', {
@@ -102,6 +102,24 @@ angular.module('app.routes', [])
             'side-menu21': {
                 templateUrl: 'templates/plsScanResult.html',
                 controller: 'plsScanCtrl'
+            }
+        }
+    })
+    .state('menu.modelload', {
+        url: '/modelload',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/modelLoad.html',
+                controller: 'modelLoadCtrl'
+            }
+        }
+    })
+    .state('menu.modelsave', {
+        url: '/modelsave',
+        views: {
+            'side-menu21': {
+                templateUrl: 'templates/modelSave.html',
+                controller: 'modelSaveCtrl'
             }
         }
     })

@@ -36,6 +36,11 @@ angular.module('app.controllers', ['app.nodeServices'])
         $scope.isTrainingData = !$scope.isTrainingData;
     };
 
+    $scope.saveTrainingModel = function () {
+        var model = chemo.getModel();
+        //chemo.
+    }
+
     $scope.startScanSteps = function (device_id) {
 
         if (!$scope.isTrainingData) {
@@ -304,6 +309,8 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
     }
 
+   
+
     $scope.Save = function (fname) {
 
         $scope.loadingsetTwo = true;
@@ -408,12 +415,14 @@ angular.module('app.controllers', ['app.nodeServices'])
             $scope.loading = !$scope.loading;
 
             var timeout = setTimeout(onTimeout, 15000);
-
+            var fakeScan;
             function onTimeout(){
                 $state.go("menu.reset");
             }
 
-            BLE.NIRScan().then(
+            
+
+            BLE.FakeNIRScan.then(
                  // success callback
                  function (res) {
                      $scope.loading = !$scope.loading;
@@ -497,7 +506,75 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
+.controller('modelLoadCtrl', function ($scope, BLE, chemo, database) {
+
+    $scope.ScanPCA = {
+        textPCA: 'PCA Models',
+        value: 'PCA'
+    }
+    $scope.ScanPLS = {
+        textPLS: 'PLS Models',
+        value: 'PLS'
+    };
+    $scope.testType = {
+        type: 'RAW'
+    };
+    
+    
+
+    $scope.showModels = function () {
+        var isPLS = false;
+        if($scope.testType.type == "PLS"){
+            isPLS = true;
+        }
+
+        database.listEntrties(true, $scope.testType.type, function (filenames) {
+            //alert(filenames);
+            //Need to be finished with the phone. 
+
+            $scope.filenames = filenames;
+
+        });
+
+    }
+
+    $scope.loadModel = function (filename) {
+
+        database.outputModel(filename, isPLS, function () {
+            chemo.chemoLoadModel(model, isPLS);
+        })
+
+        //chemo.chemoLoadModel(model, isPLS);
+
+    }
+    
+    
+
+    
+    
+})
+.controller('modelSaveCtrl', function ($scope, BLE, chemo, database) {
+    $scope.isTrained = chemo.isTrained();
+    $scope.filename = {
+        text: ''
+    };
+
+
+    $scope.saveModel = function () {
+
+        var models = chemo.getModel();
+        database.inputModel($scope.filename.text, models, function () {
+            alert("Model Saved");
+        });
+    }
+
+
+})
+
 .controller('pcaScanCtrl', function ($scope, BLE, chemo) {
+
+
+
     $scope.loading = true;
 
     $scope.absorbance = [];
@@ -522,6 +599,7 @@ angular.module('app.controllers', ['app.nodeServices'])
             alert('Error: ' + error)
         }
     );
+
 
     function getChartVals(scan) {
         var absValues = [];
