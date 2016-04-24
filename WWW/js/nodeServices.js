@@ -143,10 +143,21 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             if (isPls) {
                 chemoIsPls = true;
                 chemoAlgo = new lib_pls(true, model);
+                chemoAlgo.T = new lib_matrix(model.T);
+                chemoAlgo.P = new lib_matrix(model.P);
+                chemoAlgo.U = new lib_matrix(model.U);
+                chemoAlgo.Q = new lib_matrix(model.Q);
+                chemoAlgo.W = new lib_matrix(model.W);
+                chemoAlgo.B = new lib_matrix(model.B);
+                chemoAlgo.E = new lib_matrix(model.E);
+                chemoAlgo.F = new lib_matrix(model.F);
+                chemoAlgo.PBQ = new lib_matrix(model.PBQ);
             }
             else {
                 chemoIsPls = false;
                 chemoAlgo = new lib_pca(null, null, true, model);
+                chemoAlgo.U = new lib_matrix(model.U);
+                chemoAlgo.S = new lib_matrix(model.S);
                 chemoPCACompressed = model.PCACompressed;  
             }
         }
