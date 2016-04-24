@@ -429,7 +429,7 @@ angular.module('app.controllers', ['app.nodeServices'])
                      $scope.scanResults = res;
                      clearTimeout(timeout);
                      chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
-
+                     debugger;
                  },
                  // failure callback
                  function () {
@@ -444,66 +444,76 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
-.controller('ScatterPlotCtrl', function ScatterPlotCtrl($scope, database, chemo) {
-    
-    //this and piechart controller need to be integrated, messy until we meet up tomorrow
-    var test = [[0.1, 0.2]]; //testing 2D array
-
-    //putting the data into a json object
-    var data = [];
-
-    for (var num in test) {
-        data.push({
-            key: {},
-            values: []
-        });
-        data[num].key = "Sample " + num;
-        data[num].values.push({
-            x: test[num][0],
-            y: test[num][1],
-            size: 10
-        });
-    }
-    //console.log(data);
-    $scope.exampleData = data; //sets data for chart
-
-    //colors, hopefully different colors for each sample
-    var colorArray = ['#CC0000', '#FF6666', '#FF3333'];//, '#FF6666', '#FFE6E6'];
-    $scope.colorFunction = function () {
-        return function (d, i) {
-            return colorArray[i];
-        };
-    }
-})
-
-.controller('PieChartCtrl', function PieChartCtrl($scope, database, chemo) {
-    $scope.exampleData = [
-     	{ key: "One", y: 5 },
-        { key: "Two", y: 2 },
-        { key: "Three", y: 9 },
-        { key: "Four", y: 7 },
-        { key: "Five", y: 4 },
-        { key: "Six", y: 3 },
-        { key: "Seven", y: 9 }
-    ];
-    $scope.xFunction = function () {
-        return function (d) {
-            return d.key;
-        };
-    }
-    $scope.yFunction = function () {
-        return function (d) {
-            return d.y;
-        };
-    }
-})
-
 .controller('resetCtrl', function ($scope, BLE) {
 
 })
 
-.controller('plsScanCtrl', function ($scope, BLE) {
+.controller('plsScanCtrl', function ($scope, BLE, chemo) {
+    $scope.loading = true;
 
+    $scope.absorbance = [];
+    $scope.reflectance = [];
+
+    var labels = ['label1', 'label2'];
+    var concentrations = [1, 2];
+
+    BLE.NIRScan().then(
+        // success callback
+        function (res) {
+            $scope.loading = !$scope.loading;
+            var absorbances = res.absorbance;
+
+
+            getChartVals(res);
+            getPLSValues(res);
+        },
+        // failure callback
+        function (error) {
+            $scope.loading = !$scope.loading;
+            alert('Error: ' + error)
+        }
+    );
+
+    function getChartVals(scan) {
+        var absValues = [];
+        var refValues = [];
+        for (w in scan.wavelength) {
+            absValues.push([scan.wavelength[w], scan.absorbance[w]]);
+            refValues.push([scan.wavelength[w], scan.reflectance[w]]);
+        }
+
+        $scope.absorbance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": absValues
+     	    }
+        ];
+
+        $scope.reflectance = [
+     	    {
+     	        "key": "Series 1",
+     	        "values": refValues
+     	    }
+        ];
+    };
+    //bar chart
+    function getPLSValues(scan) {
+        if (!chemo.isTrained()) {
+            var train = chemo.train(true);
+        }
+        var results = chemo.infer(scan.absorbance);
+        var compounds = results.compounds;
+        var concentrations = results.concentrations;
+        var chartData = [{
+            key: "PLS",
+            values: []
+        }];
+
+        for (var x = 0; x < compounds.length; x++) {
+            chartData[0].values.push([compounds[x], concentrations[x]]);
+        }
+        $scope.PLSData = chartData; //sets data for chart
+    }
 })
 
 .controller('modelLoadCtrl', function ($scope, BLE, chemo, database) {
@@ -572,9 +582,6 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('pcaScanCtrl', function ($scope, BLE, chemo) {
-
-
-
     $scope.loading = true;
 
     $scope.absorbance = [];
@@ -649,13 +656,14 @@ angular.module('app.controllers', ['app.nodeServices'])
             chartData[x].values.push({
                 x: trainingPoints[x][0],
                 y: trainingPoints[x][1],
-                size: 10
+                size: 2
             });
         }
         //look for the closest sample and turn it red
         for (var i in chartData) {
             if (chartData[i].key == closestSample) {
                 chartData[i].color = '#FF0000';
+                chartData[i].values[0].size = 10;
             }
         }
 
@@ -671,7 +679,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         chartData[length - 1].values.push({
             x: inferredPoint[0],
             y: inferredPoint[1],
-            size: 10
+            size: 5
         });
         //console.log(data);
         $scope.PCAData = chartData; //sets data for chart
