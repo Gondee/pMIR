@@ -252,7 +252,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var numNullColumns = nullColumns.length;
         if (numNullColumns == 0)
         {
-            return;
+            return { mat:mat, nullColumns:[] };
         }
         //Remove null columns
         var processedMat = [];
