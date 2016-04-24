@@ -635,7 +635,7 @@ angular.module('app.services')
                 mngmntRead.then(
                     function (success) {
                         mngmntArr = angular.fromJson(success);
-                        callback(mngmntArr);
+                        callback(mngmntArr.entries);
                     },
                     function (error) { }
                 );
