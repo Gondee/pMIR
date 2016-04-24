@@ -283,6 +283,7 @@ angular.module('app.services', [])
             console.log("TRIMMED: " + Array.apply([], Array.from(trimmedPayload)).join(","));
 
             var success = function (config) {
+                var configObj = JSON.parse(config);
                 scanConfigNames.push({ id: currentScanConfigId, name: config.name, startNM: config.startNM, endNM: config.endNM, repeats: config.repeats });
 
                 if (scanConfigNames.length == scanConfigIds.length) {
@@ -570,7 +571,7 @@ angular.module('app.services', [])
         }
 
         return base64
-    }
+    }outputModel
 
 });
 

@@ -519,11 +519,10 @@ angular.module('app.controllers', ['app.nodeServices'])
     $scope.testType = {
         type: 'RAW'
     };
-    
-    
 
+    var isPLS = false;
+    
     $scope.showModels = function () {
-        var isPLS = false;
         if($scope.testType.type == "PLS"){
             isPLS = true;
         }
@@ -540,8 +539,8 @@ angular.module('app.controllers', ['app.nodeServices'])
 
     $scope.loadModel = function (filename) {
 
-        database.outputModel(filename, isPLS, function () {
-            chemo.chemoLoadModel(model, isPLS);
+        database.outputModel(filename, isPLS, function (model) {
+            chemo.loadModel(model.model, isPLS);
             alert("Model Loaded");
         })
 
