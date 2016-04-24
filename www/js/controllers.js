@@ -542,6 +542,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
         database.outputModel(filename, isPLS, function () {
             chemo.chemoLoadModel(model, isPLS);
+            alert("Model Loaded");
         })
 
         //chemo.chemoLoadModel(model, isPLS);

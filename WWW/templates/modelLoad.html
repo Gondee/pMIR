@@ -14,7 +14,7 @@
 
         <ion-list>
             <ion-item collection-repeat="file in filenames">
-                {{file}}
+                <ion-radio ng-click="loadModel(file)">{{file}}</ion-radio>
             </ion-item>
         <ion-list>
 </ion-view>
