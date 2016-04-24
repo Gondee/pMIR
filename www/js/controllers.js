@@ -192,7 +192,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 
 
-    BLE.FakeNIRScan().then(
+    BLE.NIRScan().then(
         function (res) {
             getChartVals(res);
             $scope.loading = false;
@@ -422,7 +422,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
             
 
-            BLE.FakeNIRScan.then(
+            BLE.NIRScan().then(
                  // success callback
                  function (res) {
                      $scope.loading = !$scope.loading;
@@ -538,7 +538,7 @@ angular.module('app.controllers', ['app.nodeServices'])
             isPLS = true;
         }
 
-        database.listEntrties(true, $scope.testType.type, function (filenames) {
+        database.listEntries(true, isPLS, function (filenames) {
             //alert(filenames);
             //Need to be finished with the phone. 
 
