@@ -116,6 +116,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 model.concentrationLabels = chemoConcentrationLabels;
                 model.absorbances = chemoTrainingAbsorbances;
                 model.nullColumns = chemoNullColumns;
+                model.latentVectors = chemoNumLatentVectors;
                 if (!chemoIsPls) {
                     model.PCACompressed = chemoPCACompressed;
                 }
@@ -138,15 +139,15 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             chemoNullColumns = model.nullColumns;
             chemoTrainingAbsorbances = model.absorbances;
             chemoIsTrained = true;
+            chemoNumLatentVectors = model.latentVectors;
             if (isPls) {
                 chemoIsPls = true;
                 chemoAlgo = new lib_pls(true, model);
-                chemoTrainingAbsorbances = model.absorbances;
             }
             else {
                 chemoIsPls = false;
                 chemoAlgo = new lib_pca(null, null, true, model);
-                chemoPCACompressed = model.PCACompressed;
+                chemoPCACompressed = model.PCACompressed;  
             }
         }
         catch(err)
