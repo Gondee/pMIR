@@ -114,12 +114,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             {
                 model = chemoAlgo.export();
                 model.concentrationLabels = chemoConcentrationLabels;
+                model.absorbances = chemoTrainingAbsorbances;
                 model.nullColumns = chemoNullColumns;
                 if (!chemoIsPls) {
                     model.PCACompressed = chemoPCACompressed;
-                }
-                else {
-                    model.absorbances = chemoTrainingAbsorbances;
                 }
                 status = chemoFlags.success;
             }
@@ -138,6 +136,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         try {
             chemoConcentrationLabels = model.concentrationLabels;
             chemoNullColumns = model.nullColumns;
+            chemoTrainingAbsorbances = model.absorbances;
             chemoIsTrained = true;
             if (isPls) {
                 chemoIsPls = true;
