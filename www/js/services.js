@@ -284,7 +284,9 @@ angular.module('app.services', [])
 
             var success = function (config) {
                 var configObj = JSON.parse(config);
-                scanConfigNames.push({ id: currentScanConfigId, name: config.name, startNM: config.startNM, endNM: config.endNM, repeats: config.repeats });
+                scanConfigNames.push({
+                    id: currentScanConfigId, name: configObj.name, startNM: configObj.startNM, endNM: configObj.endNM, repeats: configObj.repeats
+                });
 
                 if (scanConfigNames.length == scanConfigIds.length) {
                     returnConfigNames();

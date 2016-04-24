@@ -11,7 +11,8 @@
             <ion-list>
                 <ion-item class="item-icon-right" ng-repeat="config in scanConfigs" type="item-text-wrap" ng-click="setConfig(config.id)">
                     <h2>{{config.name}}</h2>
-                    <p>ID: {{config.id}}, Range: [{{config.startNM}}nm - {{config.endNM}}nm], Number of scans averaged: {{config.repeats}}</p>
+                    <p>Range: [{{config.startNM}}nm - {{config.endNM}}nm]</p>
+                    <p>Number of scans averaged: {{config.repeats}}</p>
                     <i ng-show="isActiveConfig(config.id)" style="color: rgb(51, 205, 95);" class="icon ion-checkmark-circled"></i>
                 </ion-item>
             </ion-list>

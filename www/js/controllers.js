@@ -429,7 +429,6 @@ angular.module('app.controllers', ['app.nodeServices'])
                      $scope.scanResults = res;
                      clearTimeout(timeout);
                      chemo.updateData($scope.scanResults.absorbance, concentrations, clabels, fileName);
-                     debugger;
                  },
                  // failure callback
                  function () {

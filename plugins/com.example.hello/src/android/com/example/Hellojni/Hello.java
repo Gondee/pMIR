@@ -32,8 +32,8 @@ public class Hello extends CordovaPlugin {
             byte[] buffer = data.getArrayBuffer(0);
             String configName = HelloJni.getConfigName(buffer);
             int startNM = HelloJni.getConfigStart(buffer);
-            int endNM = HelloJni.getConfigStart(buffer);
-            int repeats = HelloJni.getConfigStart(buffer);
+            int endNM = HelloJni.getConfigEnd(buffer);
+            int repeats = HelloJni.getConfigRepeats(buffer);
 
             JSONObject configJSON = new JSONObject();
             configJSON.put("name", configName);
