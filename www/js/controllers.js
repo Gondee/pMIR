@@ -192,7 +192,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 
 
-    BLE.FakeNIRScan().then(
+    BLE.NIRScan().then(
         function (res) {
             getChartVals(res);
             $scope.loading = false;
@@ -422,7 +422,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
             
 
-            BLE.FakeNIRScan.then(
+            BLE.NIRScan().then(
                  // success callback
                  function (res) {
                      $scope.loading = !$scope.loading;
@@ -528,7 +528,7 @@ angular.module('app.controllers', ['app.nodeServices'])
             isPLS = true;
         }
 
-        database.listEntrties(true, $scope.testType.type, function (filenames) {
+        database.listEntries(true, isPLS, function (filenames) {
             //alert(filenames);
             //Need to be finished with the phone. 
 
@@ -629,13 +629,11 @@ angular.module('app.controllers', ['app.nodeServices'])
             chemo.train(false, scan.absorbance, concentrations, labels);
         }
         var results = chemo.infer(scan.absorbance);
-        debugger;
         var trainingPoints = results.trainingPoints; //2D array
         var trainingNames = results.trainingSampleNames;
         var inferredPoint = results.recentPoint;    //1D array
         var closestSample = results.closestSample;
         var chartData = [];
-        debugger;
         //store training points first
         //set their colors to black
         for (var x = 0; x < trainingPoints.length; x++){
