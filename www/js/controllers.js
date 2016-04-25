@@ -400,7 +400,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
 
         if (remainder != 0) {
-            clabels.push('NA');
+            clabels.push('');
             concentrations.push((remainder / 100));
         }
 
