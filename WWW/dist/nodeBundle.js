@@ -391,9 +391,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var inferred = [];
         try {
             //alert("Before transpose");
-            var newDataset = chemoTrainingAbsorbances.splice(0);
+            var newDataset = chemoTrainingAbsorbances;
             newDataset[newDataset.length] = measuredAbsorbances;
             var inferred = chemoAlgo.predict(newDataset);
+            newDataset.pop();
+            chemoTrainingAbsorbances = newDataset;
             /*var matForm = [measuredAbsorbances, measuredAbsorbances];
             var measuredTranspose = new lib_matrix(matForm);
             measuredTranspose = measuredTranspose.transpose();

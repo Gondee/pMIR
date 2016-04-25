@@ -542,9 +542,6 @@ angular.module('app.controllers', ['app.nodeServices'])
             isPLS = true;
         }
 
-        
-
-
         database.listEntries(true, isPLS, function (filenames) {
             //alert(filenames);
             //Need to be finished with the phone. 

@@ -762,7 +762,7 @@ angular.module('app.services')
     Success: New file added pcafileName.pmir OR plsfileName.pmir 
     */
     function inputModel(fileName, algorithm, callback) {
-        var output = angular.toJson(algorithm.model);
+        var output = angular.toJson(algorithm);
 
         var isPls = algorithm.model.modelName == "PLS";
         var fullFileName = getFullName(fileName, true, isPls);
