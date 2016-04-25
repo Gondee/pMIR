@@ -122,6 +122,10 @@ angular.module('app.controllers', ['app.nodeServices'])
         alert(error);
     };
 
+    $scope.scan = function () {
+        BLE.scan().then(success, failure);
+    }
+
     BLE.scan().then(success, failure);
 
     $scope.connect = function (deviceId) {
