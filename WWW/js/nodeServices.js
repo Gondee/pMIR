@@ -110,20 +110,20 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var model = null;
         var status = chemoFlags.failModelNotLoaded;
         if (chemoIsTrained) {
-            try
-            {
+            try {
                 model = chemoAlgo.export();
                 model.concentrationLabels = chemoConcentrationLabels;
+                model.concentrations = chemoTrainingConcentrations;
                 model.absorbances = chemoTrainingAbsorbances;
                 model.nullColumns = chemoNullColumns;
                 model.latentVectors = chemoNumLatentVectors;
+                model.sampleNames = chemoSampleNames;
                 if (!chemoIsPls) {
                     model.PCACompressed = chemoPCACompressed;
                 }
                 status = chemoFlags.success;
             }
-            catch(err)
-            {
+            catch (err) {
                 model = null;
                 status = chemoFlags.failModelNotLoaded;
             }
@@ -136,10 +136,12 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var result = chemoFlags.success;
         try {
             chemoConcentrationLabels = model.concentrationLabels;
+            chemoTrainingConcentrations = model.concentrations;
             chemoNullColumns = model.nullColumns;
             chemoTrainingAbsorbances = model.absorbances;
             chemoIsTrained = true;
             chemoNumLatentVectors = model.latentVectors;
+            chemoSampleNames = model.sampleNames;
             if (isPls) {
                 chemoIsPls = true;
                 chemoAlgo = new lib_pls(true, model);
@@ -157,12 +159,10 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 chemoIsPls = false;
                 chemoAlgo = new lib_pca(null, null, true, model);
                 chemoAlgo.U = new lib_matrix(model.U);
-                chemoAlgo.S = new lib_matrix(model.S);
-                chemoPCACompressed = model.PCACompressed;  
+                chemoPCACompressed = model.PCACompressed;
             }
         }
-        catch(err)
-        {
+        catch (err) {
             result = chemoFlags.failModelNotLoaded;
         }
         return result;
