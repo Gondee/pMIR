@@ -104,7 +104,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
 })
 
-.controller('connectionsCtrl', function ($scope, BLE) {
+.controller('connectionsCtrl', function ($scope, $ionicHistory, $state, BLE) {
     // keep a reference since devices will be added
     $scope.devices = BLE.devices;
 
@@ -131,6 +131,12 @@ angular.module('app.controllers', ['app.nodeServices'])
                 $scope.connected = true;
                 $scope.device = peripheral;
                 $scope.connecting = false;
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+                $state.go('menu.pMIRQuickScanner');
+
             },
             function () { $scope.connecting = false; }
         );
@@ -515,7 +521,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     }
 })
 
-.controller('modelLoadCtrl', function ($scope, BLE, chemo, database) {
+.controller('modelLoadCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database) {
 
     $scope.ScanPCA = {
         textPCA: 'PCA Models',
@@ -536,6 +542,9 @@ angular.module('app.controllers', ['app.nodeServices'])
             isPLS = true;
         }
 
+        
+
+
         database.listEntries(true, isPLS, function (filenames) {
             //alert(filenames);
             //Need to be finished with the phone. 
@@ -551,11 +560,15 @@ angular.module('app.controllers', ['app.nodeServices'])
         database.outputModel(filename, isPLS, function (model) {
             chemo.loadModel(model.model, isPLS);
             alert("Model Loaded");
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.pMIRQuickScanner');
         });
     }
     
 })
-.controller('modelSaveCtrl', function ($scope, BLE, chemo, database) {
+.controller('modelSaveCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database) {
     $scope.isTrained = chemo.isTrained();
     $scope.filename = {
         text: ''
@@ -567,6 +580,10 @@ angular.module('app.controllers', ['app.nodeServices'])
         var models = chemo.getModel();
         database.inputModel($scope.filename.text, models, function () {
             alert("Model Saved");
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.pMIRQuickScanner');
         });
     }
 
