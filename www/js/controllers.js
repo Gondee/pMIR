@@ -515,7 +515,13 @@ angular.module('app.controllers', ['app.nodeServices'])
         }];
 
         for (var x = 0; x < compounds.length; x++) {
-            chartData[0].values.push([compounds[x], concentrations[x]]);
+            if (compounds[x] = '') {
+                chartData[0].values.push(['Unknown', concentrations[x]]);
+            }
+            else {
+                chartData[0].values.push([compounds[x], concentrations[x]]);
+            }
+            
         }
         $scope.PLSData = chartData; //sets data for chart
     }
@@ -655,7 +661,13 @@ angular.module('app.controllers', ['app.nodeServices'])
                 color: {},
                 values: []
             });
-            chartData[x].key = trainingNames[x];
+            if (trainingNames[x] = '') {
+                charData[x].key = 'Unknown';
+            }
+            else {
+                chartData[x].key = trainingNames[x];
+            }
+            
             chartData[x].color = '#000000';
             chartData[x].values.push({
                 x: trainingPoints[x][0],
