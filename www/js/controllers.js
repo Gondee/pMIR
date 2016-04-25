@@ -50,12 +50,15 @@ angular.module('app.controllers', ['app.nodeServices'])
             }
             else if ($scope.testType.type == "PCA") {
                 $state.go("menu.pcaccanresult");
-                chemo.train(false);
-
+                if (!chemo.isTrained()) {
+                    chemo.train(false);
+                }
             }
             else if ($scope.testType.type == "PLS") {
                 $state.go("menu.plsscanresult");
-                chemo.train(true);
+                if (!chemo.isTrained()) {
+                    chemo.train(true);
+                }
             }
             else {
                 alert("You must select the type of Scan");he
@@ -497,9 +500,6 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
     //bar chart
     function getPLSValues(scan) {
-        if (!chemo.isTrained()) {
-            var train = chemo.train(true);
-        }
         var results = chemo.infer(scan.absorbance);
         var compounds = results.compounds;
         var concentrations = results.concentrations;
@@ -551,15 +551,8 @@ angular.module('app.controllers', ['app.nodeServices'])
         database.outputModel(filename, isPLS, function (model) {
             chemo.loadModel(model.model, isPLS);
             alert("Model Loaded");
-        })
-
-        //chemo.chemoLoadModel(model, isPLS);
-
+        });
     }
-    
-    
-
-    
     
 })
 .controller('modelSaveCtrl', function ($scope, BLE, chemo, database) {
@@ -631,9 +624,6 @@ angular.module('app.controllers', ['app.nodeServices'])
     };
 
     function getPCAValues(scan) {
-        if (!chemo.isTrained()) {
-            chemo.train(false, scan.absorbance, concentrations, labels);
-        }
         var results = chemo.infer(scan.absorbance);
         var trainingPoints = results.trainingPoints; //2D array
         var trainingNames = results.trainingSampleNames;
