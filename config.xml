@@ -10,7 +10,7 @@
   <preference name="SplashScreen" value="screen" />
   <preference name="windows-target-version" value="8.1" />
   <preference name="android-targetSdkVersion" value="22" />
-  <preference name="Fullscreen" value="True" />
+  <preference name="Fullscreen" value="False" />
   <preference name="KeepRunning" value="True" />
   <preference name="ShowTitle" value="True" />
   <preference name="InAppBrowserStorageEnabled" value="True" />
