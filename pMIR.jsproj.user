@@ -4,7 +4,7 @@
     <ReferenceCachePath>C:\Users\Josh\AppData\Local\Temp\n40exzme_pMIR_refcache</ReferenceCachePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
-    <DebuggerFlavor>AndroidEmulator</DebuggerFlavor>
+    <DebuggerFlavor>RippleNexus7</DebuggerFlavor>
     <AndroidEmulatorID>AndroidDevice;Device</AndroidEmulatorID>
   </PropertyGroup>
 </Project>
