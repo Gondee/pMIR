@@ -520,7 +520,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         }];
 
         for (var x = 0; x < compounds.length; x++) {
-            if (compounds[x] = '') {
+            if (compounds[x] == '') {
                 chartData[0].values.push(['Unknown', concentrations[x]]);
             }
             else {
