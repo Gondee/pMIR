@@ -49,16 +49,16 @@ angular.module('app.controllers', ['app.nodeServices'])
                 $state.go("menu.simplescanresult");
             }
             else if ($scope.testType.type == "PCA") {
-                $state.go("menu.pcaccanresult");
                 if (!chemo.isTrained()) {
                     chemo.train(false);
                 }
+                $state.go("menu.pcaccanresult");
             }
             else if ($scope.testType.type == "PLS") {
-                $state.go("menu.plsscanresult");
                 if (!chemo.isTrained()) {
                     chemo.train(true);
                 }
+                $state.go("menu.plsscanresult");
             }
             else {
                 alert("You must select the type of Scan");he
@@ -578,9 +578,6 @@ angular.module('app.controllers', ['app.nodeServices'])
 
     $scope.absorbance = [];
     $scope.reflectance = [];
-
-    var labels = ['label1', 'label2'];
-    var concentrations = [1, 2];
 
     BLE.NIRScan().then(
         // success callback

@@ -157,6 +157,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 chemoAlgo.E = new lib_matrix(model.E);
                 chemoAlgo.F = new lib_matrix(model.F);
                 chemoAlgo.PBQ = new lib_matrix(model.PBQ);
+                chemoAlgo.ymean = new lib_matrix(model.ymean);
+                chemoAlgo.ystd = new lib_matrix(model.ystd);
             }
             else {
                 chemoIsPls = false;
