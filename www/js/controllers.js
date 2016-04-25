@@ -1,9 +1,10 @@
 angular.module('app.controllers', ['app.nodeServices'])
 
-.controller('pMIRQuickScannerCtrl', function ($scope, $state, BLE, chemo, database) {
-    $scope.connected = false; 
+.controller('pMIRQuickScannerCtrl', function ($scope, $ionicHistory, $state, BLE, chemo, database) {
+    $ionicHistory.clearCache();
+    $scope.connected = false;
     $scope.isTrainingData = false;
-
+   
     $scope.scanResults = {};
 
     $scope.ScanRAW = {
