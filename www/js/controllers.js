@@ -1,9 +1,10 @@
 angular.module('app.controllers', ['app.nodeServices'])
 
-.controller('pMIRQuickScannerCtrl', function ($scope, $state, BLE, chemo, database) {
-    $scope.connected = false; 
+.controller('pMIRQuickScannerCtrl', function ($scope, $ionicHistory, $state, BLE, chemo, database) {
+    $ionicHistory.clearCache();
+    $scope.connected = false;
     $scope.isTrainingData = false;
-
+   
     $scope.scanResults = {};
 
     $scope.ScanRAW = {
@@ -121,6 +122,10 @@ angular.module('app.controllers', ['app.nodeServices'])
     var failure = function (error) {
         alert(error);
     };
+
+    $scope.scan = function () {
+        BLE.scan().then(success, failure);
+    }
 
     BLE.scan().then(success, failure);
 
@@ -400,7 +405,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
 
         if (remainder != 0) {
-            clabels.push('NA');
+            clabels.push('');
             concentrations.push((remainder / 100));
         }
 
@@ -515,7 +520,13 @@ angular.module('app.controllers', ['app.nodeServices'])
         }];
 
         for (var x = 0; x < compounds.length; x++) {
-            chartData[0].values.push([compounds[x], concentrations[x]]);
+            if (compounds[x] = '') {
+                chartData[0].values.push(['Unknown', concentrations[x]]);
+            }
+            else {
+                chartData[0].values.push([compounds[x], concentrations[x]]);
+            }
+            
         }
         $scope.PLSData = chartData; //sets data for chart
     }
@@ -649,7 +660,13 @@ angular.module('app.controllers', ['app.nodeServices'])
                 color: {},
                 values: []
             });
-            chartData[x].key = trainingNames[x];
+            if (trainingNames[x] = '') {
+                charData[x].key = 'Unknown';
+            }
+            else {
+                chartData[x].key = trainingNames[x];
+            }
+            
             chartData[x].color = '#000000';
             chartData[x].values.push({
                 x: trainingPoints[x][0],

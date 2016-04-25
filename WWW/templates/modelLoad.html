@@ -1,7 +1,7 @@
 ﻿<ion-view title="Load A Model" id="page16">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-    
-        
+
+
         <div class="list card">
             <div class="item item-divider">Select a Type of Model To Load</div>
             <div class="item item-body">
@@ -12,9 +12,14 @@
             </div>
         </div>
 
-        <ion-list>
-            <ion-item collection-repeat="file in filenames">
-                <ion-radio ng-click="loadModel(file)">{{file}}</ion-radio>
-            </ion-item>
-        <ion-list>
+        <div class="list card">
+            <div class="item item-divider">Select an Option</div>
+            <div class="item item-body">
+                <ion-list>
+                    <ion-item collection-repeat="file in filenames">
+                        <button class="button button-block button-dark button-clear" ng-click="loadModel(file)">{{file}}</button>
+                    </ion-item>
+                <ion-list>
+            </div>
+        </div>
 </ion-view>
