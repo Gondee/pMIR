@@ -3,7 +3,7 @@
         <center><i ng-show="loading"><ion-spinner icon="lines"></ion-spinner>Scanning...</i></center>
 
         <div ng-hide="loading">
-
+            <h1>Closest Match: {{closestSample}}</h1>
             <div class="card">
                 <div class="item item-divider">
                     PCA Results
@@ -23,7 +23,7 @@
 
             <div class="card">
                 <div class="item item-divider">
-                    Absorbance
+                    Sample Absorbance
                 </div>
                 <div class="item item-text-wrap">
                     <nvd3-line-chart data="absorbance"
@@ -41,7 +41,7 @@
 
             <div class="card">
                 <div class="item item-divider">
-                    Reflectance
+                    Sample Reflectance
                 </div>
                 <div class="item item-text-wrap">
                     <nvd3-line-chart data="reflectance"

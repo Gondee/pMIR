@@ -75,33 +75,8 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
     }
 
-    $scope.databaseTest = function () {
-        var File = '{"absorbances":[1, 2, 2, 3, 4,  4, 5, 6, 6],"wavelength":[1, 2, 3, 4, 5, 6],"concentrations":[0.05,0.95],"concentrationLabels":["Thx","NA"]}';
-        var obj = JSON.parse(File);
-        obj.modelName = 'PLS';
-        var fileName = 'model2';
-        database.inputDataFile(obj.absorbances, obj.concentrationLabels, obj.concentrations, obj.wavelength, fileName, function () {
-            console.log('wrote file');
-
-            database.outputDataFile(fileName, function (data) {
-                //alert("success: " + (obj.absorbances[1] == data.absorbances[1]));
-                database.listEntries(false, false, function (entries) {
-                    debugger;
-                    
-                });
-            });
-        });
-
-        /*fileName = fileName + $scope.numba;
-        database.inputModel(fileName, obj, function (data) {
-            database.outputModel(fileName, true, function (data) {
-
-                database.listEntries(true, true, function (entries) {
-                    debugger;
-
-                });
-            });
-        });*/
+    $scope.clearModel = function () {
+        // here you go
     };
 })
 
@@ -551,6 +526,8 @@ angular.module('app.controllers', ['app.nodeServices'])
     $scope.showModels = function () {
         if($scope.testType.type == "PLS"){
             isPLS = true;
+        } else {
+            isPLS = false;
         }
 
         database.listEntries(true, isPLS, function (filenames) {
@@ -600,6 +577,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 .controller('pcaScanCtrl', function ($scope, BLE, chemo) {
     $scope.loading = true;
+    $scope.closestSample;
 
     $scope.absorbance = [];
     $scope.reflectance = [];
@@ -651,6 +629,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         var trainingNames = results.trainingSampleNames;
         var inferredPoint = results.recentPoint;    //1D array
         var closestSample = results.closestSample;
+        $scope.closestSample = closestSample;
         var chartData = [];
         //store training points first
         //set their colors to black
@@ -660,8 +639,8 @@ angular.module('app.controllers', ['app.nodeServices'])
                 color: {},
                 values: []
             });
-            if (trainingNames[x] = '') {
-                charData[x].key = 'Unknown';
+            if (trainingNames[x] == '') {
+                chartData[x].key = 'Unknown';
             }
             else {
                 chartData[x].key = trainingNames[x];
