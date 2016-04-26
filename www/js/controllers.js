@@ -76,7 +76,8 @@ angular.module('app.controllers', ['app.nodeServices'])
     }
 
     $scope.clearModel = function () {
-        // here you go
+        chemo.clearModel();
+        alert("All scanned data has been cleared.");
     };
 })
 

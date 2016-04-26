@@ -38,6 +38,19 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         failModelNotLoaded: 13,
     };
 
+    function chemoClearModel() {
+        chemoIsPls = false;
+        chemoConcentrationLabels = [];
+        chemoTrainingAbsorbances = [];
+        chemoTrainingConcentrations = [];
+        chemoPCACompressed = [];
+        chemoNumLatentVectors = 0;
+        chemoIsTrained = false;
+        chemoSampleNames = [];
+        chemoNullColumns = [];
+        chemoAlgo = null;
+    };
+
     function chemoAddLabels(labels) {
 
         var newLabelsLength = labels.length;
@@ -154,6 +167,8 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                 chemoAlgo.E = new lib_matrix(model.E);
                 chemoAlgo.F = new lib_matrix(model.F);
                 chemoAlgo.PBQ = new lib_matrix(model.PBQ);
+                chemoAlgo.ymean = new lib_matrix(model.ymean);
+                chemoAlgo.ystd = new lib_matrix(model.ystd);
             }
             else {
                 chemoIsPls = false;
@@ -385,9 +400,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var inferred = [];
         try {
             //alert("Before transpose");
-            var newDataset = chemoTrainingAbsorbances.splice(0);
+            var newDataset = chemoTrainingAbsorbances;
             newDataset[newDataset.length] = measuredAbsorbances;
             var inferred = chemoAlgo.predict(newDataset);
+            newDataset.pop();
+            chemoTrainingAbsorbances = newDataset;
             /*var matForm = [measuredAbsorbances, measuredAbsorbances];
             var measuredTranspose = new lib_matrix(matForm);
             measuredTranspose = measuredTranspose.transpose();
@@ -455,7 +472,6 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         if (chemoNumLatentVectors != chemoPCACompressed[0].length) {
             return { compounds: [], concentrations: [], status: chemoFlags.failInferenceColumnMismatch };
         }
-        var distance = [];
         for (var i = 0; i < numPoints; ++i) {
             var sum = 0;
             var numComponents = chemoPCACompressed[i].length;
@@ -467,7 +483,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             }
             //Square root of distances squared is the euclidean distance formula
             sum = Math.sqrt(sum);
-            distance[i] = sum;
+            distances[i] = sum;
         }
         //Linear search to find point with minimum distance from new observation
         var minimumDistance = distances[0];
@@ -1016,6 +1032,6 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         return chemoPCACompressed;
     };
 
-    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest, updateTest:updateTest, updateData:updateData, getPCA: getPCA, isTrained: isTrained, removeNullColumnsTest: removeNullColumnsTest };
+    return { train: newTrain, infer: newInfer, flags: chemoFlags, getModel: chemoGetModel, loadModel: chemoLoadModel, pcaTest: pcaTest, plsTest: plsTest, updateTest:updateTest, updateData:updateData, getPCA: getPCA, isTrained: isTrained, removeNullColumnsTest: removeNullColumnsTest, clearModel:chemoClearModel };
 
 });
