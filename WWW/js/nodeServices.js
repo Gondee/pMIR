@@ -454,10 +454,12 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         var measured = [];
         try {
             //Append observed data to training data (temporary, observed data is NOT training data)
-            var matForm = chemoTrainingAbsorbances.slice(0);
-            matForm[matForm.length] = measuredAbsorbances;
-            measured = chemoAlgo.project(matForm, chemoNumLatentVectors);
-            measured = measured[measured.length - 1];
+            var newDataset = chemoTrainingAbsorbances;
+            newDataset[newDataset.length] = measuredAbsorbances;
+            var inferred = chemoAlgo.project(matForm, chemoNumLatentVectors);
+            measured = inferred[measured.length - 1];
+            newDataset.pop();
+            chemoTrainingAbsorbances = newDataset;
         }
         catch (err) {
             return { compounds: [], concentrations: [], status: chemoFlags.failUnknownInferenceError };
