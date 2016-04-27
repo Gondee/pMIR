@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['app.nodeServices'])
 
-.controller('pMIRQuickScannerCtrl', function ($scope, $ionicHistory, $state, BLE, chemo, database) {
+.controller('pMIRQuickScannerCtrl', function ($scope, $ionicHistory, $state, BLE, chemo, database, $ionicPopup) {
     $ionicHistory.clearCache();
     $scope.connected = false;
     $scope.isTrainingData = false;
@@ -62,7 +62,10 @@ angular.module('app.controllers', ['app.nodeServices'])
                 $state.go("menu.plsscanresult");
             }
             else {
-                alert("You must select the type of Scan");he
+                $ionicPopup.alert({
+                    title: 'Error',
+                    template: 'You must select a type of scan!'
+                });
                 return;
             }
 
@@ -78,7 +81,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     
 })
 
-.controller('connectionsCtrl', function ($scope, $ionicHistory, $state, BLE) {
+.controller('connectionsCtrl', function ($scope, $ionicHistory, $state, BLE, $ionicPopup) {
     // keep a reference since devices will be added
     $scope.devices = BLE.devices;
 
@@ -88,7 +91,10 @@ angular.module('app.controllers', ['app.nodeServices'])
     var success = function () {
         if ($scope.devices.length < 1) {
             // a better solution would be to update a status message rather than an alert
-            alert("Didn't find any Bluetooth Low Energy devices.");
+            $ionicPopup.alert({
+                title: 'No NIR devices detected',
+                template: 'Please make sure the device is in search mode and BLE is enabled'
+            });
         }
     };
 
@@ -234,7 +240,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 .controller('profilesCtrl', function ($scope) {
 
 })
-.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo, $state) {
+.controller('postTrainScanCtrl', function ($scope, BLE, database, chemo, $state, $ionicPopup) {
 
     $scope.scanResults = {};
     $scope.loading = false;
@@ -316,14 +322,26 @@ angular.module('app.controllers', ['app.nodeServices'])
         
 
         if ((total) > 100.0) {
-            alert("Your total concentrations are greater than 100");
+            
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'Your total concentrations are greater than 100'
+            });
             return;
         } else if ((total) == 0.0) {
-            alert("You must enter concentration data before proceding");
+            
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'You must enter concentration data before proceding'
+            });
             return;
         }
         if ($scope.name.text = '') {
-            alert("You must enter a name for this training data");
+            
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'You must enter a name for this training data'
+            });
             return;
         }
 
@@ -392,7 +410,10 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
         if (contCheck != 1) {
             alert(contCheck);
-            alert("Your Concentrations don't add to 100%");
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'Your Concentration do not add to 100%'
+            });
             return;
         }
 
@@ -434,12 +455,50 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
-.controller('menuCtrl', function ($scope, BLE,chemo,database) {
+.controller('menuCtrl', function ($scope, $state, BLE, chemo, database, $ionicPopup, $timeout) {
 
-    $scope.clearModel = function () {
-        chemo.clearModel();
-        alert("All scanned data has been cleared.");
+   
+
+    $scope.showConfirm = function () {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Clear Current Model',
+            template: 'Are you sure you want to clear the current model?'
+        });
+
+        confirmPopup.then(function (res) {
+            if (res) {
+                chemo.clearModel();
+                
+            } else {
+                
+            }
+        });
     };
+
+    $scope.connected = false;
+
+    var init = function () {
+        setInterval(checkConnect, 500);
+    }
+
+    var checkConnect = function () {
+        $scope.connected = BLE.isConnected();
+    };
+
+    init();
+
+    $scope.configs = function () {
+        if ($scope.connected == true) {
+            $state.go('menu.scanconfigselect');
+        }
+        else {
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'You must be connected to the device'
+            });
+        }
+    }
+
 
 })
 
@@ -514,7 +573,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     }
 })
 
-.controller('modelLoadCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database) {
+.controller('modelLoadCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database, $ionicPopup) {
 
     $scope.ScanPCA = {
         textPCA: 'PCA Models',
@@ -551,7 +610,12 @@ angular.module('app.controllers', ['app.nodeServices'])
 
         database.outputModel(filename, isPLS, function (model) {
             chemo.loadModel(model.model, isPLS);
-            alert("Model Loaded");
+            
+            $ionicPopup.alert({
+                title: 'Success',
+                template: 'Model is now loaded!'
+            });
+
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
@@ -560,7 +624,7 @@ angular.module('app.controllers', ['app.nodeServices'])
     }
     
 })
-.controller('modelSaveCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database) {
+.controller('modelSaveCtrl', function ($scope, $state, $ionicHistory, BLE, chemo, database, $ionicPopup) {
     $scope.isTrained = chemo.isTrained();
     $scope.filename = {
         text: ''
@@ -571,7 +635,12 @@ angular.module('app.controllers', ['app.nodeServices'])
 
         var models = chemo.getModel();
         database.inputModel($scope.filename.text, models, function () {
-            alert("Model Saved");
+            
+            $ionicPopup.alert({
+                title: 'Success',
+                template: 'Model saved!'
+            });
+
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
@@ -582,7 +651,7 @@ angular.module('app.controllers', ['app.nodeServices'])
 
 })
 
-.controller('pcaScanCtrl', function ($scope, BLE, chemo) {
+.controller('pcaScanCtrl', function ($scope, BLE, chemo, $ionicPopup) {
     $scope.loading = true;
     $scope.closestSample;
 

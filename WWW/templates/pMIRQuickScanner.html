@@ -1,4 +1,4 @@
-<ion-view title="pMIR Quick Scanner" id="page1">
+<ion-view title="pMIR Scanner" id="page1">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
 
 
@@ -15,16 +15,9 @@
                 </div>
             </div>
         </div>
-        <div class="list">
-            <label class="item item-input" ui-sref="menu.scanconfigselect">
-                <div class="input-label item-icon-right">
-                    Select a scan configuration
-                    <i class="icon ion-chevron-right"></i>
-                </div>
-            </label>
-        </div>
+        <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Model Training Mode</ion-toggle>
         <form class="list">
-            <ion-toggle ng-change="toggleTraining()" ng-model="isTrainingData" toggle-class="toggle-positive">Training Data</ion-toggle>
+            <br />
             <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanRAW.value">{{ScanRAW.textRaw}}</ion-radio>
             <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanPCA.value">{{ScanPCA.textPCA}}</ion-radio>
             <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanPLS.value">{{ScanPLS.textPLS}}</ion-radio>
