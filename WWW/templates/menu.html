@@ -15,14 +15,16 @@
         <ion-content padding="false" class="side-menu-left has-header">
             <ion-list>
                 <ion-item ui-sref="menu.pMIRQuickScanner" menu-close="">Scan&nbsp;&nbsp;<i class="icon ion-ios-home-outline"></i> </ion-item>
-                <ion-item ui-sref="menu.scanconfigselect" menu-close="">Scan Configs</ion-item>
-                <!--<ion-item ui-sref="menu.chemometrics" menu-close="">Chemometrics</ion-item>-->
+                <div class="item item-divider">Chemometrics</div>
                 <ion-item ui-sref="menu.modelload" menu-close="">Load Model</ion-item>
-                <ion-item ui-sref="menu.modelsave" menu-close="">Save Model</ion-item>
-                <ion-item ng-click="clearModel()" menu-close="">Clear Current Model</ion-item>
+                <ion-item ui-sref="menu.modelsave" menu-close="">Save Current Model</ion-item>
+                <ion-item ng-click="showConfirm()" menu-close="">Clear Current Model</ion-item>
             </ion-list>
+            <div class="item item-divider">Sensor</div>
             <div class="button-bar"></div>
             <ion-list>
+               
+                <ion-item ng-click="configs()" menu-close="">Sensor Configurations</ion-item>
                 <ion-item ui-sref="menu.connections" menu-close="">Connections</ion-item>
             </ion-list>
         </ion-content>
