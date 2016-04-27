@@ -75,10 +75,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         }
     }
 
-    $scope.clearModel = function () {
-        chemo.clearModel();
-        alert("All scanned data has been cleared.");
-    };
+    
 })
 
 .controller('connectionsCtrl', function ($scope, $ionicHistory, $state, BLE) {
@@ -434,6 +431,15 @@ angular.module('app.controllers', ['app.nodeServices'])
 })
 
 .controller('resetCtrl', function ($scope, BLE) {
+
+})
+
+.controller('menuCtrl', function ($scope, BLE,chemo,database) {
+
+    $scope.clearModel = function () {
+        chemo.clearModel();
+        alert("All scanned data has been cleared.");
+    };
 
 })
 
