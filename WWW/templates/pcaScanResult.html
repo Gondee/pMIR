@@ -3,7 +3,13 @@
         <center><i ng-show="loading"><ion-spinner icon="lines"></ion-spinner>Scanning...</i></center>
 
         <div ng-hide="loading">
-            <h1>Closest Match: {{closestSample}}</h1>
+
+            <div class="card">
+                <div class="item item-text-wrap">
+                    Closest Match: {{closestSample}}
+                </div>
+            </div>
+         
             <div class="card">
                 <div class="item item-divider">
                     PCA Results
