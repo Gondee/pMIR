@@ -714,14 +714,14 @@ angular.module('app.controllers', ['app.nodeServices'])
             values: [],
             color: '#000000'
         });
-        chartData[x].values.push({
+        chartData[0].values.push({
             x: 0,
             y: 0,
             size: 1
         });
         var found = false;
         for (var x = 0; x < trainingPoints.length; x++) {
-            for (var j = ; j < chartData.length; j++){
+            for (var j = 0; j < chartData.length; j++){
                 if (chartData[j].key == trainingNames[x]){
                     found = true;
                     chartData[j].values.push({
