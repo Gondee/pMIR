@@ -456,7 +456,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             //Append observed data to training data (temporary, observed data is NOT training data)
             var newDataset = chemoTrainingAbsorbances;
             newDataset[newDataset.length] = measuredAbsorbances;
-            var inferred = chemoAlgo.project(matForm, chemoNumLatentVectors);
+            var inferred = chemoAlgo.project(newDataset, chemoNumLatentVectors);
             measured = inferred[measured.length - 1];
             newDataset.pop();
             chemoTrainingAbsorbances = newDataset;
