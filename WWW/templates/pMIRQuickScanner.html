@@ -6,10 +6,11 @@
             <div class="item item-divider">TI NIRScan Nano Connection</div>
             <div class="item item-body">
                 <div class="item-icon-right">
-                    <p>Connected</p>
+                    <h2 ng-show="connected">Connected </h2>
+                    <h2 ng-hide="connected">Click here to connect </h2>
 
                     <i ng-show="connected" style="color: rgb(51, 205, 95);" class="icon ion-checkmark-circled"></i>
-                    <i ng-hide="connected" style="color: rgb(239, 71, 58);" class="icon ion-close-circled"></i>
+                    <i ng-hide="connected" style="color: rgb(239, 71, 58);" class="icon ion-alert-circled"></i>
 
                 </div>
             </div>

@@ -15,7 +15,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
         cordova.plugins.Keyboard.disableScroll(true);
 
     }
-    if(window.StatusBar) {
+    if (window.StatusBar) {
         // org.apache.cordova.statusbar required
       fullScreen(false, true);
       StatusBar.styleDefault();
