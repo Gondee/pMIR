@@ -640,9 +640,19 @@ angular.module('app.controllers', ['app.nodeServices'])
         var chartData = [];
         //store training points first
         //set their colors to black
+        chartData.push({
+            key: "origin",
+            values: [],
+            color: '#000000'
+        });
+        chartData[x].values.push({
+            x: 0,
+            y: 0,
+            size: 1
+        });
         var found = false;
         for (var x = 0; x < trainingPoints.length; x++) {
-            for (var j = 0; j < chartData.length; j++){
+            for (var j = ; j < chartData.length; j++){
                 if (chartData[j].key == trainingNames[x]){
                     found = true;
                     chartData[j].values.push({
@@ -658,12 +668,12 @@ angular.module('app.controllers', ['app.nodeServices'])
                     values: []
                 });
                 if (trainingNames[x] == '') {
-                    chartData[x].key = 'Unknown';
+                    chartData[x+1].key = 'Unknown';
                 }
                 else {
-                    chartData[x].key = trainingNames[x];
+                    chartData[x+1].key = trainingNames[x];
                 }
-                chartData[x].values.push({
+                chartData[x+1].values.push({
                     x: trainingPoints[x][0],
                     y: trainingPoints[x][1],
                     size: 2
