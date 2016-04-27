@@ -29,11 +29,7 @@
             <ion-radio ng-hide="isTrainingData" ng-model="testType.type" ng-value="ScanPLS.value">{{ScanPLS.textPLS}}</ion-radio>
         </form>
         <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="startScanSteps()" class="button button-balanced  button-block">Go</button><!-- ng-disabled="!connected"     Add in production-->
-        </div>
-
-        <div class="button-bar">
-            <button id="pMIRQuickScanner-button5" ng-click="clearModel()" class="button button-status  button-block">Clear Model</button><!-- ng-disabled="!connected"     Add in production-->
+            <button id="pMIRQuickScanner-button5" ng-disabled="!connected" ng-click="startScanSteps()" class="button button-balanced  button-block">Go</button><!-- ng-disabled="!connected"     Add in production-->
         </div>
 
     </ion-content>

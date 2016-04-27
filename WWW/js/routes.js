@@ -23,7 +23,8 @@ angular.module('app.routes', [])
   .state('menu', {
     url: '/side-menu21',
     templateUrl: 'templates/menu.html',
-    abstract: true
+    abstract: true,
+    controller: 'menuCtrl'
   })
 
   .state('menu.connections', {
@@ -77,6 +78,7 @@ angular.module('app.routes', [])
     })
 
     .state('menu.simplescanresult', {
+
         url: '/simplescanresult',
         views: {
             'side-menu21': {
