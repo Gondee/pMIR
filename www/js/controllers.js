@@ -640,25 +640,36 @@ angular.module('app.controllers', ['app.nodeServices'])
         var chartData = [];
         //store training points first
         //set their colors to black
-        for (var x = 0; x < trainingPoints.length; x++){
-            chartData.push({
-                key: {},
-                color: {},
-                values: []
-            });
-            if (trainingNames[x] == '') {
-                chartData[x].key = 'Unknown';
+        var found = false;
+        for (var x = 0; x < trainingPoints.length; x++) {
+            for (var j = 0; j < chartData.length; j++){
+                if (chartData[j].key == trainingNames[x]){
+                    found = true;
+                    chartData[j].values.push({
+                        x: trainingPoints[x][0],
+                        y: trainingPoints[x][1],
+                        size: 2
+                    });
+                }
             }
-            else {
-                chartData[x].key = trainingNames[x];
+            if (!found) {
+                chartData.push({
+                    key: {},
+                    values: []
+                });
+                if (trainingNames[x] == '') {
+                    chartData[x].key = 'Unknown';
+                }
+                else {
+                    chartData[x].key = trainingNames[x];
+                }
+                chartData[x].values.push({
+                    x: trainingPoints[x][0],
+                    y: trainingPoints[x][1],
+                    size: 2
+                });
             }
-            
-            chartData[x].color = '#000000';
-            chartData[x].values.push({
-                x: trainingPoints[x][0],
-                y: trainingPoints[x][1],
-                size: 2
-            });
+            found = false;
         }
         //look for the closest sample and turn it red
         for (var i in chartData) {
