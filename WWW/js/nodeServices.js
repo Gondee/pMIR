@@ -457,7 +457,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             var newDataset = chemoTrainingAbsorbances;
             newDataset[newDataset.length] = measuredAbsorbances;
             var inferred = chemoAlgo.project(newDataset, chemoNumLatentVectors);
-            measured = inferred[measured.length - 1];
+            measured = inferred[inferred.length - 1];
             newDataset.pop();
             chemoTrainingAbsorbances = newDataset;
         }
