@@ -619,6 +619,7 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
         if (retTrain == chemoFlags.success) {
             //Infer, no save
             var retInfer = newInfer(detectedAbsorbances);
+            var retInfer2 = newInfer(detectedAbsorbances);
             //results of infer?
             console.log("Infer Status: ");
             console.log(flagToString(retInfer.status));
@@ -627,9 +628,11 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
             if (retInfer.status == chemoFlags.success) {
                 console.log("Labels of closest point:\n");
                 console.log(retInfer.compounds);
+                console.log(retInfer2.compounds);
                 console.log("\n");
                 console.log("Concentrations on closest point:\n");
                 console.log(retInfer.concentrations);
+                console.log(retInfer2.concentrations);
                 console.log("\n");
                 console.log("Points:\n");
                 var numPoints = retInfer.trainingPoints.length; 
@@ -638,12 +641,19 @@ angular.module('app.nodeServices', ['ionic', 'ngCordova'])
                     console.log(retInfer.trainingPoints[i]);
                     console.log("\n");
                 }
+                var numPoints2 = retInfer2.trainingPoints.length;
+                for (var i = 0; i < numPoints2; ++i) {
+                    console.log(retInfer2.trainingPoints[i]);
+                    console.log("\n");
+                }
                 console.log("\n");
                 console.log("Scanned Point:\n");
                 console.log(retInfer.recentPoint);
+                console.log(retInfer2.recentPoint);
                 console.log("\n");
                 console.log("Closest Sample:\n");
                 console.log(retInfer.closestSample);
+                console.log(retInfer2.closestSample);
             }
         }
     };
