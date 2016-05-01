@@ -721,7 +721,7 @@ angular.module('app.controllers', ['app.nodeServices'])
         });
         var found = false;
         for (var x = 0; x < trainingPoints.length; x++) {
-            for (var j = ; j < chartData.length; j++){
+            for (var j = 0; j < chartData.length; j++){
                 if (chartData[j].key == trainingNames[x]){
                     found = true;
                     chartData[j].values.push({
