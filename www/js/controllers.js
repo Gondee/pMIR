@@ -714,13 +714,14 @@ angular.module('app.controllers', ['app.nodeServices'])
             values: [],
             color: '#000000'
         });
-        chartData[x].values.push({
+        chartData[0].values.push({
             x: 0,
             y: 0,
             size: 1
         });
         var found = false;
         for (var x = 0; x < trainingPoints.length; x++) {
+
             for (var j = 0; j < chartData.length; j++){
                 if (chartData[j].key == trainingNames[x]){
                     found = true;
@@ -732,17 +733,18 @@ angular.module('app.controllers', ['app.nodeServices'])
                 }
             }
             if (!found) {
+                var lastIndex = chartData.length;
                 chartData.push({
                     key: {},
                     values: []
                 });
                 if (trainingNames[x] == '') {
-                    chartData[x+1].key = 'Unknown';
+                    chartData[lastIndex].key = 'Unknown';
                 }
                 else {
-                    chartData[x+1].key = trainingNames[x];
+                    chartData[lastIndex].key = trainingNames[x];
                 }
-                chartData[x+1].values.push({
+                chartData[lastIndex].values.push({
                     x: trainingPoints[x][0],
                     y: trainingPoints[x][1],
                     size: 2
