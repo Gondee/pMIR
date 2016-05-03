@@ -756,7 +756,6 @@ angular.module('app.controllers', ['app.nodeServices'])
         for (var i in chartData) {
             if (chartData[i].key == closestSample) {
                 chartData[i].color = '#FF0000';
-                chartData[i].values[0].size = 10;
             }
         }
 
